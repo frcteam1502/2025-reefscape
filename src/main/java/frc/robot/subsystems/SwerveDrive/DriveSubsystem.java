@@ -27,9 +27,12 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.measure.measure.MutDistance;
-import edu.wpi.first.units.measure.measure.MutLinearVelocity;
-import edu.wpi.first.units.measure.measure.MutVoltage;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.MutDistance;
+import edu.wpi.first.units.measure.MutLinearVelocity;
+import edu.wpi.first.units.measure.MutVoltage;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -83,9 +86,13 @@ public class DriveSubsystem extends SubsystemBase{
 
   private static Limelight limelight = new Limelight();
 
-  private final MutVoltage appliedVoltage = new MutVoltage(0,0, Volts);
-  private final MutDistance distance = new MutDistance(0,0, Meters);
-  private final MutLinearVelocity velocity = new MutLinearVelocity(0, 0, MetersPerSecond);
+  //private final MutVoltage appliedVoltage = new MutVoltage(0,0, Volts);
+  //private final MutDistance distance = new MutDistance(0,0, Meters);
+  //private final MutLinearVelocity velocity = new MutLinearVelocity(0, 0, MetersPerSecond);
+
+  private final Voltage appliedVoltage;
+  private final Distance distance;
+  private final LinearVelocity velocity;
 
   //Create a SysIdRoutine object for characterizing the drive
   private final SysIdRoutine sysIdRoutine = 
@@ -103,24 +110,24 @@ public class DriveSubsystem extends SubsystemBase{
       log -> {
         //Log a frame for the frontLeft Motor
         log.motor("drive-frontLeft")
-          .voltage(appliedVoltage.mut_replace(frontLeft.getDriveMotorVoltage(), Volts))
-          .linearPosition(distance.mut_replace(frontLeft.getLinearPosition(), Meters))
-          .linearVelocity(velocity.mut_replace(frontLeft.getModuleVelocity(), MetersPerSecond));
+          .voltage(frontLeft.getDriveMotorVoltage())
+          .linearPosition(frontLeft.getLinearPositionMeters())
+          .linearVelocity(frontLeft.getModuleVelocityMetersPerSec());
         //Log a frame for the frontRight Motor
         log.motor("drive-frontRight")
-          .voltage(appliedVoltage.mut_replace(frontRight.getDriveMotorVoltage(), Volts))
-          .linearPosition(distance.mut_replace(frontRight.getLinearPosition(), Meters))
-          .linearVelocity(velocity.mut_replace(frontRight.getModuleVelocity(), MetersPerSecond));
+          .voltage(frontRight.getDriveMotorVoltage())
+          .linearPosition(frontRight.getLinearPositionMeters())
+          .linearVelocity(frontRight.getModuleVelocityMetersPerSec());
         //Log a frame for the backLeft Motor
         log.motor("drive-backLeft")
-          .voltage(appliedVoltage.mut_replace(backLeft.getDriveMotorVoltage(), Volts))
-          .linearPosition(distance.mut_replace(backLeft.getLinearPosition(), Meters))
-          .linearVelocity(velocity.mut_replace(backLeft.getModuleVelocity(), MetersPerSecond));
+          .voltage(backLeft.getDriveMotorVoltage())
+          .linearPosition(backLeft.getLinearPositionMeters())
+          .linearVelocity(backLeft.getModuleVelocityMetersPerSec());
         //Log a frame for the backRight Motor
         log.motor("drive-backRight")
-          .voltage(appliedVoltage.mut_replace(backRight.getDriveMotorVoltage(), Volts))
-          .linearPosition(distance.mut_replace(backRight.getLinearPosition(), Meters))
-          .linearVelocity(velocity.mut_replace(backRight.getModuleVelocity(), MetersPerSecond));
+          .voltage(backRight.getDriveMotorVoltage())
+          .linearPosition(backRight.getLinearPositionMeters())
+          .linearVelocity(backRight.getModuleVelocityMetersPerSec());
       },
       // Tell SysId to make generated commands require this subsystem, suffix test state in
       // WPILog with this subsystem's name ("drive")
@@ -454,11 +461,6 @@ public class DriveSubsystem extends SubsystemBase{
     Logger.RegisterSensor("FR Drive Speed", ()->frontRight.getVelocity());
     Logger.RegisterSensor("RL Drive Speed", ()->backLeft.getVelocity());
     Logger.RegisterSensor("RR Drive Speed", ()->backRight.getVelocity());
-
-    Logger.RegisterSensor("FL Drive Distance", ()->frontLeft.getLinearPosition());
-    Logger.RegisterSensor("FR Drive Distance", ()->frontRight.getLinearPosition());
-    Logger.RegisterSensor("RL Drive Distance", ()->backLeft.getLinearPosition());
-    Logger.RegisterSensor("RR Drive Distance", ()->backRight.getLinearPosition());
   }
 
   /**

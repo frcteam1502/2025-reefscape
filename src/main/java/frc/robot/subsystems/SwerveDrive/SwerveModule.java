@@ -1,5 +1,9 @@
 package frc.robot.subsystems.SwerveDrive;
 
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Volts;
+
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.spark.SparkBase;
@@ -15,8 +19,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.measure.measure.MutVelocity;
-import edu.wpi.first.units.measure.measure.Voltage;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.MutVelocity;
+import edu.wpi.first.units.measure.Voltage;
 
 public class SwerveModule{
   private final SparkFlex driveMotor;
@@ -124,8 +130,8 @@ public class SwerveModule{
     return new SwerveModulePosition(driveEncoder.getPosition(), new Rotation2d(getAbsPositionZeroed()));
   }
 
-  public double getLinearPosition() {
-    return driveEncoder.getPosition();
+  public Distance getLinearPositionMeters() {
+    return Distance.ofBaseUnits(driveEncoder.getPosition(), Meters);
   }
 
   public void zeroModule() {
@@ -142,8 +148,8 @@ public class SwerveModule{
     return commandedSpeed;
   }
 
-  public double getModuleVelocity(){
-    return driveEncoder.getVelocity();
+  public LinearVelocity getModuleVelocityMetersPerSec(){
+    return LinearVelocity.ofBaseUnits(driveEncoder.getVelocity(), MetersPerSecond);
   }
 
   public double getCommandedAngle(){
@@ -197,8 +203,10 @@ public class SwerveModule{
     turningMotor.setVoltage(turnOutput);
   }
 
-  public double getDriveMotorVoltage(){
-    return (driveMotor.getAppliedOutput()*driveMotor.getBusVoltage());
+  public Voltage getDriveMotorVoltage(){
+    var busVoltage = Voltage.ofBaseUnits(driveMotor.getBusVoltage(), Volts);
+    var appliedOutput = driveMotor.getAppliedOutput();
+    return (busVoltage.times(appliedOutput));
   }
 
   public double getBusVoltage(){
