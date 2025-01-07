@@ -27,12 +27,6 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.measure.Distance;
-import edu.wpi.first.units.measure.LinearVelocity;
-import edu.wpi.first.units.measure.MutDistance;
-import edu.wpi.first.units.measure.MutLinearVelocity;
-import edu.wpi.first.units.measure.MutVoltage;
-import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -85,14 +79,6 @@ public class DriveSubsystem extends SubsystemBase{
   private Pose2d limelightPose = new Pose2d();
 
   private static Limelight limelight = new Limelight();
-
-  //private final MutVoltage appliedVoltage = new MutVoltage(0,0, Volts);
-  //private final MutDistance distance = new MutDistance(0,0, Meters);
-  //private final MutLinearVelocity velocity = new MutLinearVelocity(0, 0, MetersPerSecond);
-
-  private final Voltage appliedVoltage;
-  private final Distance distance;
-  private final LinearVelocity velocity;
 
   //Create a SysIdRoutine object for characterizing the drive
   private final SysIdRoutine sysIdRoutine = 
