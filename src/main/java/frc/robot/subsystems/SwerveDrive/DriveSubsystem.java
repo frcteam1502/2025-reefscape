@@ -369,6 +369,7 @@ public class DriveSubsystem extends SubsystemBase{
     resetOdometry(pose);
   }
 
+  @SuppressWarnings("unused")
   private void configAutoBuilder(){
     //Wrapper for AutoBuilder.configure, must be called from DriveTrain config....
 
@@ -394,9 +395,10 @@ public class DriveSubsystem extends SubsystemBase{
           // Boolean supplier that controls when the path will be mirrored for the red alliance
           // This will flip the path being followed to the red side of the field.
           // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-    
+        
           var alliance = DriverStation.getAlliance();
-          if (alliance.isPresent()) {
+          if ((alliance.isPresent()) &&
+              (!DrivebaseCfg.IS_FIELD_MIRRORED)){//This causes a warning for dead code if configuration is true
                 return alliance.get() == DriverStation.Alliance.Red;
             }
               return false;

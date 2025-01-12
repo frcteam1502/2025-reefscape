@@ -21,6 +21,8 @@ public class DrivebaseCfg {
 
     public static final double MAX_SPEED_METERS_PER_SECOND = 5.897;//NEO Vortex w/ L3 MK4i
 
+    public static final boolean IS_FIELD_MIRRORED = true;
+
     //Other Configs
     //Swerve Module IDs
     public static final int FRONT_LEFT_MOD_ID   = 0;
