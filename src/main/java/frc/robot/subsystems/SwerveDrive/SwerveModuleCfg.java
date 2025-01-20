@@ -13,9 +13,9 @@ public class SwerveModuleCfg {
   
   //public static final double DRIVE_MOTOR_KV = 565;//https://docs.revrobotics.com/brushless/neo/vortex#motor-specifications
   
-  public static final double DRIVE_MOTOR_KV = 2.682;
-  public static final double DRIVE_MOTOR_KS = 0.15284;
-  public static final double DRIVE_MOTOR_KA = 0.66569;
+  public static final double DRIVE_MOTOR_KV = 2.066325;
+  public static final double DRIVE_MOTOR_KS = 0.120585;
+  public static final double DRIVE_MOTOR_KA = 0.185495;
 
   public static final double MODULE_TURN_PID_CONTROLLER_P = 3.4;
   public static final double MODULE_TURN_PID_CONTROLLER_I = 0;

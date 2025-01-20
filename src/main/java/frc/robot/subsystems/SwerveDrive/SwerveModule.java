@@ -18,10 +18,8 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
-import edu.wpi.first.units.measure.MutVelocity;
 import edu.wpi.first.units.measure.Voltage;
 
 public class SwerveModule{
@@ -49,9 +47,6 @@ public class SwerveModule{
   private double commandedSpeed;
   private double commandedAngle;
 
-  ClosedLoopConfig drivePIDF_Config = new ClosedLoopConfig();
-  SparkFlexConfig driveConfig = new SparkFlexConfig();
-
   public SwerveModule(int moduleId, SparkFlex driveMotor, SparkMax turnMotor, CANcoder absEncoder) {
     this.driveMotor = driveMotor;
     this.turningMotor = turnMotor;
@@ -65,15 +60,15 @@ public class SwerveModule{
     driveEncoderConfig.velocityConversionFactor(SwerveModuleCfg.DRIVE_ENCODER_MPS_PER_REV);
 
     //Setup Drive Motor Closed Loop Config settings
-    //ClosedLoopConfig drivePIDF_Config = new ClosedLoopConfig();
+    ClosedLoopConfig drivePIDF_Config = new ClosedLoopConfig();
     drivePIDF_Config.p(SwerveModuleCfg.MODULE_DRIVE_PID_CONTROLLER_P);
     drivePIDF_Config.i(SwerveModuleCfg.MODULE_DRIVE_PID_CONTROLLER_I);
     drivePIDF_Config.d(SwerveModuleCfg.MODULE_DRIVE_PID_CONTROLLER_D);
-    //drivePIDF_Config.velocityFF(1/DrivebaseCfg.MAX_SPEED_METERS_PER_SECOND);
+    drivePIDF_Config.velocityFF(1/DrivebaseCfg.MAX_SPEED_METERS_PER_SECOND);
 
 
     //Setup Drive Motor Config
-    //SparkFlexConfig driveConfig = new SparkFlexConfig();
+    SparkFlexConfig driveConfig = new SparkFlexConfig();
     driveConfig.idleMode(SwerveModuleCfg.DRIVE_IDLE_MODE);
     driveConfig.closedLoopRampRate(SwerveModuleCfg.CLSD_LOOP_RAMP_RATE_SECONDS);
     driveConfig.smartCurrentLimit(SwerveModuleCfg.DRIVE_CURRENT_LIMIT_AMPS);
@@ -125,9 +120,11 @@ public class SwerveModule{
     }else{
       // Optimize the reference state to avoid spinning further than 90 degrees
       var rotation = new Rotation2d(getAbsPositionZeroed());
-
       desiredState.optimize(rotation);
-
+      
+      // Scale speed by cosine of angle error. This scales down movement perpendicular to the desired
+      // direction of travel that can occur when modules change directions. This results in smoother
+      // driving.
       desiredState.cosineScale(rotation);
 
       //Set SmartDashboard variables
@@ -136,8 +133,6 @@ public class SwerveModule{
 
       //Calculate the motor speed output && feedforward and pass the values to the SPARK PID Controller object
       var desiredSpeed = desiredState.speedMetersPerSecond;
-      drivePIDF_Config.velocityFF(feedforward.calculate(desiredSpeed));
-      driveConfig.apply(drivePIDF_Config);
       drivePIDController.setReference(desiredSpeed, SparkMax.ControlType.kVelocity);
 
       // Calculate the turning motor output from the turning PID controller.
