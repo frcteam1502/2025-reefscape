@@ -49,6 +49,9 @@ public class SwerveModule{
   private double commandedSpeed;
   private double commandedAngle;
 
+  ClosedLoopConfig drivePIDF_Config = new ClosedLoopConfig();
+  SparkFlexConfig driveConfig = new SparkFlexConfig();
+
   public SwerveModule(int moduleId, SparkFlex driveMotor, SparkMax turnMotor, CANcoder absEncoder) {
     this.driveMotor = driveMotor;
     this.turningMotor = turnMotor;
@@ -62,15 +65,15 @@ public class SwerveModule{
     driveEncoderConfig.velocityConversionFactor(SwerveModuleCfg.DRIVE_ENCODER_MPS_PER_REV);
 
     //Setup Drive Motor Closed Loop Config settings
-    ClosedLoopConfig drivePIDF_Config = new ClosedLoopConfig();
+    //ClosedLoopConfig drivePIDF_Config = new ClosedLoopConfig();
     drivePIDF_Config.p(SwerveModuleCfg.MODULE_DRIVE_PID_CONTROLLER_P);
     drivePIDF_Config.i(SwerveModuleCfg.MODULE_DRIVE_PID_CONTROLLER_I);
     drivePIDF_Config.d(SwerveModuleCfg.MODULE_DRIVE_PID_CONTROLLER_D);
-    drivePIDF_Config.velocityFF(1/DrivebaseCfg.MAX_SPEED_METERS_PER_SECOND);
+    //drivePIDF_Config.velocityFF(1/DrivebaseCfg.MAX_SPEED_METERS_PER_SECOND);
 
 
     //Setup Drive Motor Config
-    SparkFlexConfig driveConfig = new SparkFlexConfig();
+    //SparkFlexConfig driveConfig = new SparkFlexConfig();
     driveConfig.idleMode(SwerveModuleCfg.DRIVE_IDLE_MODE);
     driveConfig.closedLoopRampRate(SwerveModuleCfg.CLSD_LOOP_RAMP_RATE_SECONDS);
     driveConfig.smartCurrentLimit(SwerveModuleCfg.DRIVE_CURRENT_LIMIT_AMPS);
@@ -104,6 +107,45 @@ public class SwerveModule{
     this.turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
   }
 
+   /**
+   * Sets the desired state for the module.
+   *
+   * @param desiredState Desired state with speed and angle.
+   */
+  public void setDesiredState(SwerveModuleState desiredState) {
+    
+    //Set SmartDashboard variables
+    commandedSpeed = desiredState.speedMetersPerSecond;
+    commandedAngle = desiredState.angle.getRadians();
+
+    if(Math.abs(desiredState.speedMetersPerSecond) < .2){
+      driveMotor.set(0);
+      turningMotor.set(0);
+      return;
+    }else{
+      // Optimize the reference state to avoid spinning further than 90 degrees
+      var rotation = new Rotation2d(getAbsPositionZeroed());
+
+      desiredState.optimize(rotation);
+
+      desiredState.cosineScale(rotation);
+
+      //Set SmartDashboard variables
+      commandedSpeed = desiredState.speedMetersPerSecond;
+      commandedAngle = desiredState.angle.getRadians();
+
+      //Calculate the motor speed output && feedforward and pass the values to the SPARK PID Controller object
+      var desiredSpeed = desiredState.speedMetersPerSecond;
+      drivePIDF_Config.velocityFF(feedforward.calculate(desiredSpeed));
+      driveConfig.apply(drivePIDF_Config);
+      drivePIDController.setReference(desiredSpeed, SparkMax.ControlType.kVelocity);
+
+      // Calculate the turning motor output from the turning PID controller.
+      final double turnOutput = turningPIDController.calculate(getAbsPositionZeroed(), desiredState.angle.getRadians());
+      turningMotor.setVoltage(turnOutput);
+    }
+  }
+
   /**
    * Returns the current state of the module.
    *
@@ -115,10 +157,6 @@ public class SwerveModule{
 
   public double getVelocity() {
     return driveEncoder.getVelocity();
-  }
-
-  public Rotation2d getRotation2d() {
-    return new Rotation2d(Units.degreesToRadians(getAbsPositionZeroed()));
   }
 
   /**
@@ -154,44 +192,6 @@ public class SwerveModule{
 
   public double getCommandedAngle(){
     return commandedAngle;
-  }
-
-  public double getControllerSetpoint(){
-    return driveMotor.get();
-  }
-
-  /**
-   * Sets the desired state for the module.
-   *
-   * @param desiredState Desired state with speed and angle.
-   */
-  public void setDesiredState(SwerveModuleState desiredState) {
-    
-    //Set SmartDashboard variables
-    commandedSpeed = desiredState.speedMetersPerSecond;
-    commandedAngle = desiredState.angle.getRadians();
-
-    if(Math.abs(desiredState.speedMetersPerSecond) < .2){
-      driveMotor.set(0);
-      turningMotor.set(0);
-      return;
-    }else{
-      // Optimize the reference state to avoid spinning further than 90 degrees
-      desiredState.optimize(new Rotation2d(getAbsPositionZeroed()));
-
-      //Set SmartDashboard variables
-      commandedSpeed = desiredState.speedMetersPerSecond;
-      commandedAngle = desiredState.angle.getRadians();
-
-      //Calculate the motor speed output and pass the value to the SPARK PID Controller object
-      //var desiredSpeed = desiredState.speedMetersPerSecond/DrivebaseCfg.MAX_SPEED_METERS_PER_SECOND;
-      var desiredSpeed = desiredState.speedMetersPerSecond;
-      drivePIDController.setReference(desiredSpeed, SparkMax.ControlType.kVelocity);
-
-      // Calculate the turning motor output from the turning PID controller.
-      final double turnOutput = turningPIDController.calculate(getAbsPositionZeroed(), desiredState.angle.getRadians());
-      turningMotor.setVoltage(turnOutput);
-    }
   }
 
   public void setSysIDVoltage(Voltage volts){
