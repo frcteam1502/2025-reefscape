@@ -30,14 +30,12 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.GameState;
 
 public class DriveSubsystem extends SubsystemBase{
   
   public static boolean isTeleOp = false;
 
   public boolean isTurning = false;
-  public double targetAngle = 0.0;
   public double turnCommand = 0.0;
   public double fieldXCommand = 0;
   public double fieldYCommand = 0;
@@ -153,12 +151,6 @@ public class DriveSubsystem extends SubsystemBase{
     configAutoBuilder(); 
   }
 
-  private void checkInitialAngle() {
-    if (GameState.isTeleop() && GameState.isFirst()) { 
-      targetAngle = getIMU_Yaw();
-    }
-  }
-
   private double getIMU_Yaw() {
     var currentHeading = gyro.getYaw(); 
     return(currentHeading.getValueAsDouble());
@@ -180,7 +172,6 @@ public class DriveSubsystem extends SubsystemBase{
     SmartDashboard.putNumber("Drive Robot Relative Rotation Command", relativeCommands.omegaRadiansPerSecond);
 
     SmartDashboard.putNumber("Gyro Yaw", getIMU_Yaw());
-    SmartDashboard.putNumber("Target Angle", targetAngle);
 
     //Pose Info
     SmartDashboard.putString("FMS Alliance", DriverStation.getAlliance().toString());
@@ -195,7 +186,6 @@ public class DriveSubsystem extends SubsystemBase{
   
   @Override
   public void periodic() {
-    checkInitialAngle();
     updateOdometry();
     updateEstimatedPose();
     limelight.update();
@@ -214,36 +204,14 @@ public class DriveSubsystem extends SubsystemBase{
   }
   
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-    checkInitialAngle();
-
-    if (GameState.isTeleop()) {
-      if (Math.abs(rot) > 0) {
-        //Driver is commanding rotation, 
-        isTurning = true;
-        targetAngle = getIMU_Yaw();
-      } 
-      else if (rot == 0 && isTurning) {
-        //Driver stopped commanding a turn
-        isTurning = false;
-      }
-
-      if (isTurning) {
-        turnCommand = rot;
-      }
-      else { 
-        turnCommand = (targetAngle - getIMU_Yaw()) * DrivebaseCfg.GO_STRAIGHT_GAIN;
-      }
-      
-    }
-    
     //Set Dashboard variables
     fieldXCommand = xSpeed;
     fieldYCommand = ySpeed;
 
     if(fieldRelative){
-      speedCommands = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, turnCommand, getGyroRotation2d());
+      speedCommands = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, getGyroRotation2d());
     } else {
-      speedCommands.omegaRadiansPerSecond = turnCommand;
+      speedCommands.omegaRadiansPerSecond = rot;
       speedCommands.vxMetersPerSecond = xSpeed;
       speedCommands.vyMetersPerSecond = ySpeed;
     }
@@ -353,7 +321,6 @@ public class DriveSubsystem extends SubsystemBase{
 
   public void resetGyro(double angle) {
     gyro.setYaw(angle);
-    targetAngle = angle;
   }
 
   public void resetModules() {
