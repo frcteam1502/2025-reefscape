@@ -336,6 +336,10 @@ public class DriveSubsystem extends SubsystemBase{
     resetOdometry(pose);
   }
 
+  public void resetGyroToPose(){
+    resetGyro(pose.getRotation().getDegrees());
+  }
+
   @SuppressWarnings("unused")
   private void configAutoBuilder(){
     //Wrapper for AutoBuilder.configure, must be called from DriveTrain config....

@@ -5,12 +5,12 @@
 package frc.robot;
 
 import frc.robot.Logger;
+import frc.robot.subsystems.SwerveDrive.DriveSubsystem;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -147,12 +147,14 @@ private String[] pneumaticNames = {
   public void teleopInit() {
     //TODO: Handle pose during transition from auto to teleop
     //double rotation = m_robotContainer.driveSubsystem.getPoseRotationDegrees();
-    if(wasAutonExecuted){
-      //m_robotContainer.driveSubsystem.resetGyro(rotation);//Take out until PathPlanner headings are fixed!
+    /*if(wasAutonExecuted){
+      m_robotContainer.driveSubsystem.resetGyroToPose();
       wasAutonExecuted = false;
-    }
-
+    }*/
     GameState.teleopInit();
+    //Reset gyro heading to whatever the pose heading is coming out of auto.  This should be 0 if going directly to teleop
+    //m_robotContainer.driveSubsystem.resetGyroToPose();
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove

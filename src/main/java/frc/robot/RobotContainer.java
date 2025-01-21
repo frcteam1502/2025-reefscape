@@ -49,16 +49,14 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-
     configureBindings();
 
     //Register named commands. Must register all commands we want Pathplanner to execute.
     NamedCommands.registerCommand("Stop Drive Motors", new StopDriveMotors(driveSubsystem));
   
     //Build an Autochooser from SmartDashboard selection.  Default will be Commands.none()
-
     //e.g new PathPlannerAuto("MiddleAutoAMPFinal");
-    new PathPlannerAuto("Example Auto");
+    new PathPlannerAuto("TestAuto");
 
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
