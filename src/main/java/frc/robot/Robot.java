@@ -153,7 +153,7 @@ private String[] pneumaticNames = {
     }*/
     GameState.teleopInit();
     //Reset gyro heading to whatever the pose heading is coming out of auto.  This should be 0 if going directly to teleop
-    //m_robotContainer.driveSubsystem.resetGyroToPose();
+    m_robotContainer.driveSubsystem.resetGyroToPose();
 
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to

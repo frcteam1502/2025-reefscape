@@ -128,6 +128,7 @@ public class DriveSubsystem extends SubsystemBase{
   public DriveSubsystem() {
 
     //this.odometry = new SwerveDrivePoseEstimator(kinematics, getGyroRotation2d(), getModulePositions(), pose);
+    resetGyro(0);
     this.odometry = new SwerveDriveOdometry(kinematics, getGyroRotation2d(), getModulePositions());
 
     this.poseEstimator = new SwerveDrivePoseEstimator(
@@ -331,13 +332,17 @@ public class DriveSubsystem extends SubsystemBase{
   }
 
   public void reset() {
-    resetGyro(0);
+    //resetGyro(0);
     resetModules();
     resetOdometry(pose);
   }
 
   public void resetGyroToPose(){
+    //This method will get called from teleopInit() via RobotContainer
+    //First, reset the gyro with the heading from the robot pose
     resetGyro(pose.getRotation().getDegrees());
+    //Now, reset the pose updated gyro heading
+    odometry.resetRotation(getGyroRotation2d());
   }
 
   @SuppressWarnings("unused")
