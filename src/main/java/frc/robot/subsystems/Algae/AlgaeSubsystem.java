@@ -28,17 +28,39 @@ public class AlgaeSubsystem extends SubsystemBase {
     pivotEncoderConfig.positionConversionFactor(AlgaeCfg.ALGAE_PIVOT_GEAR_RATIO);
     pivotEncoderConfig.velocityConversionFactor(AlgaeCfg.ALGAE_PIVOT_GEAR_RATIO);
 
-    SparkMaxConfig pivotMotorConfig = new SparkMaxConfig();
-    pivotMotorConfig.idleMode(AlgaeCfg.ALGAE_PIVOT_IDLE_MODE);
-    pivotMotorConfig.inverted(AlgaeCfg.ALGAE_PIVOT_MOTOR_REVERSED);
-    pivotMotorConfig.smartCurrentLimit(AlgaeCfg.ALGAE_PIVOT_CURRENT_LIMIT);
+    algaeIntakeEncoder = algaeIntake.getEncoder();
+    EncoderConfig intakeEncoderConfig = new EncoderConfig();
+    intakeEncoderConfig.positionConversionFactor(AlgaeCfg.ALGAE_PIVOT_GEAR_RATIO);
+    intakeEncoderConfig.velocityConversionFactor(AlgaeCfg.ALGAE_PIVOT_GEAR_RATIO);
 
-    pivotMotorConfig.apply(pivotEncoderConfig);
+
+    SparkMaxConfig intakeMotorConfig = new SparkMaxConfig();
+    intakeMotorConfig.idleMode(AlgaeCfg.ALGAE_PIVOT_IDLE_MODE);
+    intakeMotorConfig.inverted(AlgaeCfg.ALGAE_PIVOT_MOTOR_REVERSED);
+    intakeMotorConfig.smartCurrentLimit(AlgaeCfg.ALGAE_PIVOT_CURRENT_LIMIT);
+
+    intakeMotorConfig.apply(pivotEncoderConfig);
     
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  public void setAlgaePivotPower(double power){
+    algaePivot.set(power);
+  }
+
+  public void setAlgaeIntakePower(double power){
+    algaeIntake.set(power);
+  }
+
+  public double getAlgaeIntakePosition(){
+    return algaeIntakeEncoder.getPosition();
+  }
+
+  public double getAlgaePivotPosition(){
+    return algaePivotEncoder.getPosition();
   }
 }
