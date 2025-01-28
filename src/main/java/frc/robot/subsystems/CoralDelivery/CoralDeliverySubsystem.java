@@ -14,32 +14,54 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class CoralDeliverySubsystem extends SubsystemBase {
   /** Creates a new CoralDSubsystem. */
   private final SparkMax coralDOne;
-  private final SparkMax coralD_two;
+  private final SparkMax coralDTwo;
+  private final SparkMax coralDThree;
 
-  private final RelativeEncoder algaePivotEncoder;
-  private final RelativeEncoder algaeIntakeEncoder;
+  private final RelativeEncoder coralDOneEncoder;
+  private final RelativeEncoder coralDTwoEncoder;
+  private final RelativeEncoder coralDThreeEncoder;
 
-  public Algaebsystem() {
-    algaePivot = AlgaeCfg.ALGAE_PIVOT_MOTOR;
-    algaeIntake = AlgaeCfg.ALGAE_INTAKE_MOTOR;
+  public CoralDeliverySubsystem() {
+    coralDOne = CoralDeliveryCfg.CORALD_ONE_MOTOR;
+    coralDTwo = CoralDeliveryCfg.CORALD_TWO_MOTOR;
+    coralDThree = CoralDeliveryCfg.CORALD_THREE_MOTOR;
 
-    algaePivotEncoder = algaePivot.getEncoder();
-    EncoderConfig pivotEncoderConfig = new EncoderConfig();
-    pivotEncoderConfig.positionConversionFactor(AlgaeCfg.ALGAE_PIVOT_GEAR_RATIO);
-    pivotEncoderConfig.velocityConversionFactor(AlgaeCfg.ALGAE_PIVOT_GEAR_RATIO);
+    coralDOneEncoder = coralDOne.getEncoder();
+    EncoderConfig coralDOneEncoderConfig = new EncoderConfig();
+    coralDOneEncoderConfig.positionConversionFactor(CoralDeliveryCfg.CORALD_ONE_GEAR_RATIO);
+    coralDOneEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.CORALD_ONE_GEAR_RATIO);
 
-    algaeIntakeEncoder = algaeIntake.getEncoder();
-    EncoderConfig intakeEncoderConfig = new EncoderConfig();
-    intakeEncoderConfig.positionConversionFactor(AlgaeCfg.ALGAE_PIVOT_GEAR_RATIO);
-    intakeEncoderConfig.velocityConversionFactor(AlgaeCfg.ALGAE_PIVOT_GEAR_RATIO);
+    coralDTwoEncoder = coralDTwo.getEncoder();
+    EncoderConfig coralDTwoEncoderConfig = new EncoderConfig();
+    coralDTwoEncoderConfig.positionConversionFactor(CoralDeliveryCfg.CORALD_TWO_GEAR_RATIO);
+    coralDTwoEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.CORALD_TWO_GEAR_RATIO);
+
+    coralDThreeEncoder = coralDThree.getEncoder();
+    EncoderConfig coralDThreeEncoderConfig = new EncoderConfig();
+    coralDThreeEncoderConfig.positionConversionFactor(CoralDeliveryCfg.CORALD_THREE_GEAR_RATIO);
+    coralDThreeEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.CORALD_THREE_GEAR_RATIO);
 
 
-    SparkMaxConfig intakeMotorConfig = new SparkMaxConfig();
-    intakeMotorConfig.idleMode(AlgaeCfg.ALGAE_PIVOT_IDLE_MODE);
-    intakeMotorConfig.inverted(AlgaeCfg.ALGAE_PIVOT_MOTOR_REVERSED);
-    intakeMotorConfig.smartCurrentLimit(AlgaeCfg.ALGAE_PIVOT_CURRENT_LIMIT);
+    SparkMaxConfig CoralDOneConfig = new SparkMaxConfig();
+    CoralDOneConfig.idleMode(CoralDeliveryCfg.CORALD_ONE_IDLE_MODE);
+    CoralDOneConfig.inverted(CoralDeliveryCfg.CORALD_ONE_MOTOR_REVERSED);
+    CoralDOneConfig.smartCurrentLimit(CoralDeliveryCfg.CORALD_ONE_CURRENT_LIMIT);
 
-    intakeMotorConfig.apply(pivotEncoderConfig);
+    CoralDOneConfig.apply(coralDOneEncoderConfig);
+
+    SparkMaxConfig CoralDTwoConfig = new SparkMaxConfig();
+    CoralDTwoConfig.idleMode(CoralDeliveryCfg.CORALD_TWO_IDLE_MODE);
+    CoralDTwoConfig.inverted(CoralDeliveryCfg.CORALD_TWO_MOTOR_REVERSED);
+    CoralDTwoConfig.smartCurrentLimit(CoralDeliveryCfg.CORALD_TWO_CURRENT_LIMIT);
+
+    CoralDTwoConfig.apply(coralDTwoEncoderConfig);
+
+    SparkMaxConfig CoralDThreeConfig = new SparkMaxConfig();
+    CoralDThreeConfig.idleMode(CoralDeliveryCfg.CORALD_THREE_IDLE_MODE);
+    CoralDThreeConfig.inverted(CoralDeliveryCfg.CORALD_THREE_MOTOR_REVERSED);
+    CoralDThreeConfig.smartCurrentLimit(CoralDeliveryCfg.CORALD_THREE_CURRENT_LIMIT);
+
+    CoralDThreeConfig.apply(coralDThreeEncoderConfig);
     
   }
 
@@ -48,19 +70,28 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void setAlgaePivotPower(double power){
-    algaePivot.set(power);
+  public void setCoralDOnePower(double power){
+    coralDOne.set(power);
   }
 
-  public void setAlgaeIntakePower(double power){
-    algaeIntake.set(power);
+  public void setCoralDTwoPower(double power){
+    coralDTwo.set(power);
   }
 
-  public double getAlgaeIntakePosition(){
-    return algaeIntakeEncoder.getPosition();
+  public void setCoralDThreePower(double power){
+    coralDThree.set(power);
   }
 
-  public double getAlgaePivotPosition(){
-    return algaePivotEncoder.getPosition();
+ 
+  public double getCoralDOnePosition(){
+    return coralDOneEncoder.getPosition();
+  }
+
+  public double getCoralDTwoPosition(){
+    return coralDTwoEncoder.getPosition();
+  }
+
+  public double getCoralDThreePosition(){
+    return coralDThreeEncoder.getPosition();
   }
 }
