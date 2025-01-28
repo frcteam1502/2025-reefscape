@@ -26,7 +26,7 @@ public class SwerveModuleCfg {
   public static final double MODULE_DRIVE_PID_CONTROLLER_D = 0;
 
   public static final double CLSD_LOOP_RAMP_RATE_SECONDS = .5;
-  public static final int DRIVE_CURRENT_LIMIT_AMPS = 80;
+  public static final int DRIVE_CURRENT_LIMIT_AMPS = 50;
 
   public static final SparkBaseConfig.IdleMode DRIVE_IDLE_MODE  = SparkBaseConfig.IdleMode.kBrake;
   public static final SparkBaseConfig.IdleMode TURN_IDLE_MODE   = SparkBaseConfig.IdleMode.kBrake;
