@@ -373,8 +373,7 @@ public class DriveSubsystem extends SubsystemBase{
           // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
         
           var alliance = DriverStation.getAlliance();
-          if ((alliance.isPresent()) &&
-              (!DrivebaseCfg.IS_FIELD_MIRRORED)){//This causes a warning for dead code if configuration is true
+          if (alliance.isPresent()){
                 return alliance.get() == DriverStation.Alliance.Red;
             }
               return false;
