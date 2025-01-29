@@ -22,44 +22,44 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   private final RelativeEncoder deliveryEncoder;
 
   public CoralDeliverySubsystem() {
-    elevator = CoralDeliveryCfg.CORALD_ONE_MOTOR;
-    pivot = CoralDeliveryCfg.CORALD_TWO_MOTOR;
-    delivery = CoralDeliveryCfg.CORALD_THREE_MOTOR;
+    elevator = CoralDeliveryCfg.ELEVATOR_MOTOR;
+    pivot = CoralDeliveryCfg.PIVOT_MOTOR;
+    delivery = CoralDeliveryCfg.DELIVERY_MOTOR;
 
     elevatorEncoder = elevator.getEncoder();
     EncoderConfig elevatorEncoderConfig = new EncoderConfig();
-    elevatorEncoderConfig.positionConversionFactor(CoralDeliveryCfg.CORALD_ONE_GEAR_RATIO);
-    elevatorEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.CORALD_ONE_GEAR_RATIO);
+    elevatorEncoderConfig.positionConversionFactor(CoralDeliveryCfg.ELEVATOR_GEAR_RATIO);
+    elevatorEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.ELEVATOR_GEAR_RATIO);
 
     pivotEncoder = pivot.getEncoder();
     EncoderConfig pivotEncoderConfig = new EncoderConfig();
-    pivotEncoderConfig.positionConversionFactor(CoralDeliveryCfg.CORALD_TWO_GEAR_RATIO);
-    pivotEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.CORALD_TWO_GEAR_RATIO);
+    pivotEncoderConfig.positionConversionFactor(CoralDeliveryCfg.PIVOT_GEAR_RATIO);
+    pivotEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.PIVOT_GEAR_RATIO);
 
     deliveryEncoder = delivery.getEncoder();
     EncoderConfig deliveryEncoderConfig = new EncoderConfig();
-    deliveryEncoderConfig.positionConversionFactor(CoralDeliveryCfg.CORALD_THREE_GEAR_RATIO);
-    deliveryEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.CORALD_THREE_GEAR_RATIO);
+    deliveryEncoderConfig.positionConversionFactor(CoralDeliveryCfg.DELIVERY_GEAR_RATIO);
+    deliveryEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.DELIVERY_GEAR_RATIO);
 
 
     SparkMaxConfig elevatorConfig = new SparkMaxConfig();
-    elevatorConfig.idleMode(CoralDeliveryCfg.CORALD_ONE_IDLE_MODE);
-    elevatorConfig.inverted(CoralDeliveryCfg.CORALD_ONE_MOTOR_REVERSED);
-    elevatorConfig.smartCurrentLimit(CoralDeliveryCfg.CORALD_ONE_CURRENT_LIMIT);
+    elevatorConfig.idleMode(CoralDeliveryCfg.ELEVATOR_IDLE_MODE);
+    elevatorConfig.inverted(CoralDeliveryCfg.ELEVATOR_MOTOR_REVERSED);
+    elevatorConfig.smartCurrentLimit(CoralDeliveryCfg.ELEVATOR_CURRENT_LIMIT);
 
     elevatorConfig.apply(elevatorEncoderConfig);
 
     SparkMaxConfig pivotConfig = new SparkMaxConfig();
-    pivotConfig.idleMode(CoralDeliveryCfg.CORALD_TWO_IDLE_MODE);
-    pivotConfig.inverted(CoralDeliveryCfg.CORALD_TWO_MOTOR_REVERSED);
-    pivotConfig.smartCurrentLimit(CoralDeliveryCfg.CORALD_TWO_CURRENT_LIMIT);
+    pivotConfig.idleMode(CoralDeliveryCfg.PIVOT_IDLE_MODE);
+    pivotConfig.inverted(CoralDeliveryCfg.PIVOT_MOTOR_REVERSED);
+    pivotConfig.smartCurrentLimit(CoralDeliveryCfg.PIVOT_CURRENT_LIMIT);
 
     pivotConfig.apply(pivotEncoderConfig);
 
     SparkMaxConfig deliveryConfig = new SparkMaxConfig();
-    deliveryConfig.idleMode(CoralDeliveryCfg.CORALD_THREE_IDLE_MODE);
-    deliveryConfig.inverted(CoralDeliveryCfg.CORALD_THREE_MOTOR_REVERSED);
-    deliveryConfig.smartCurrentLimit(CoralDeliveryCfg.CORALD_THREE_CURRENT_LIMIT);
+    deliveryConfig.idleMode(CoralDeliveryCfg.DELIVERY_IDLE_MODE);
+    deliveryConfig.inverted(CoralDeliveryCfg.DELIVERY_MOTOR_REVERSED);
+    deliveryConfig.smartCurrentLimit(CoralDeliveryCfg.DELIVERY_CURRENT_LIMIT);
 
     deliveryConfig.apply(deliveryEncoderConfig);
     
