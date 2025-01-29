@@ -1,9 +1,7 @@
 package frc.robot.subsystems.SwerveDrive;
 
-import static edu.wpi.first.units.Units.*;
-
 import frc.robot.Logger;
-import frc.robot.subsystems.Vision.Limelight;
+import frc.robot.subsystems.Vision.LimelightHelpers;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -75,8 +73,6 @@ public class DriveSubsystem extends SubsystemBase{
   private Pose2d pose = new Pose2d();
   private Pose2d estimatedPose = new Pose2d();
   private Pose2d limelightPose = new Pose2d();
-
-  private static Limelight limelight = new Limelight();
 
   //Create a SysIdRoutine object for characterizing the drive
   private final SysIdRoutine sysIdRoutine = 
@@ -189,18 +185,8 @@ public class DriveSubsystem extends SubsystemBase{
   public void periodic() {
     updateOdometry();
     updateEstimatedPose();
-    limelight.update();
-    limelightPose = limelight.getVisionBotPose();
-    
-    if (limelightPose != null) { // Limelight mode
-      
-      double currentTimestamp = limelight.getTimestampSeconds(limelight.getTotalLatency());
-      
-      if (limelight.visionAccurate(limelightPose)) 
-      {
-        poseEstimator.addVisionMeasurement(limelightPose, currentTimestamp);
-      }
-    }
+    updateLimelightPose();
+
     updateDashboard();
   }
   
@@ -268,11 +254,8 @@ public class DriveSubsystem extends SubsystemBase{
   }
 
   public void updateEstimatedPose(){
-    estimatedPose = poseEstimator.update(
-      getGyroRotation2d(), 
-      getModulePositions());
+    estimatedPose = poseEstimator.update(getGyroRotation2d(), getModulePositions());
   }
-
 
   public void resetOdometry(Pose2d pose) {
     odometry.resetPosition(getGyroRotation2d(), getModulePositions(), pose);
@@ -312,7 +295,6 @@ public class DriveSubsystem extends SubsystemBase{
   }
 
   public Pose2d getPose2d() {
-    //return odometry.getEstimatedPosition();
     return odometry.getPoseMeters();
   }
 
@@ -332,7 +314,6 @@ public class DriveSubsystem extends SubsystemBase{
   }
 
   public void reset() {
-    //resetGyro(0);
     resetModules();
     resetOdometry(pose);
   }
@@ -343,6 +324,21 @@ public class DriveSubsystem extends SubsystemBase{
     resetGyro(pose.getRotation().getDegrees());
     //Now, reset the pose updated gyro heading
     odometry.resetRotation(getGyroRotation2d());
+  }
+
+  private void updateLimelightPose(){
+    // First, tell Limelight your robot's current orientation
+    double robotYaw = getIMU_Yaw(); 
+    LimelightHelpers.SetRobotOrientation("", robotYaw, 0.0, 0.0, 0.0, 0.0, 0.0);
+
+    // Get the pose estimate
+    LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("");
+
+    // Add it to your pose estimator
+    poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.5, .5, 9999999));
+    poseEstimator.addVisionMeasurement(
+    limelightMeasurement.pose,
+    limelightMeasurement.timestampSeconds);
   }
 
   @SuppressWarnings("unused")
