@@ -27,4 +27,11 @@ public class CoralDeliveryCfg {
     public static final int ELEVATOR_CURRENT_LIMIT = 50;
     public static final int PIVOT_CURRENT_LIMIT = 20;
     public static final int DELIVERY_CURRENT_LIMIT = 20;
+    
+    public static final double PIVOT_P_GAIN = 0;
+    public static final double PIVOT_I_GAIN = 0;
+    public static final double PIVOT_D_GAIN = 0;
+    public static final double ELEVATOR_P_GAIN = 0;
+    public static final double ELEVATOR_I_GAIN = 0;
+    public static final double ELEVATOR_D_GAIN = 0;
 }

@@ -20,6 +20,9 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   private final RelativeEncoder elevatorEncoder;
   private final RelativeEncoder pivotEncoder;
   private final RelativeEncoder deliveryEncoder;
+  
+  private final SparkClosedLoopController pivotPIDController;
+  private final SparkClosedLoopController elevatorPIDController;
 
   public CoralDeliverySubsystem() {
     elevator = CoralDeliveryCfg.ELEVATOR_MOTOR;
@@ -31,10 +34,22 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     elevatorEncoderConfig.positionConversionFactor(CoralDeliveryCfg.ELEVATOR_GEAR_RATIO);
     elevatorEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.ELEVATOR_GEAR_RATIO);
 
+    elevatorPIDController = elevator.getClosedLoopController();
+    ClosedLoopConfig elevatorPID_Config = new ClosedLoopConfig();
+    elevatorPID_Config.p(CoralDeliveryCfg.ELEVATOR_P_GAIN);
+    elevatorPID_Config.i(CoralDeliveryCfg.ELEVATOR_I_GAIN);
+    elevatorPID_Config.d(CoralDeliveryCfg.ELEVATOR_D_GAIN);
+
     pivotEncoder = pivot.getEncoder();
     EncoderConfig pivotEncoderConfig = new EncoderConfig();
     pivotEncoderConfig.positionConversionFactor(CoralDeliveryCfg.PIVOT_GEAR_RATIO);
     pivotEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.PIVOT_GEAR_RATIO);
+
+    pivotPIDController = pivot.getClosedLoopController();
+    ClosedLoopConfig pivotPID_Config = new ClosedLoopConfig();
+    pivotPID_Config.p(CoralDeliveryCfg.PIVOT_P_GAIN);
+    pivotPID_Config.i(CoralDeliveryCfg.PIVOT_I_GAIN);
+    pivotPID_Config.d(CoralDeliveryCfg.PIVOT_D_GAIN);
 
     deliveryEncoder = delivery.getEncoder();
     EncoderConfig deliveryEncoderConfig = new EncoderConfig();
@@ -48,6 +63,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     elevatorConfig.smartCurrentLimit(CoralDeliveryCfg.ELEVATOR_CURRENT_LIMIT);
 
     elevatorConfig.apply(elevatorEncoderConfig);
+    elevatorConfig.apply(elevatorPID_Config);
 
     SparkMaxConfig pivotConfig = new SparkMaxConfig();
     pivotConfig.idleMode(CoralDeliveryCfg.PIVOT_IDLE_MODE);
@@ -55,6 +71,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     pivotConfig.smartCurrentLimit(CoralDeliveryCfg.PIVOT_CURRENT_LIMIT);
 
     pivotConfig.apply(pivotEncoderConfig);
+    pivotConfig.apply(pivotPID_Config);
 
     SparkMaxConfig deliveryConfig = new SparkMaxConfig();
     deliveryConfig.idleMode(CoralDeliveryCfg.DELIVERY_IDLE_MODE);
@@ -94,5 +111,13 @@ public class CoralDeliverySubsystem extends SubsystemBase {
 
   public double getDeliveryPosition(){
     return deliveryEncoder.getPosition();
+  }
+
+  public void setElevatorPosition(double position){
+    elevatorPIDController.setReference(position, SparkBase.ControlType.kPosition);
+  }
+  
+  public void setPivotPosition(double position){
+    pivotPIDController.setReference(position, SparkBase.ControlType.kPosition);
   }
 }
