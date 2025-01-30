@@ -1,5 +1,7 @@
 package frc.robot.subsystems.Climber;
 
+import java.io.File;
+
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
@@ -14,5 +16,9 @@ public class ClimberCfg {
     public static final SparkBaseConfig.IdleMode CLIMBER_IDLE_MODE = SparkBaseConfig.IdleMode.kBrake;
     public static final boolean CLIMBER_MOTOR_REVERSED = false;
     public static final int CLIMBER_CURRENT_LIMIT = 50;
+
+    public static final double CLIMBER_P_GAIN = 0;
+    public static final double CLIMBER_I_GAIN = 0;
+    public static final double CLIMBER_D_GAIN = 0;
 
 }

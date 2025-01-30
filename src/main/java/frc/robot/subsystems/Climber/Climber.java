@@ -5,7 +5,10 @@
 package frc.robot.subsystems.Climber;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.ClosedLoopConfig;
 import com.revrobotics.spark.config.EncoderConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
@@ -17,6 +20,8 @@ public class Climber extends SubsystemBase {
   private final SparkMax climber;
   private final RelativeEncoder climberEncoder;
   
+  private final SparkClosedLoopController climberPIDComController;
+
   public Climber() {
     //Do intialization stuff here
     climber = ClimberCfg.CLIMBER;
@@ -27,6 +32,12 @@ public class Climber extends SubsystemBase {
     climbEncoderConfig.positionConversionFactor(ClimberCfg.CLIMBER_GEAR_RATIO);
     climbEncoderConfig.velocityConversionFactor(ClimberCfg.CLIMBER_GEAR_RATIO);
 
+    climberPIDComController = climber.getClosedLoopController();
+    ClosedLoopConfig climberPIDConfig = new ClosedLoopConfig();
+    climberPIDConfig.p(ClimberCfg.CLIMBER_P_GAIN);
+    climberPIDConfig.i(ClimberCfg.CLIMBER_I_GAIN);
+    climberPIDConfig.d(ClimberCfg.CLIMBER_D_GAIN);
+
     //Setup Motor Config
     SparkMaxConfig climbMotorConfig = new SparkMaxConfig();
     climbMotorConfig.idleMode(ClimberCfg.CLIMBER_IDLE_MODE);
@@ -35,6 +46,7 @@ public class Climber extends SubsystemBase {
     
     //Apply the encoder config to the SparkMax
     climbMotorConfig.apply(climbEncoderConfig);
+    climbMotorConfig.apply(climberPIDConfig);
   }
 
   @Override
@@ -44,6 +56,10 @@ public class Climber extends SubsystemBase {
 
   public void setClimberPower(double power){
     climber.set(power);
+  }
+
+  public void setClimberPosition(double position){
+    climberPIDComController.setReference(position, SparkBase.ControlType.kPosition);
   }
 
   public double getClimberPosition(){
