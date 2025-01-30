@@ -7,7 +7,9 @@ package frc.robot.subsystems.IntakeIndexer;
 
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.ClosedLoopConfig;
 import com.revrobotics.spark.config.EncoderConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
@@ -30,6 +32,8 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   private final RelativeEncoder rightIntakeEncoder;
   private final RelativeEncoder indexerEncoder;
 
+  private final SparkClosedLoopController leftPivotPIDController;
+  private final SparkClosedLoopController rightPivotPIDController;
 
   public IntakeIndexerSubsystem() {
     leftPivot = IntakeIndexerCfg.LEFTPIVOT_MOTOR;
@@ -44,6 +48,11 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     leftPivotEncoderConfig.positionConversionFactor(IntakeIndexerCfg.LEFTPIVOT_GEAR_RATIO);
     leftPivotEncoderConfig.velocityConversionFactor(IntakeIndexerCfg.LEFTPIVOT_GEAR_RATIO);
 
+    leftPivotPIDController = leftPivot.getClosedLoopController();
+    ClosedLoopConfig leftPivotPIDConfig = new ClosedLoopConfig();
+    leftPivotPIDConfig.p(IntakeIndexerCfg.LEFTPIVOT_P_GAIN);
+    leftPivotPIDConfig.i(IntakeIndexerCfg.LEFTPIVOT_I_GAIN);
+    leftPivotPIDConfig.d(IntakeIndexerCfg.LEFTPIVOT_D_GAIN);
 
     leftIntakeEncoder = leftIntake.getEncoder();
     EncoderConfig leftIntakeEncoderConfig = new EncoderConfig();
@@ -56,6 +65,11 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     rightPivotEncoderConfig.positionConversionFactor(IntakeIndexerCfg.RIGHTPIVOT_GEAR_RATIO);
     rightPivotEncoderConfig.velocityConversionFactor(IntakeIndexerCfg.RIGHTPIVOT_GEAR_RATIO);
 
+    rightPivotPIDController = rightPivot.getClosedLoopController();
+    ClosedLoopConfig rightPivotPIDConfig = new ClosedLoopConfig();
+    rightPivotPIDConfig.p(IntakeIndexerCfg.RIGHTPIVOT_P_GAIN);
+    rightPivotPIDConfig.i(IntakeIndexerCfg.RIGHTPIVOT_I_GAIN);
+    rightPivotPIDConfig.d(IntakeIndexerCfg.RIGHTPIVOT_D_GAIN);
 
     rightIntakeEncoder = rightIntake.getEncoder();
     EncoderConfig rightIntakeEncoderConfig = new EncoderConfig();
@@ -99,8 +113,10 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     indexerConfig.smartCurrentLimit(IntakeIndexerCfg.INDEXER_CURRENT_LIMIT);
 
     leftPivotConfig.apply(leftPivotConfig);
+    leftPivotConfig.apply(leftPivotPIDConfig);
     leftIntakeConfig.apply(leftIntakeConfig);
-    rightPivotConfig.apply(rightPivotConfig);  
+    rightPivotConfig.apply(rightPivotConfig);
+    rightPivotConfig.apply(rightPivotPIDConfig);  
     rightIntakeConfig.apply(rightIntakeConfig);
     indexerConfig.apply(indexerConfig);
   }

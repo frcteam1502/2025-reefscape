@@ -38,4 +38,12 @@ public class IntakeIndexerCfg {
     public static final int RIGHTPIVOT_CURRENT_LIMIT = 50;
     public static final int RIGHTINTAKE_CURRENT_LIMIT = 50;
     public static final int INDEXER_CURRENT_LIMIT = 20;
+
+    public static final double LEFTPIVOT_P_GAIN = 0;
+    public static final double LEFTPIVOT_I_GAIN = 0;
+    public static final double LEFTPIVOT_D_GAIN = 0;
+    public static final double RIGHTPIVOT_P_GAIN = 0;
+    public static final double RIGHTPIVOT_I_GAIN = 0;
+    public static final double RIGHTPIVOT_D_GAIN = 0;
 }
+
