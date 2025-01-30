@@ -7,6 +7,7 @@ package frc.robot.subsystems.IntakeIndexer;
 
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig;
@@ -142,6 +143,12 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   }
   public void setIndexerPower(double power){
     indexer.set(power);
+  }
+  public void setLeftPivotPosition(double position){
+    leftPivotPIDController.setReference(position, SparkBase.ControlType.kPosition);
+  }
+  public void setRightPivotPosition(double position){
+    rightPivotPIDController.setReference(position, SparkBase.ControlType.kPosition);
   }
 
 
