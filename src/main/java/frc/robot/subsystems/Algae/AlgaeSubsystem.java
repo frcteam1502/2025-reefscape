@@ -5,7 +5,10 @@
 package frc.robot.subsystems.Algae;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.ClosedLoopConfig;
 import com.revrobotics.spark.config.EncoderConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
@@ -19,6 +22,9 @@ public class AlgaeSubsystem extends SubsystemBase {
   private final RelativeEncoder algaePivotEncoder;
   private final RelativeEncoder algaeIntakeEncoder;
 
+  private final SparkClosedLoopController algaePivotPIDController;
+
+
   public AlgaeSubsystem() {
     algaePivot = AlgaeCfg.ALGAE_PIVOT_MOTOR;
     algaeIntake = AlgaeCfg.ALGAE_INTAKE_MOTOR;
@@ -27,6 +33,12 @@ public class AlgaeSubsystem extends SubsystemBase {
     EncoderConfig pivotEncoderConfig = new EncoderConfig();
     pivotEncoderConfig.positionConversionFactor(AlgaeCfg.ALGAE_PIVOT_GEAR_RATIO);
     pivotEncoderConfig.velocityConversionFactor(AlgaeCfg.ALGAE_PIVOT_GEAR_RATIO);
+
+    algaePivotPIDController = algaePivot.getClosedLoopController();
+    ClosedLoopConfig algaePivotPIDConfig = new ClosedLoopConfig();
+    algaePivotPIDConfig.p(AlgaeCfg.ALGAE_PIVOT_P_GAIN);
+    algaePivotPIDConfig.i(AlgaeCfg.ALGAE_PIVOT_I_GAIN);
+    algaePivotPIDConfig.d(AlgaeCfg.ALGAE_PIVOT_D_GAIN);
 
     algaeIntakeEncoder = algaeIntake.getEncoder();
     EncoderConfig intakeEncoderConfig = new EncoderConfig();
@@ -40,6 +52,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     intakeMotorConfig.smartCurrentLimit(AlgaeCfg.ALGAE_PIVOT_CURRENT_LIMIT);
 
     intakeMotorConfig.apply(pivotEncoderConfig);
+    intakeMotorConfig.apply(algaePivotPIDConfig);
     
   }
 
@@ -50,6 +63,10 @@ public class AlgaeSubsystem extends SubsystemBase {
 
   public void setAlgaePivotPower(double power){
     algaePivot.set(power);
+  }
+
+  public void setAlgaePivotPosition(double position){
+    algaePivotPIDController.setReference(position, SparkBase.ControlType.kPosition);
   }
 
   public void setAlgaeIntakePower(double power){

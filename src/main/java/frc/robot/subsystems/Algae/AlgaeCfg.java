@@ -20,4 +20,8 @@ public class AlgaeCfg {
     public static final boolean ALGAE_INTAKE_MOTOR_REVERSED = false;
     public static final int ALGAE_INTAKE_CURRENT_LIMIT = 50;
     public static final int ALGAE_PIVOT_CURRENT_LIMIT = 50;
+
+    public static final double ALGAE_PIVOT_P_GAIN = 0;
+    public static final double ALGAE_PIVOT_I_GAIN = 0;
+    public static final double ALGAE_PIVOT_D_GAIN = 0;
 }
