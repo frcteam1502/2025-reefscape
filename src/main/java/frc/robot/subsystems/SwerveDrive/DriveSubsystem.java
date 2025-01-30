@@ -2,6 +2,8 @@ package frc.robot.subsystems.SwerveDrive;
 
 import frc.robot.Logger;
 import frc.robot.subsystems.Vision.LimelightHelpers;
+import frc.robot.subsystems.Vision.LimelightHelpers.LimelightTarget_Detector;
+import frc.robot.subsystems.Vision.LimelightHelpers.LimelightTarget_Fiducial;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -73,6 +75,8 @@ public class DriveSubsystem extends SubsystemBase{
   private Pose2d pose = new Pose2d();
   private Pose2d estimatedPose = new Pose2d();
   private Pose2d limelightPose = new Pose2d();
+
+  private LimelightTarget_Fiducial fiducial = new LimelightTarget_Fiducial();
 
   //Create a SysIdRoutine object for characterizing the drive
   private final SysIdRoutine sysIdRoutine = 
@@ -179,6 +183,9 @@ public class DriveSubsystem extends SubsystemBase{
     SmartDashboard.putNumber("EstimatedPose X", estimatedPose.getX());
     SmartDashboard.putNumber("EstimatedPose Y", estimatedPose.getY());
     SmartDashboard.putNumber("EstimatedPose Rotation", estimatedPose.getRotation().getDegrees());
+
+    //Limelight crap
+    SmartDashboard.putBoolean("Target Valid", LimelightHelpers.getTV(""));
   }
   
   @Override
@@ -331,14 +338,16 @@ public class DriveSubsystem extends SubsystemBase{
     double robotYaw = getIMU_Yaw(); 
     LimelightHelpers.SetRobotOrientation("", robotYaw, 0.0, 0.0, 0.0, 0.0, 0.0);
 
-    // Get the pose estimate
-    LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("");
-
-    // Add it to your pose estimator
-    poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.5, .5, 9999999));
-    poseEstimator.addVisionMeasurement(
-    limelightMeasurement.pose,
-    limelightMeasurement.timestampSeconds);
+    //Check if a valid target was found by the limelight
+    if(LimelightHelpers.getTV("")){
+      // Get the pose estimate
+      LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("");
+      // Add it to your pose estimator
+      poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.5, .5, 9999999));
+      poseEstimator.addVisionMeasurement(
+      limelightMeasurement.pose,
+      limelightMeasurement.timestampSeconds);
+    }
   }
 
   @SuppressWarnings("unused")
