@@ -5,10 +5,13 @@
 package frc.robot.subsystems.CoralDelivery;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.ClosedLoopConfig;
 import com.revrobotics.spark.config.EncoderConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import au.grapplerobotics.LaserCan;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CoralDeliverySubsystem extends SubsystemBase {
@@ -23,6 +26,8 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   
   private final SparkClosedLoopController pivotPIDController;
   private final SparkClosedLoopController elevatorPIDController;
+
+  private final LaserCan foo1;//Change this name and duplicate for the 2nd sensor
 
   public CoralDeliverySubsystem() {
     elevator = CoralDeliveryCfg.ELEVATOR_MOTOR;
@@ -56,7 +61,6 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     deliveryEncoderConfig.positionConversionFactor(CoralDeliveryCfg.DELIVERY_GEAR_RATIO);
     deliveryEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.DELIVERY_GEAR_RATIO);
 
-
     SparkMaxConfig elevatorConfig = new SparkMaxConfig();
     elevatorConfig.idleMode(CoralDeliveryCfg.ELEVATOR_IDLE_MODE);
     elevatorConfig.inverted(CoralDeliveryCfg.ELEVATOR_MOTOR_REVERSED);
@@ -79,7 +83,9 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     deliveryConfig.smartCurrentLimit(CoralDeliveryCfg.DELIVERY_CURRENT_LIMIT);
 
     deliveryConfig.apply(deliveryEncoderConfig);
-    
+
+    //Initialize LaserCan objects here (stuff from RobotInit() in example)
+    foo1 = CoralDeliveryCfg.LASER_CAN1;
 
   }
 
@@ -113,11 +119,15 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     return deliveryEncoder.getPosition();
   }
 
+  public void getLaserCanDistance(){
+    // Put example code from robotPeriodic() here
+  }
+
   public void setElevatorPosition(double position){
-    elevatorPIDController.setReference(position, SparkBase.ControlType.kPosition);
+    elevatorPIDController.setReference(position, SparkMax.ControlType.kPosition);
   }
   
   public void setPivotPosition(double position){
-    pivotPIDController.setReference(position, SparkBase.ControlType.kPosition);
+    pivotPIDController.setReference(position, SparkMax.ControlType.kPosition);
   }
 }

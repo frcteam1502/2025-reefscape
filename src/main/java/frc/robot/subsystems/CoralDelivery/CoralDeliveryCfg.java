@@ -4,11 +4,15 @@ import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 
+import au.grapplerobotics.LaserCan;
+
 public class CoralDeliveryCfg {
 //CORALD = Coral Delivery
      public static final int ELEVATOR_MOTOR_ID = 3;
      public static final int PIVOT_MOTOR_ID = 3;
      public static final int DELIVERY_MOTOR_ID = 3;
+     //Add 2 more ints for LaserCANs
+     public static final int LASER_CAN1_ID = 0;
 
     public static final SparkMax ELEVATOR_MOTOR = new SparkMax(ELEVATOR_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
     public static final SparkMax PIVOT_MOTOR = new SparkMax(PIVOT_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
@@ -34,4 +38,6 @@ public class CoralDeliveryCfg {
     public static final double ELEVATOR_P_GAIN = 0;
     public static final double ELEVATOR_I_GAIN = 0;
     public static final double ELEVATOR_D_GAIN = 0;
+
+    public static final LaserCan LASER_CAN1 = new LaserCan(LASER_CAN1_ID);
 }
