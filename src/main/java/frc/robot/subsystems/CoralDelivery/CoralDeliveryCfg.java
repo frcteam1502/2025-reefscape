@@ -13,10 +13,14 @@ public class CoralDeliveryCfg {
      public static final int DELIVERY_MOTOR_ID = 3;
      //Add 2 more ints for LaserCANs
      public static final int LASER_CAN1_ID = 0;
+     public static final int LASER_CAN2_ID = 0;
 
     public static final SparkMax ELEVATOR_MOTOR = new SparkMax(ELEVATOR_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
     public static final SparkMax PIVOT_MOTOR = new SparkMax(PIVOT_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
     public static final SparkMax DELIVERY_MOTOR = new SparkMax(DELIVERY_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
+
+    //public static final SparkMax DELIVERY_MOTOR = new SparkMax(DELIVERY_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
+
 
     public static final double ELEVATOR_GEAR_RATIO = 1/5.0;//TBD with design
     public static final double PIVOT_GEAR_RATIO = 1/60.0;//TBD with design
@@ -40,4 +44,5 @@ public class CoralDeliveryCfg {
     public static final double ELEVATOR_D_GAIN = 0;
 
     public static final LaserCan LASER_CAN1 = new LaserCan(LASER_CAN1_ID);
+    public static final LaserCan LASER_CAN2 = new LaserCan(LASER_CAN2_ID);
 }

@@ -27,7 +27,8 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   private final SparkClosedLoopController pivotPIDController;
   private final SparkClosedLoopController elevatorPIDController;
 
-  private final LaserCan foo1;//Change this name and duplicate for the 2nd sensor
+  private final LaserCan entryCoralDeliveryTracker;//Change this name and duplicate for the 2nd sensor
+  private final LaserCan exitCoralDeliveryTracker;
 
   public CoralDeliverySubsystem() {
     elevator = CoralDeliveryCfg.ELEVATOR_MOTOR;
@@ -85,8 +86,11 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     deliveryConfig.apply(deliveryEncoderConfig);
 
     //Initialize LaserCan objects here (stuff from RobotInit() in example)
-    foo1 = CoralDeliveryCfg.LASER_CAN1;
+    laserCan entryCoralDeliveryTracker = CoralDeliveryCfg.LASER_CAN1;
+    laserCan exitCoralDeliveryTracker = CoralDeliveryCfg.LASER_CAN2;
 
+    // Lazer or Laser
+    
   }
 
   @Override
@@ -119,9 +123,31 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     return deliveryEncoder.getPosition();
   }
 
-  public void getLaserCanDistance(){
+  public void getEntryLaserCanDistance(){
     // Put example code from robotPeriodic() here
+    LaserCan.Measurement measurement = entryCoralDeliveryTracker.getMeasurement();
+    if (measurement != null && measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {
+      System.out.println("The target is " + measurement.distance_mm + "mm away!");
+    } else {
+      System.out.println("Oh no! The target is out of range, or we can't get a reliable measurement!");
+      // You can still use distance_mm in here, if you're ok tolerating a clamped value or an unreliable measurement.
+    }
   }
+
+
+
+  public void getExitLaserCanDistance(){
+    // Put example code from robotPeriodic() here
+    LaserCan.Measurement measurement = exitCoralDeliveryTracker.getMeasurement();
+    if (measurement != null && measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {
+      System.out.println("The target is " + measurement.distance_mm + "mm away!");
+    } else {
+      System.out.println("Oh no! The target is out of range, or we can't get a reliable measurement!");
+      // You can still use distance_mm in here, if you're ok tolerating a clamped value or an unreliable measurement.
+    }
+  }
+    
+  
 
   public void setElevatorPosition(double position){
     elevatorPIDController.setReference(position, SparkMax.ControlType.kPosition);
