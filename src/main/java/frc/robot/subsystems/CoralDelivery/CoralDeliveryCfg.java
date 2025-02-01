@@ -8,9 +8,9 @@ import au.grapplerobotics.LaserCan;
 
 public class CoralDeliveryCfg {
 //CORALD = Coral Delivery
-     public static final int ELEVATOR_MOTOR_ID = 3;
-     public static final int PIVOT_MOTOR_ID = 3;
-     public static final int DELIVERY_MOTOR_ID = 3;
+     public static final int ELEVATOR_MOTOR_ID = 15;
+     public static final int PIVOT_MOTOR_ID = 18;
+     public static final int DELIVERY_MOTOR_ID = 19;
      //Add 2 more ints for LaserCANs
      public static final int LASER_CAN1_ID = 0;
      public static final int LASER_CAN2_ID = 0;
