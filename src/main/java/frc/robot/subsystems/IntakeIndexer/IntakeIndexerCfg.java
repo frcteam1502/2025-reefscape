@@ -5,10 +5,10 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 
 public class IntakeIndexerCfg {
-     public static final int LEFTPIVOT_MOTOR_ID = 2;
-     public static final int LEFTINTAKE_MOTOR_ID = 1;
-     public static final int RIGHTPIVOT_MOTOR_ID = 7;
-     public static final int RIGHTINTAKE_MOTOR_ID = 6;
+     public static final int LEFTPIVOT_MOTOR_ID = 3;
+     public static final int LEFTINTAKE_MOTOR_ID = 3;
+     public static final int RIGHTPIVOT_MOTOR_ID = 3;
+     public static final int RIGHTINTAKE_MOTOR_ID = 3;
      public static final int INDEXER_MOTOR_ID = 3;
 
     public static final SparkMax LEFTPIVOT_MOTOR = new SparkMax(LEFTPIVOT_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);

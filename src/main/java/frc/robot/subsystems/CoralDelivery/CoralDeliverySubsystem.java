@@ -5,6 +5,7 @@
 package frc.robot.subsystems.CoralDelivery;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig;
@@ -12,33 +13,38 @@ import com.revrobotics.spark.config.EncoderConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import au.grapplerobotics.LaserCan;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CoralDeliverySubsystem extends SubsystemBase {
   /** Creates a new CoralDSubsystem. */
   private final SparkMax elevator;
   private final SparkMax pivot;
-  private final SparkMax delivery;
+  //private final SparkMax delivery;
 
   private final RelativeEncoder elevatorEncoder;
   private final RelativeEncoder pivotEncoder;
-  private final RelativeEncoder deliveryEncoder;
+  //private final RelativeEncoder deliveryEncoder;
   
   private final SparkClosedLoopController pivotPIDController;
   private final SparkClosedLoopController elevatorPIDController;
 
-  private final LaserCan entryCoralSensor;//Change this name and duplicate for the 2nd sensor
-  private final LaserCan exitCoralSensor;
+  private final LaserCan entryCoralDeliveryTracker;//Change this name and duplicate for the 2nd sensor
+  private final LaserCan exitCoralDeliveryTracker;
+  private double elevatorSetPosition = 0;
+  private double pivotSetPosition = 0;
 
   public CoralDeliverySubsystem() {
     elevator = CoralDeliveryCfg.ELEVATOR_MOTOR;
     pivot = CoralDeliveryCfg.PIVOT_MOTOR;
-    delivery = CoralDeliveryCfg.DELIVERY_MOTOR;
-
+    //delivery = CoralDeliveryCfg.DELIVERY_MOTOR;
+    
+    //Setup the Elevator motor config
     elevatorEncoder = elevator.getEncoder();
     EncoderConfig elevatorEncoderConfig = new EncoderConfig();
-    elevatorEncoderConfig.positionConversionFactor(CoralDeliveryCfg.ELEVATOR_GEAR_RATIO);
-    elevatorEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.ELEVATOR_GEAR_RATIO);
+    elevatorEncoderConfig.positionConversionFactor(CoralDeliveryCfg.ELEVATOR_POS_CONVERSION_CM);
+    elevatorEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.ELEVATOR_POS_CONVERSION_CM);
 
     elevatorPIDController = elevator.getClosedLoopController();
     ClosedLoopConfig elevatorPID_Config = new ClosedLoopConfig();
@@ -46,10 +52,23 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     elevatorPID_Config.i(CoralDeliveryCfg.ELEVATOR_I_GAIN);
     elevatorPID_Config.d(CoralDeliveryCfg.ELEVATOR_D_GAIN);
 
+    SparkMaxConfig elevatorConfig = new SparkMaxConfig();
+    elevatorConfig.idleMode(CoralDeliveryCfg.ELEVATOR_IDLE_MODE);
+    elevatorConfig.inverted(CoralDeliveryCfg.ELEVATOR_MOTOR_REVERSED);
+    elevatorConfig.smartCurrentLimit(CoralDeliveryCfg.ELEVATOR_CURRENT_LIMIT);
+
+    //Apply the encoder and PID configs to the Spark config
+    elevatorConfig.apply(elevatorEncoderConfig);
+    elevatorConfig.apply(elevatorPID_Config);
+
+    //Finally write the config to the spark
+    elevator.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+
+    //Setup the Pivot motor config
     pivotEncoder = pivot.getEncoder();
     EncoderConfig pivotEncoderConfig = new EncoderConfig();
-    pivotEncoderConfig.positionConversionFactor(CoralDeliveryCfg.PIVOT_GEAR_RATIO);
-    pivotEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.PIVOT_GEAR_RATIO);
+    pivotEncoderConfig.positionConversionFactor(CoralDeliveryCfg.PIVOT_ANGLE_CONVERSION_DEG);
+    pivotEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.PIVOT_ANGLE_CONVERSION_DEG);
 
     pivotPIDController = pivot.getClosedLoopController();
     ClosedLoopConfig pivotPID_Config = new ClosedLoopConfig();
@@ -57,37 +76,33 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     pivotPID_Config.i(CoralDeliveryCfg.PIVOT_I_GAIN);
     pivotPID_Config.d(CoralDeliveryCfg.PIVOT_D_GAIN);
 
-    deliveryEncoder = delivery.getEncoder();
-    EncoderConfig deliveryEncoderConfig = new EncoderConfig();
-    deliveryEncoderConfig.positionConversionFactor(CoralDeliveryCfg.DELIVERY_GEAR_RATIO);
-    deliveryEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.DELIVERY_GEAR_RATIO);
-
-    SparkMaxConfig elevatorConfig = new SparkMaxConfig();
-    elevatorConfig.idleMode(CoralDeliveryCfg.ELEVATOR_IDLE_MODE);
-    elevatorConfig.inverted(CoralDeliveryCfg.ELEVATOR_MOTOR_REVERSED);
-    elevatorConfig.smartCurrentLimit(CoralDeliveryCfg.ELEVATOR_CURRENT_LIMIT);
-
-    elevatorConfig.apply(elevatorEncoderConfig);
-    elevatorConfig.apply(elevatorPID_Config);
-
     SparkMaxConfig pivotConfig = new SparkMaxConfig();
     pivotConfig.idleMode(CoralDeliveryCfg.PIVOT_IDLE_MODE);
     pivotConfig.inverted(CoralDeliveryCfg.PIVOT_MOTOR_REVERSED);
     pivotConfig.smartCurrentLimit(CoralDeliveryCfg.PIVOT_CURRENT_LIMIT);
 
+    //Apply the encoder and PID configs on Spark config
     pivotConfig.apply(pivotEncoderConfig);
     pivotConfig.apply(pivotPID_Config);
 
-    SparkMaxConfig deliveryConfig = new SparkMaxConfig();
+    //Finally write the config to the spark
+    pivot.configure(pivotConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+
+    /*deliveryEncoder = delivery.getEncoder();
+    EncoderConfig deliveryEncoderConfig = new EncoderConfig();
+    deliveryEncoderConfig.positionConversionFactor(CoralDeliveryCfg.DELIVERY_GEAR_RATIO);
+    deliveryEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.DELIVERY_GEAR_RATIO);*/
+
+    /*SparkMaxConfig deliveryConfig = new SparkMaxConfig();
     deliveryConfig.idleMode(CoralDeliveryCfg.DELIVERY_IDLE_MODE);
     deliveryConfig.inverted(CoralDeliveryCfg.DELIVERY_MOTOR_REVERSED);
     deliveryConfig.smartCurrentLimit(CoralDeliveryCfg.DELIVERY_CURRENT_LIMIT);
 
-    deliveryConfig.apply(deliveryEncoderConfig);
+    deliveryConfig.apply(deliveryEncoderConfig);*/
 
     //Initialize LaserCan objects here (stuff from RobotInit() in example)
-    entryCoralSensor = CoralDeliveryCfg.LASER_CAN1;
-    exitCoralSensor = CoralDeliveryCfg.LASER_CAN2;
+    entryCoralDeliveryTracker = CoralDeliveryCfg.LASER_CAN1;
+    exitCoralDeliveryTracker = CoralDeliveryCfg.LASER_CAN2;
 
     // Lazer or Laser
     
@@ -96,6 +111,12 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    setElevatorPosition(elevatorSetPosition);
+    setPivotPosition(pivotSetPosition);
+    SmartDashboard.putNumber("ELEVATOR_POS", getElevatorPosition());
+    SmartDashboard.putNumber("PIVOT_POS", getPivotPosition());
+    SmartDashboard.putNumber("ElevatorSetPosition", elevatorSetPosition);
+    SmartDashboard.putNumber("PivotSetPosition", pivotSetPosition);
   }
 
   public void setElevatorPower(double power){
@@ -106,9 +127,9 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     pivot.set(power);
   }
 
-  public void setDeliveryPower(double power){
+  /*public void setDeliveryPower(double power){
     delivery.set(power);
-  }
+  }*/
 
  
   public double getElevatorPosition(){
@@ -119,13 +140,13 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     return pivotEncoder.getPosition();
   }
 
-  public double getDeliveryPosition(){
+  /*public double getDeliveryPosition(){
     return deliveryEncoder.getPosition();
-  }
+  }*/
 
   public void getEntryLaserCanDistance(){
     // Put example code from robotPeriodic() here
-    LaserCan.Measurement measurement = entryCoralSensor.getMeasurement();
+    LaserCan.Measurement measurement = entryCoralDeliveryTracker.getMeasurement();
     if (measurement != null && measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {
       System.out.println("The target is " + measurement.distance_mm + "mm away!");
     } else {
@@ -138,7 +159,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
 
   public void getExitLaserCanDistance(){
     // Put example code from robotPeriodic() here
-    LaserCan.Measurement measurement = exitCoralSensor.getMeasurement();
+    LaserCan.Measurement measurement = exitCoralDeliveryTracker.getMeasurement();
     if (measurement != null && measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {
       System.out.println("The target is " + measurement.distance_mm + "mm away!");
     } else {
@@ -152,8 +173,38 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   public void setElevatorPosition(double position){
     elevatorPIDController.setReference(position, SparkMax.ControlType.kPosition);
   }
+
+  public void setElevatorUp(){
+    System.out.println("Elevator Up");
+    elevatorSetPosition = 20;
+  }
+  public void setElevatorOn(){
+    setElevatorPower(1);
+  }
+  
+  public void setElevatorDown(){
+    System.out.println("Elevator Down");
+    elevatorSetPosition = 0;
+  }
+  public void setElevatorOff(){
+    setElevatorPower(0);
+  }
   
   public void setPivotPosition(double position){
     pivotPIDController.setReference(position, SparkMax.ControlType.kPosition);
+  }
+  public void setPivotUp(){
+    System.out.println("Pivot Up");
+    pivotSetPosition = 90;
+  }
+  public void setPivotOn(){
+    setPivotPower(1);
+  }
+  public void setPivotDown(){
+    System.out.println("Pivot Down");
+    pivotSetPosition = 0;
+  }
+  public void setPivotOff(){
+    setPivotPower(0);
   }
 }

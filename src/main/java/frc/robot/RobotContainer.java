@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.subsystems.CoralDelivery.CoralDeliverySubsystem;
 import frc.robot.subsystems.PowerManagement.MockDetector;
 import frc.robot.commands.DriverCommands;
 import frc.robot.commands.ResetGyro;
@@ -32,7 +33,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public final DriveSubsystem driveSubsystem = new DriveSubsystem();
   //private final PdpSubsystem pdpSubsystem = new PdpSubsystem();
-  
+  public final CoralDeliverySubsystem coralSubsystem = new CoralDeliverySubsystem();
   //Needed to invoke scheduler
   //public final Vision visionSubsystem = new Vision();
 
@@ -74,14 +75,17 @@ public class RobotContainer {
   private void configureBindings() {
     //Drivetrain
     driveSubsystem.setDefaultCommand(new DriverCommands(driveSubsystem, new MockDetector())); //USES THE LEFT BUMPER TO SLOW DOWN
-    
     Driver.Controller.start().onTrue(new ResetGyro(driveSubsystem));
 
+    Driver.Controller.x().onTrue(new InstantCommand(coralSubsystem::setElevatorUp));
+    Driver.Controller.b().onTrue(new InstantCommand(coralSubsystem::setElevatorDown));
+    Driver.Controller.y().onTrue(new InstantCommand(coralSubsystem::setPivotUp));
+    Driver.Controller.a().onTrue(new InstantCommand(coralSubsystem::setPivotDown));
     //SysID stuff - comment out on competition build!
-    Driver.Controller.y().whileTrue(driveSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    /*Driver.Controller.y().whileTrue(driveSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
     Driver.Controller.a().whileTrue(driveSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
     Driver.Controller.b().whileTrue(driveSubsystem.sysIdDynamic(SysIdRoutine.Direction.kForward));
-    Driver.Controller.x().whileTrue(driveSubsystem.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+    Driver.Controller.x().whileTrue(driveSubsystem.sysIdDynamic(SysIdRoutine.Direction.kReverse));*/
 
     /* sample code
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`

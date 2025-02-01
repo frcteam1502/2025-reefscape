@@ -8,7 +8,7 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 
 public class ClimberCfg {
 
-    public static final int CLIMBER_ID = 20;
+    public static final int CLIMBER_ID = 2;
     public static final SparkMax CLIMBER = new SparkMax(CLIMBER_ID, SparkLowLevel.MotorType.kBrushless);
 
     public static final double CLIMBER_GEAR_RATIO = 1/25.0;//TBD with design
