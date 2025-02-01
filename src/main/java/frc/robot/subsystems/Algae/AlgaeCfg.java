@@ -5,8 +5,8 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 
 public class AlgaeCfg {
-    public static final int ALGAE_PIVOT_ID = 3;
-    public static final int ALGAE_INTAKE_ID = 4;
+    public static final int ALGAE_PIVOT_ID = 13;
+    public static final int ALGAE_INTAKE_ID = 12;
 
     public static final SparkMax ALGAE_PIVOT_MOTOR = new SparkMax(ALGAE_PIVOT_ID, SparkLowLevel.MotorType.kBrushless);
     public static final SparkMax ALGAE_INTAKE_MOTOR = new SparkMax(ALGAE_INTAKE_ID, SparkLowLevel.MotorType.kBrushless);

@@ -27,8 +27,8 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   private final SparkClosedLoopController pivotPIDController;
   private final SparkClosedLoopController elevatorPIDController;
 
-  private final LaserCan entryCoralDeliveryTracker;//Change this name and duplicate for the 2nd sensor
-  private final LaserCan exitCoralDeliveryTracker;
+  private final LaserCan entryCoralSensor;//Change this name and duplicate for the 2nd sensor
+  private final LaserCan exitCoralSensor;
 
   public CoralDeliverySubsystem() {
     elevator = CoralDeliveryCfg.ELEVATOR_MOTOR;
@@ -86,8 +86,8 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     deliveryConfig.apply(deliveryEncoderConfig);
 
     //Initialize LaserCan objects here (stuff from RobotInit() in example)
-    laserCan entryCoralDeliveryTracker = CoralDeliveryCfg.LASER_CAN1;
-    laserCan exitCoralDeliveryTracker = CoralDeliveryCfg.LASER_CAN2;
+    entryCoralSensor = CoralDeliveryCfg.LASER_CAN1;
+    exitCoralSensor = CoralDeliveryCfg.LASER_CAN2;
 
     // Lazer or Laser
     
@@ -125,7 +125,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
 
   public void getEntryLaserCanDistance(){
     // Put example code from robotPeriodic() here
-    LaserCan.Measurement measurement = entryCoralDeliveryTracker.getMeasurement();
+    LaserCan.Measurement measurement = entryCoralSensor.getMeasurement();
     if (measurement != null && measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {
       System.out.println("The target is " + measurement.distance_mm + "mm away!");
     } else {
@@ -138,7 +138,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
 
   public void getExitLaserCanDistance(){
     // Put example code from robotPeriodic() here
-    LaserCan.Measurement measurement = exitCoralDeliveryTracker.getMeasurement();
+    LaserCan.Measurement measurement = exitCoralSensor.getMeasurement();
     if (measurement != null && measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {
       System.out.println("The target is " + measurement.distance_mm + "mm away!");
     } else {
