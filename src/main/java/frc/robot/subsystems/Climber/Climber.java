@@ -12,6 +12,7 @@ import com.revrobotics.spark.config.ClosedLoopConfig;
 import com.revrobotics.spark.config.EncoderConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.wpilibj.ADIS16448_IMU.CalibrationTime;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
@@ -47,6 +48,9 @@ public class Climber extends SubsystemBase {
     //Apply the encoder config to the SparkMax
     climbMotorConfig.apply(climbEncoderConfig);
     climbMotorConfig.apply(climberPIDConfig);
+
+    //Finally write config to the spark
+    climber.configure(climbMotorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
   }
 
   @Override
