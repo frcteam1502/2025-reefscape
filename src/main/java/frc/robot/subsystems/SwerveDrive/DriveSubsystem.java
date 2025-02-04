@@ -2,8 +2,7 @@ package frc.robot.subsystems.SwerveDrive;
 
 import frc.robot.Logger;
 import frc.robot.subsystems.Vision.LimelightHelpers;
-import frc.robot.subsystems.Vision.LimelightHelpers.LimelightTarget_Detector;
-import frc.robot.subsystems.Vision.LimelightHelpers.LimelightTarget_Fiducial;
+import frc.robot.subsystems.Vision.LimelightHelpers.RawFiducial;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -74,9 +73,9 @@ public class DriveSubsystem extends SubsystemBase{
 
   private Pose2d pose = new Pose2d();
   private Pose2d estimatedPose = new Pose2d();
-  private Pose2d limelightPose = new Pose2d();
+  private Pose2d targetPose = new Pose2d();
 
-  private LimelightTarget_Fiducial fiducial = new LimelightTarget_Fiducial();
+  private int limelightFiducialID = -1;
 
   //Create a SysIdRoutine object for characterizing the drive
   private final SysIdRoutine sysIdRoutine = 
@@ -184,8 +183,13 @@ public class DriveSubsystem extends SubsystemBase{
     SmartDashboard.putNumber("EstimatedPose Y", estimatedPose.getY());
     SmartDashboard.putNumber("EstimatedPose Rotation", estimatedPose.getRotation().getDegrees());
 
+    //SmartDashboard.putNumber("TargetPose X", targetPose.getX());
+    //SmartDashboard.putNumber("TargetPose Y", targetPose.getY());
+    //SmartDashboard.putNumber("TargetPose Rotation", targetPose.getRotation().getDegrees());
+
     //Limelight crap
     SmartDashboard.putBoolean("Target Valid", LimelightHelpers.getTV(""));
+    SmartDashboard.putNumber("Tag ID",(double)limelightFiducialID);
   }
   
   @Override
@@ -340,6 +344,12 @@ public class DriveSubsystem extends SubsystemBase{
 
     //Check if a valid target was found by the limelight
     if(LimelightHelpers.getTV("")){
+      //Get the Tag ID
+      RawFiducial[] fiducials = LimelightHelpers.getRawFiducials("");
+      if(fiducials.length > 0){
+        limelightFiducialID = fiducials[0].id;
+      }
+
       // Get the pose estimate
       LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("");
       // Add it to your pose estimator
@@ -348,6 +358,14 @@ public class DriveSubsystem extends SubsystemBase{
       limelightMeasurement.pose,
       limelightMeasurement.timestampSeconds);
     }
+  }
+
+  public int getLimelightFiducialId(){
+    return limelightFiducialID;
+  }
+
+  public void setTargetPosition(Pose2d targetPosition){
+    targetPose = targetPosition;
   }
 
   @SuppressWarnings("unused")

@@ -5,10 +5,12 @@
 package frc.robot;
 
 import frc.robot.subsystems.PowerManagement.MockDetector;
+import frc.robot.commands.AlignToReef;
 import frc.robot.commands.DriverCommands;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.StopDriveMotors;
 import frc.robot.subsystems.SwerveDrive.DriveSubsystem;
+import frc.robot.subsystems.Vision.ReefMap.Side;
 
 import java.util.List;
 
@@ -84,12 +86,14 @@ public class RobotContainer {
     driveSubsystem.setDefaultCommand(new DriverCommands(driveSubsystem, new MockDetector())); //USES THE LEFT BUMPER TO SLOW DOWN
     
     Driver.Controller.start().onTrue(new ResetGyro(driveSubsystem));
+    Driver.Controller.leftTrigger(0.5).onTrue(new AlignToReef(driveSubsystem, Side.LEFT));
+    Driver.Controller.rightTrigger(0.5).onTrue(new AlignToReef(driveSubsystem, Side.RIGHT));
 
     //SysID stuff - comment out on competition build!
-    Driver.Controller.y().whileTrue(driveSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    /*Driver.Controller.y().whileTrue(driveSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
     Driver.Controller.a().whileTrue(driveSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
     Driver.Controller.b().whileTrue(driveSubsystem.sysIdDynamic(SysIdRoutine.Direction.kForward));
-    Driver.Controller.x().whileTrue(driveSubsystem.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+    Driver.Controller.x().whileTrue(driveSubsystem.sysIdDynamic(SysIdRoutine.Direction.kReverse));*/
 
     /* sample code
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`

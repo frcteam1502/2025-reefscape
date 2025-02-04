@@ -81,8 +81,9 @@ public class ReefMap {
         }else{
             side = "Right";
         }
-
-        return(Integer.toString(tagId)+"_"+side);
+        String key = Integer.toString(tagId)+"_"+side;
+        System.err.println(key);
+        return(key);
     }
 
     public boolean isPosePresent(int tagId, Side value){
@@ -92,6 +93,9 @@ public class ReefMap {
 
     public Pose2d getReefPose2d(int tagId, Side value){
         String key = composeKey(tagId, value);
+        if(reefMap.get(key)==null){
+            System.out.println("Value is null!");
+        }
         return reefMap.get(key);
     }
 
