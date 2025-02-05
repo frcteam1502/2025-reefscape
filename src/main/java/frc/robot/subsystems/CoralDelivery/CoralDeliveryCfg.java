@@ -8,7 +8,7 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import au.grapplerobotics.LaserCan;
 
 public class CoralDeliveryCfg {
-//CORALD = Coral Delivery
+
      public static final int ELEVATOR_MOTOR_ID = 15;
      public static final int PIVOT_MOTOR_ID = 18;
      public static final int DELIVERY_MOTOR_ID = 19;
@@ -18,10 +18,7 @@ public class CoralDeliveryCfg {
 
     public static final SparkMax ELEVATOR_MOTOR = new SparkMax(ELEVATOR_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
     public static final SparkMax PIVOT_MOTOR = new SparkMax(PIVOT_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
-    //public static final SparkMax DELIVERY_MOTOR = new SparkMax(DELIVERY_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
-
-    //public static final SparkMax DELIVERY_MOTOR = new SparkMax(DELIVERY_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
-
+    public static final SparkMax DELIVERY_MOTOR = new SparkMax(DELIVERY_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
 
     public static final double ELEVATOR_GEAR_RATIO = 1/5.0;//TBD with design
     public static final double PIVOT_GEAR_RATIO = 1/60.0;//TBD with design

@@ -21,11 +21,11 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   /** Creates a new CoralDSubsystem. */
   private final SparkMax elevator;
   private final SparkMax pivot;
-  //private final SparkMax delivery;
+  private final SparkMax delivery;
 
   private final RelativeEncoder elevatorEncoder;
   private final RelativeEncoder pivotEncoder;
-  //private final RelativeEncoder deliveryEncoder;
+  private final RelativeEncoder deliveryEncoder;
   
   private final SparkClosedLoopController pivotPIDController;
   private final SparkClosedLoopController elevatorPIDController;
@@ -38,7 +38,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   public CoralDeliverySubsystem() {
     elevator = CoralDeliveryCfg.ELEVATOR_MOTOR;
     pivot = CoralDeliveryCfg.PIVOT_MOTOR;
-    //delivery = CoralDeliveryCfg.DELIVERY_MOTOR;
+    delivery = CoralDeliveryCfg.DELIVERY_MOTOR;
     
     //Setup the Elevator motor config
     elevatorEncoder = elevator.getEncoder();
@@ -88,17 +88,17 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     //Finally write the config to the spark
     pivot.configure(pivotConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
 
-    /*deliveryEncoder = delivery.getEncoder();
+    deliveryEncoder = delivery.getEncoder();
     EncoderConfig deliveryEncoderConfig = new EncoderConfig();
     deliveryEncoderConfig.positionConversionFactor(CoralDeliveryCfg.DELIVERY_GEAR_RATIO);
-    deliveryEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.DELIVERY_GEAR_RATIO);*/
+    deliveryEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.DELIVERY_GEAR_RATIO);
 
-    /*SparkMaxConfig deliveryConfig = new SparkMaxConfig();
+    SparkMaxConfig deliveryConfig = new SparkMaxConfig();
     deliveryConfig.idleMode(CoralDeliveryCfg.DELIVERY_IDLE_MODE);
     deliveryConfig.inverted(CoralDeliveryCfg.DELIVERY_MOTOR_REVERSED);
     deliveryConfig.smartCurrentLimit(CoralDeliveryCfg.DELIVERY_CURRENT_LIMIT);
 
-    deliveryConfig.apply(deliveryEncoderConfig);*/
+    deliveryConfig.apply(deliveryEncoderConfig);
 
     //Initialize LaserCan objects here (stuff from RobotInit() in example)
     entryCoralDeliveryTracker = CoralDeliveryCfg.LASER_CAN1;
@@ -127,9 +127,9 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     pivot.set(power);
   }
 
-  /*public void setDeliveryPower(double power){
+  public void setDeliveryPower(double power){
     delivery.set(power);
-  }*/
+  }
 
  
   public double getElevatorPosition(){
@@ -140,9 +140,9 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     return pivotEncoder.getPosition();
   }
 
-  /*public double getDeliveryPosition(){
+  public double getDeliveryPosition(){
     return deliveryEncoder.getPosition();
-  }*/
+  }
 
   public void getEntryLaserCanDistance(){
     // Put example code from robotPeriodic() here
