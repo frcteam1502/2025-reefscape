@@ -26,7 +26,8 @@ public class ReefMap {
         private static final Pose2d RIGHT_9     = new Pose2d(12.280, 5.050, new Rotation2d(Math.toRadians(-60)));
         private static final Pose2d LEFT_10     = new Pose2d(11.790, 4.190, new Rotation2d(Math.toRadians(0)));
         private static final Pose2d RIGHT_10    = new Pose2d(11.790, 3.870, new Rotation2d(Math.toRadians(0)));
-        private static final Pose2d LEFT_11     = new Pose2d(12.280, 2.990, new Rotation2d(Math.toRadians(60)));
+        //private static final Pose2d LEFT_11     = new Pose2d(12.280, 2.990, new Rotation2d(Math.toRadians(60)));
+        private static final Pose2d LEFT_11     = new Pose2d(12.350, 3.050, new Rotation2d(Math.toRadians(60)));
         private static final Pose2d RIGHT_11    = new Pose2d(12.570, 2.810, new Rotation2d(Math.toRadians(60)));
         //Blue
         private static final Pose2d LEFT_17     = new Pose2d(3.680, 2.990, new Rotation2d(Math.toRadians(60)));
@@ -93,9 +94,6 @@ public class ReefMap {
 
     public Pose2d getReefPose2d(int tagId, Side value){
         String key = composeKey(tagId, value);
-        if(reefMap.get(key)==null){
-            System.out.println("Value is null!");
-        }
         return reefMap.get(key);
     }
 

@@ -15,7 +15,7 @@ public class AlignToReef extends Command {
   /** Creates a new AlignToReef. */
   private DriveSubsystem driveSubsystem;
   private Side side;
-  private ReefMap reefMap;
+  private ReefMap reefMap = new ReefMap();
 
   Pose2d targetPosition = new Pose2d();
   
@@ -30,14 +30,12 @@ public class AlignToReef extends Command {
   @Override
   public void initialize() {
     int tagId = driveSubsystem.getLimelightFiducialId();
-    if(tagId > 1){
+    if(reefMap.isPosePresent(tagId,side)){
       targetPosition = reefMap.getReefPose2d(tagId, side);
-    }
-
-    driveSubsystem.setTargetPosition(targetPosition);
-    System.out.println("Tag ID: " + String.valueOf(tagId));
-    //System.out.println("X:"+ String.valueOf(targetPosition.getX()) + " Y:" + String.valueOf(targetPosition.getY()) + 
-    //                      " Rotation:" + String.valueOf(targetPosition.getRotation().getDegrees()));
+      driveSubsystem.setTargetPosition(targetPosition);
+    }else{
+      System.out.println("No Reef pose found!");
+    } 
   }
 
   // Called every time the scheduler runs while the command is scheduled.

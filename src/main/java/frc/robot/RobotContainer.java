@@ -86,8 +86,8 @@ public class RobotContainer {
     driveSubsystem.setDefaultCommand(new DriverCommands(driveSubsystem, new MockDetector())); //USES THE LEFT BUMPER TO SLOW DOWN
     
     Driver.Controller.start().onTrue(new ResetGyro(driveSubsystem));
-    Driver.Controller.leftTrigger(0.5).onTrue(new AlignToReef(driveSubsystem, Side.LEFT));
-    Driver.Controller.rightTrigger(0.5).onTrue(new AlignToReef(driveSubsystem, Side.RIGHT));
+    Driver.Controller.leftTrigger(0.5).onTrue(new InstantCommand(driveSubsystem::moveToReefLeft));
+    Driver.Controller.rightTrigger(0.5).onTrue(new InstantCommand(driveSubsystem::moveToReefRight));
 
     //SysID stuff - comment out on competition build!
     /*Driver.Controller.y().whileTrue(driveSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));

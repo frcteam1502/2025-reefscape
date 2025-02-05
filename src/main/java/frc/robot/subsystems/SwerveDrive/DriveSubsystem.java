@@ -2,12 +2,20 @@ package frc.robot.subsystems.SwerveDrive;
 
 import frc.robot.Logger;
 import frc.robot.subsystems.Vision.LimelightHelpers;
+import frc.robot.subsystems.Vision.ReefMap;
+import frc.robot.subsystems.Vision.ReefMap.Side;
 import frc.robot.subsystems.Vision.LimelightHelpers.RawFiducial;
+
+import java.util.List;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.GoalEndState;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.config.PIDConstants;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -71,7 +79,10 @@ public class DriveSubsystem extends SubsystemBase{
 
   public final SwerveDrivePoseEstimator poseEstimator;
 
+  private final ReefMap reefMap = new ReefMap();
+
   private Pose2d pose = new Pose2d();
+  private Pose2d limelightPose = new Pose2d();
   private Pose2d estimatedPose = new Pose2d();
   private Pose2d targetPose = new Pose2d();
 
@@ -183,9 +194,13 @@ public class DriveSubsystem extends SubsystemBase{
     SmartDashboard.putNumber("EstimatedPose Y", estimatedPose.getY());
     SmartDashboard.putNumber("EstimatedPose Rotation", estimatedPose.getRotation().getDegrees());
 
-    //SmartDashboard.putNumber("TargetPose X", targetPose.getX());
-    //SmartDashboard.putNumber("TargetPose Y", targetPose.getY());
-    //SmartDashboard.putNumber("TargetPose Rotation", targetPose.getRotation().getDegrees());
+    SmartDashboard.putNumber("LimelightPose X", limelightPose.getX());
+    SmartDashboard.putNumber("LimelightPose Y", limelightPose.getY());
+    SmartDashboard.putNumber("LimelightPose Rotation", limelightPose.getRotation().getDegrees());
+
+    SmartDashboard.putNumber("TargetPose X", targetPose.getX());
+    SmartDashboard.putNumber("TargetPose Y", targetPose.getY());
+    SmartDashboard.putNumber("TargetPose Rotation", targetPose.getRotation().getDegrees());
 
     //Limelight crap
     SmartDashboard.putBoolean("Target Valid", LimelightHelpers.getTV(""));
@@ -209,6 +224,7 @@ public class DriveSubsystem extends SubsystemBase{
     if(fieldRelative){
       speedCommands = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, getGyroRotation2d());
     } else {
+  
       speedCommands.omegaRadiansPerSecond = rot;
       speedCommands.vxMetersPerSecond = xSpeed;
       speedCommands.vyMetersPerSecond = ySpeed;
@@ -335,6 +351,7 @@ public class DriveSubsystem extends SubsystemBase{
     resetGyro(pose.getRotation().getDegrees());
     //Now, reset the pose updated gyro heading
     odometry.resetRotation(getGyroRotation2d());
+    poseEstimator.resetRotation(getGyroRotation2d());
   }
 
   private void updateLimelightPose(){
@@ -352,6 +369,7 @@ public class DriveSubsystem extends SubsystemBase{
 
       // Get the pose estimate
       LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("");
+      limelightPose = limelightMeasurement.pose;
       // Add it to your pose estimator
       poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.5, .5, 9999999));
       poseEstimator.addVisionMeasurement(
@@ -366,6 +384,48 @@ public class DriveSubsystem extends SubsystemBase{
 
   public void setTargetPosition(Pose2d targetPosition){
     targetPose = targetPosition;
+  }
+
+  public void moveToReefLeft(){
+    int tagId = getLimelightFiducialId();
+    if(reefMap.isPosePresent(tagId, Side.LEFT)){
+      System.out.println("Building Path to Left!");
+      targetPose = reefMap.getReefPose2d(tagId, Side.LEFT);
+      List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(pose,targetPose);
+      PathPlannerPath path = new PathPlannerPath(waypoints,
+                                                 new PathConstraints(3.0,
+                                                                     3.0, 
+                                                                     Units.degreesToRadians(360), 
+                                                                     Units.degreesToRadians(540)),
+                                                 null,
+                                                 new GoalEndState(tagId, targetPose.getRotation())
+                                 );
+      path.preventFlipping = true;
+      AutoBuilder.followPath(path).schedule();
+    }else{
+      System.out.println("No Reef pose found!");
+    } 
+  }
+
+  public void moveToReefRight(){
+    int tagId = getLimelightFiducialId();
+    if(reefMap.isPosePresent(tagId, Side.RIGHT)){
+      System.out.println("Building Path to Right!");
+      targetPose = reefMap.getReefPose2d(tagId, Side.RIGHT);
+      List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(pose,targetPose);
+      PathPlannerPath path = new PathPlannerPath(waypoints,
+                                                 new PathConstraints(3.0,
+                                                                     3.0, 
+                                                                     Units.degreesToRadians(360), 
+                                                                     Units.degreesToRadians(540)),
+                                                 null,
+                                                 new GoalEndState(tagId, targetPose.getRotation())
+                                 );
+      path.preventFlipping = true;
+      AutoBuilder.followPath(path).schedule();
+    }else{
+      System.out.println("No Reef pose found!");
+    } 
   }
 
   @SuppressWarnings("unused")
