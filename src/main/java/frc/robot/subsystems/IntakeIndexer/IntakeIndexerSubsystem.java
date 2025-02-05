@@ -43,24 +43,7 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     rightIntake = IntakeIndexerCfg.RIGHTINTAKE_MOTOR;
     indexer = IntakeIndexerCfg.INDEXER_MOTOR;
 
-
-    leftPivotEncoder = leftPivot.getEncoder();
-    EncoderConfig leftPivotEncoderConfig = new EncoderConfig();
-    leftPivotEncoderConfig.positionConversionFactor(IntakeIndexerCfg.LEFTPIVOT_GEAR_RATIO);
-    leftPivotEncoderConfig.velocityConversionFactor(IntakeIndexerCfg.LEFTPIVOT_GEAR_RATIO);
-
-    leftPivotPIDController = leftPivot.getClosedLoopController();
-    ClosedLoopConfig leftPivotPIDConfig = new ClosedLoopConfig();
-    leftPivotPIDConfig.p(IntakeIndexerCfg.LEFTPIVOT_P_GAIN);
-    leftPivotPIDConfig.i(IntakeIndexerCfg.LEFTPIVOT_I_GAIN);
-    leftPivotPIDConfig.d(IntakeIndexerCfg.LEFTPIVOT_D_GAIN);
-
-    leftIntakeEncoder = leftIntake.getEncoder();
-    EncoderConfig leftIntakeEncoderConfig = new EncoderConfig();
-    leftIntakeEncoderConfig.positionConversionFactor(IntakeIndexerCfg.LEFTINTAKE_GEAR_RATIO);
-    leftIntakeEncoderConfig.velocityConversionFactor(IntakeIndexerCfg.LEFTINTAKE_GEAR_RATIO);
-
-
+    //Setup the Pivot motor config
     rightPivotEncoder = rightPivot.getEncoder();
     EncoderConfig rightPivotEncoderConfig = new EncoderConfig();
     rightPivotEncoderConfig.positionConversionFactor(IntakeIndexerCfg.RIGHTPIVOT_GEAR_RATIO);
@@ -72,53 +55,75 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     rightPivotPIDConfig.i(IntakeIndexerCfg.RIGHTPIVOT_I_GAIN);
     rightPivotPIDConfig.d(IntakeIndexerCfg.RIGHTPIVOT_D_GAIN);
 
-    rightIntakeEncoder = rightIntake.getEncoder();
-    EncoderConfig rightIntakeEncoderConfig = new EncoderConfig();
-    rightIntakeEncoderConfig.positionConversionFactor(IntakeIndexerCfg.RIGHTINTAKE_GEAR_RATIO);
-    rightIntakeEncoderConfig.velocityConversionFactor(IntakeIndexerCfg.RIGHTINTAKE_GEAR_RATIO);
+    SparkMaxConfig rightPivotConfig = new SparkMaxConfig();
+    rightPivotConfig.idleMode(IntakeIndexerCfg.RIGHTPIVOT_IDLE_MODE);
+    rightPivotConfig.inverted(IntakeIndexerCfg.RIGHTPIVOT_MOTOR_REVERSED);
+    rightPivotConfig.smartCurrentLimit(IntakeIndexerCfg.RIGHTPIVOT_CURRENT_LIMIT);
 
+    //Apply the encoder and PID configs to the Spark config
+    rightPivotConfig.apply(rightPivotConfig);
+    rightPivotConfig.apply(rightPivotPIDConfig);  
+    //Finally write the config to the spark
+    rightPivot.configure(rightPivotConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
 
-    indexerEncoder = indexer.getEncoder();
-    EncoderConfig indexerEncoderConfig = new EncoderConfig();
-    indexerEncoderConfig.positionConversionFactor(IntakeIndexerCfg.INDEXER_GEAR_RATIO);
-    indexerEncoderConfig.velocityConversionFactor(IntakeIndexerCfg.INDEXER_GEAR_RATIO);
-
-
+    //Setup the Pivot motor config
+    leftPivotEncoder = leftPivot.getEncoder();
+    EncoderConfig leftPivotEncoderConfig = new EncoderConfig();
+    leftPivotEncoderConfig.positionConversionFactor(IntakeIndexerCfg.LEFTPIVOT_GEAR_RATIO);
+    leftPivotEncoderConfig.velocityConversionFactor(IntakeIndexerCfg.LEFTPIVOT_GEAR_RATIO);
+    
+    leftPivotPIDController = leftPivot.getClosedLoopController();
+    ClosedLoopConfig leftPivotPIDConfig = new ClosedLoopConfig();
+    leftPivotPIDConfig.p(IntakeIndexerCfg.LEFTPIVOT_P_GAIN);
+    leftPivotPIDConfig.i(IntakeIndexerCfg.LEFTPIVOT_I_GAIN);
+    leftPivotPIDConfig.d(IntakeIndexerCfg.LEFTPIVOT_D_GAIN);
+    
     SparkMaxConfig leftPivotConfig = new SparkMaxConfig();
     leftPivotConfig.idleMode(IntakeIndexerCfg.LEFTPIVOT_IDLE_MODE);
     leftPivotConfig.inverted(IntakeIndexerCfg.LEFTPIVOT_MOTOR_REVERSED);
     leftPivotConfig.smartCurrentLimit(IntakeIndexerCfg.LEFTPIVOT_CURRENT_LIMIT);
+    
+    //Apply the encoder and PID configs to the Spark config
+    leftPivotConfig.apply(leftPivotConfig);
+    leftPivotConfig.apply(leftPivotPIDConfig);
 
+    //Finally write the config to the spark
+    leftPivot.configure(leftPivotConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+    
+    leftIntakeEncoder = leftIntake.getEncoder();
+    EncoderConfig leftIntakeEncoderConfig = new EncoderConfig();
+    leftIntakeEncoderConfig.positionConversionFactor(IntakeIndexerCfg.LEFTINTAKE_GEAR_RATIO);
+    leftIntakeEncoderConfig.velocityConversionFactor(IntakeIndexerCfg.LEFTINTAKE_GEAR_RATIO);
 
     SparkMaxConfig leftIntakeConfig = new SparkMaxConfig();
     leftIntakeConfig.idleMode(IntakeIndexerCfg.LEFTINTAKE_IDLE_MODE);
     leftIntakeConfig.inverted(IntakeIndexerCfg.LEFTINTAKE_MOTOR_REVERSED);
     leftIntakeConfig.smartCurrentLimit(IntakeIndexerCfg.LEFTINTAKE_CURRENT_LIMIT);
 
+    leftIntakeConfig.apply(leftIntakeConfig); 
 
-    SparkMaxConfig rightPivotConfig = new SparkMaxConfig();
-    rightPivotConfig.idleMode(IntakeIndexerCfg.RIGHTPIVOT_IDLE_MODE);
-    rightPivotConfig.inverted(IntakeIndexerCfg.RIGHTPIVOT_MOTOR_REVERSED);
-    rightPivotConfig.smartCurrentLimit(IntakeIndexerCfg.RIGHTPIVOT_CURRENT_LIMIT);
-
+    rightIntakeEncoder = rightIntake.getEncoder();
+    EncoderConfig rightIntakeEncoderConfig = new EncoderConfig();
+    rightIntakeEncoderConfig.positionConversionFactor(IntakeIndexerCfg.RIGHTINTAKE_GEAR_RATIO);
+    rightIntakeEncoderConfig.velocityConversionFactor(IntakeIndexerCfg.RIGHTINTAKE_GEAR_RATIO);
 
     SparkMaxConfig rightIntakeConfig = new SparkMaxConfig();
     rightIntakeConfig.idleMode(IntakeIndexerCfg.RIGHTINTAKE_IDLE_MODE);
     rightIntakeConfig.inverted(IntakeIndexerCfg.RIGHTINTAKE_MOTOR_REVERSED);
     rightIntakeConfig.smartCurrentLimit(IntakeIndexerCfg.RIGHTINTAKE_CURRENT_LIMIT);
 
+    rightIntakeConfig.apply(rightIntakeConfig);
+
+    indexerEncoder = indexer.getEncoder();
+    EncoderConfig indexerEncoderConfig = new EncoderConfig();
+    indexerEncoderConfig.positionConversionFactor(IntakeIndexerCfg.INDEXER_GEAR_RATIO);
+    indexerEncoderConfig.velocityConversionFactor(IntakeIndexerCfg.INDEXER_GEAR_RATIO);
 
     SparkMaxConfig indexerConfig = new SparkMaxConfig();
     indexerConfig.idleMode(IntakeIndexerCfg.INDEXER_IDLE_MODE);
     indexerConfig.inverted(IntakeIndexerCfg.INDEXER_MOTOR_REVERSED);
     indexerConfig.smartCurrentLimit(IntakeIndexerCfg.INDEXER_CURRENT_LIMIT);
 
-    leftPivotConfig.apply(leftPivotConfig);
-    leftPivotConfig.apply(leftPivotPIDConfig);
-    leftIntakeConfig.apply(leftIntakeConfig);
-    rightPivotConfig.apply(rightPivotConfig);
-    rightPivotConfig.apply(rightPivotPIDConfig);  
-    rightIntakeConfig.apply(rightIntakeConfig);
     indexerConfig.apply(indexerConfig);
   }
 
