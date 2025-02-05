@@ -10,6 +10,9 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 public class PhotonCameraCfg{
+	public static final String LEFT_APRILTAG_CAM = "leftAprilTagCam";
+	public static final String RIGHT_APRILTAG_CAM = "rightAprilTagCam";
+
 	//Left AprilTag Cam Pose Config wrt robot center
 	public static final double LEFT_APRILTAG_CAM_XPOS_METERS = 0;//"Forward" from center, in meters
 	public static final double LEFT_APRILTAG_CAM_YPOS_METERS = 0;//"Left" from center, in meters
@@ -26,6 +29,24 @@ public class PhotonCameraCfg{
 					new Rotation3d(Math.toRadians(LEFT_APRILTAG_CAM_ROLL_DEG),
 								   Math.toRadians(LEFT_APRILTAG_CAM_PITCH_DEG), 
 								   Math.toRadians(LEFT_APRILTAG_CAM_YAW_DEG)));
+
+	
+	//Right AprilTag Cam Pose Config wrt robot center
+	public static final double RIGHT_APRILTAG_CAM_XPOS_METERS = 0;//"Forward" from center, in meters
+	public static final double RIGHT_APRILTAG_CAM_YPOS_METERS = 0;//"Left" from center, in meters
+	public static final double RIGHT_APRILTAG_CAM_ZPOS_METERS = 0;//"Up" from center, in meters
+	
+	public static final double RIGHT_APRILTAG_CAM_ROLL_DEG	= 0;
+	public static final double RIGHT_APRILTAG_CAM_PITCH_DEG	= 0;
+	public static final double RIGHT_APRILTAG_CAM_YAW_DEG	= 0;
+
+	public static final Transform3d RIGHT_APRILTAG_CAM_TRANSFORM = new Transform3d(
+					new Translation3d(RIGHT_APRILTAG_CAM_XPOS_METERS,
+								      RIGHT_APRILTAG_CAM_YPOS_METERS, 
+									  RIGHT_APRILTAG_CAM_ZPOS_METERS), 
+					new Rotation3d(Math.toRadians(RIGHT_APRILTAG_CAM_ROLL_DEG),
+								   Math.toRadians(RIGHT_APRILTAG_CAM_PITCH_DEG), 
+								   Math.toRadians(RIGHT_APRILTAG_CAM_YAW_DEG)));
 
 	// The standard deviations of our vision estimated poses, which affect correction rate
     // (Fake values. Experiment and determine estimation noise on an actual robot.)

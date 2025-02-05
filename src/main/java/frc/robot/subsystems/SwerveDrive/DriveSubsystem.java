@@ -2,6 +2,8 @@ package frc.robot.subsystems.SwerveDrive;
 
 import frc.robot.Logger;
 import frc.robot.subsystems.Vision.LimelightHelpers;
+import frc.robot.subsystems.Vision.PhotonCameraCfg;
+import frc.robot.subsystems.Vision.PhotonVisionCamera;
 import frc.robot.subsystems.Vision.ReefMap;
 import frc.robot.subsystems.Vision.ReefMap.Side;
 import frc.robot.subsystems.Vision.LimelightHelpers.RawFiducial;
@@ -79,10 +81,15 @@ public class DriveSubsystem extends SubsystemBase{
 
   public final SwerveDrivePoseEstimator poseEstimator;
 
+  private final PhotonVisionCamera leftPhotonCamera;
+  private final PhotonVisionCamera rightPhotonCamera;
+  
   private final ReefMap reefMap = new ReefMap();
 
   private Pose2d pose = new Pose2d();
   private Pose2d limelightPose = new Pose2d();
+  private Pose2d photonLeftPose = new Pose2d();
+  private Pose2d photonRightPose = new Pose2d();
   private Pose2d estimatedPose = new Pose2d();
   private Pose2d targetPose = new Pose2d();
 
@@ -154,6 +161,13 @@ public class DriveSubsystem extends SubsystemBase{
           PoseEstCfg.VISION_STD_DEV_X,
           PoseEstCfg.VISION_STD_DEV_Y,
           PoseEstCfg.VISION_STD_DEV_THETA));
+    
+    
+    leftPhotonCamera = new PhotonVisionCamera(PhotonCameraCfg.LEFT_APRILTAG_CAM, 
+          PhotonCameraCfg.LEFT_APRILTAG_CAM_TRANSFORM);
+
+    rightPhotonCamera = new PhotonVisionCamera(PhotonCameraCfg.RIGHT_APRILTAG_CAM, 
+          PhotonCameraCfg.RIGHT_APRILTAG_CAM_TRANSFORM);
 
     reset();
     registerLoggerObjects();
@@ -172,14 +186,6 @@ public class DriveSubsystem extends SubsystemBase{
     //Field Oriented inputs
     SmartDashboard.putNumber("Field Oriented X Command (Forward)", fieldXCommand);
     SmartDashboard.putNumber("Field Oriented Y Command (Forward)", fieldYCommand);
-
-    //Robot Relative inputs
-    /*SmartDashboard.putNumber("Robot Relative vX Speed Command", speedCommands.vxMetersPerSecond);
-    SmartDashboard.putNumber("Robot Relative vY Speed Command", speedCommands.vyMetersPerSecond);
-    SmartDashboard.putNumber("Robot Relative Rotation Command", speedCommands.omegaRadiansPerSecond);*/
-
-    /*SmartDashboard.putNumber("Drive Robot Relative vX Speed Command", relativeCommands.vxMetersPerSecond);
-    SmartDashboard.putNumber("Drive Robot Relative vY Speed Command", relativeCommands.vyMetersPerSecond);*/
     SmartDashboard.putNumber("Drive Robot Relative Rotation Command", relativeCommands.omegaRadiansPerSecond);
 
     SmartDashboard.putNumber("Gyro Yaw", getIMU_Yaw());
@@ -197,6 +203,14 @@ public class DriveSubsystem extends SubsystemBase{
     SmartDashboard.putNumber("LimelightPose X", limelightPose.getX());
     SmartDashboard.putNumber("LimelightPose Y", limelightPose.getY());
     SmartDashboard.putNumber("LimelightPose Rotation", limelightPose.getRotation().getDegrees());
+
+    SmartDashboard.putNumber("PhotonLeft Pose X", photonLeftPose.getX());
+    SmartDashboard.putNumber("PhotonLeft Pose Y", photonLeftPose.getY());
+    SmartDashboard.putNumber("PhotonLeft Pose Rotation", photonLeftPose.getRotation().getDegrees());
+
+    SmartDashboard.putNumber("PhotonRight Pose X", photonRightPose.getX());
+    SmartDashboard.putNumber("PhotonRight Pose Y", photonRightPose.getY());
+    SmartDashboard.putNumber("PhotonRight Pose Rotation", photonRightPose.getRotation().getDegrees());
 
     SmartDashboard.putNumber("TargetPose X", targetPose.getX());
     SmartDashboard.putNumber("TargetPose Y", targetPose.getY());
@@ -222,9 +236,13 @@ public class DriveSubsystem extends SubsystemBase{
     fieldYCommand = ySpeed;
 
     if(fieldRelative){
-      speedCommands = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, getGyroRotation2d());
+      var alliance = DriverStation.getAlliance();
+      if((alliance.isPresent()) && (alliance.get() == DriverStation.Alliance.Red)){
+        speedCommands = ChassisSpeeds.fromFieldRelativeSpeeds(-xSpeed, -ySpeed, -rot, getGyroRotation2d());
+      }else{
+        speedCommands = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, getGyroRotation2d());   
+      }  
     } else {
-  
       speedCommands.omegaRadiansPerSecond = rot;
       speedCommands.vxMetersPerSecond = xSpeed;
       speedCommands.vyMetersPerSecond = ySpeed;
@@ -380,6 +398,31 @@ public class DriveSubsystem extends SubsystemBase{
 
   public int getLimelightFiducialId(){
     return limelightFiducialID;
+  }
+
+  public void updatePhotonVisionPose(){
+    var leftPoseEstimate = leftPhotonCamera.getEstimatedGlobalPose();
+    
+    if(leftPoseEstimate.isPresent()){
+      photonLeftPose = leftPoseEstimate.get().estimatedPose.toPose2d();
+      var timestampLeft = leftPoseEstimate.get().timestampSeconds;
+      var estStdDevLeft = leftPhotonCamera.getEstimationStdDevs();
+      poseEstimator.addVisionMeasurement(photonLeftPose,
+                                         timestampLeft,
+                                         estStdDevLeft);
+
+    }
+
+    var rightPoseEstimate = rightPhotonCamera.getEstimatedGlobalPose();
+
+    if(rightPoseEstimate.isPresent()){
+      photonRightPose = rightPoseEstimate.get().estimatedPose.toPose2d();
+      var timestampRight = rightPoseEstimate.get().timestampSeconds;
+      var estStdDevRight = leftPhotonCamera.getEstimationStdDevs();
+      poseEstimator.addVisionMeasurement(photonRightPose,
+                                         timestampRight,
+                                         estStdDevRight);
+    }
   }
 
   public void setTargetPosition(Pose2d targetPosition){
