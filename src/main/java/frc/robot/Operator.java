@@ -1,9 +1,7 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.OperatorConstants;
 
 public final class Operator {
@@ -17,6 +15,24 @@ public final class Operator {
   public static double getRightX() { return Controller.getRightX();}
   public static double getRightY() { return Controller.getRightY();}
   public static double getRightTrigger() { return Controller.getRightTriggerAxis();}
+
+  //Reefscape custom controller mapping
+  public static final GenericHID CustomController = new GenericHID(OperatorConstants.kCustomControllerPort);
+  public static final int CUST_CONTROLLER_BUTTON_1  = 1;
+  public static final int CUST_CONTROLLER_BUTTON_2  = 2;
+  public static final int CUST_CONTROLLER_BUTTON_3  = 3;
+  public static final int CUST_CONTROLLER_BUTTON_4  = 4;
+  public static final int CUST_CONTROLLER_BUTTON_5  = 5;
+  public static final int CUST_CONTROLLER_BUTTON_6  = 6;
+  public static final int CUST_CONTROLLER_BUTTON_7  = 7;
+  public static final int CUST_CONTROLLER_BUTTON_8  = 8;
+  public static final int CUST_CONTROLLER_BUTTON_9  = 9;
+  public static final int CUST_CONTROLLER_BUTTON_10 = 10;
+  public static final int CUST_CONTROLLER_BUTTON_11 = 11;
+  public static final int CUST_CONTROLLER_BUTTON_12 = 12;
+
+  public static boolean getButton1() {return CustomController.getRawButton(CUST_CONTROLLER_BUTTON_1);}
+  //TODO: Create methods for the other buttons by following this convention
 
   /*public static final class XboxButtons {
     

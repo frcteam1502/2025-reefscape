@@ -155,8 +155,6 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     }
   }
 
-
-
   public void getExitLaserCanDistance(){
     // Put example code from robotPeriodic() here
     LaserCan.Measurement measurement = exitCoralDeliveryTracker.getMeasurement();
@@ -168,24 +166,24 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     }
   }
     
-  
-
   public void setElevatorPosition(double position){
     elevatorPIDController.setReference(position, SparkMax.ControlType.kPosition);
   }
 
-  public void setElevatorUp(){
-    System.out.println("Elevator Up");
-    elevatorSetPosition = 20;
+  public void setElevatorDown(){//TODO: Change to "setElevatorLoadPosition"
+  System.out.println("Elevator Down");
+  elevatorSetPosition = 0;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
   }
+
+  public void setElevatorUp(){//TODO: Change to "setElevatorL1Position" and copy/paste for each setpoint L2 to L4
+    System.out.println("Elevator Up");
+    elevatorSetPosition = 20;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
+  }
+
   public void setElevatorOn(){
     setElevatorPower(1);
   }
   
-  public void setElevatorDown(){
-    System.out.println("Elevator Down");
-    elevatorSetPosition = 0;
-  }
   public void setElevatorOff(){
     setElevatorPower(0);
   }
@@ -193,17 +191,21 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   public void setPivotPosition(double position){
     pivotPIDController.setReference(position, SparkMax.ControlType.kPosition);
   }
-  public void setPivotUp(){
-    System.out.println("Pivot Up");
-    pivotSetPosition = 90;
+
+  public void setPivotDown(){//TODO: Change to "setPivotLoadPosition"
+    System.out.println("Pivot Down");
+    pivotSetPosition = 0;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
   }
+
+  public void setPivotUp(){//TODO: Change to "setPivotL1Position" and copy/paste for each setpoint L2 to L4
+    System.out.println("Pivot Up");
+    pivotSetPosition = 90;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
+  }
+  
   public void setPivotOn(){
     setPivotPower(1);
   }
-  public void setPivotDown(){
-    System.out.println("Pivot Down");
-    pivotSetPosition = 0;
-  }
+
   public void setPivotOff(){
     setPivotPower(0);
   }

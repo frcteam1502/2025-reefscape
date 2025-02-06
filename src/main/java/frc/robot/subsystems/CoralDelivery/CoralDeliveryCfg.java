@@ -47,4 +47,10 @@ public class CoralDeliveryCfg {
 
     public static final LaserCan LASER_CAN1 = new LaserCan(LASER_CAN1_ID);
     public static final LaserCan LASER_CAN2 = new LaserCan(LASER_CAN2_ID);
+
+    //Create constants to store the Elevator positions (in cm) for each reef level
+    public static final double ELEVATOR_LOAD_POSITION = 0.0;//TODO: Copy/paste/modify for L1 - L4, use dummy values for now
+
+    //Create constants to store the pivot positions (in degrees) for each reef level
+    public static final double PIVOT_LOAD_POSITION = 0.0;//TODO: Copy/paste/modify for L1 - L4, use dummy values for now
 }
