@@ -226,6 +226,7 @@ public class DriveSubsystem extends SubsystemBase{
     updateOdometry();
     updateEstimatedPose();
     updateLimelightPose();
+    updatePhotonVisionPose();
 
     updateDashboard();
   }
@@ -238,7 +239,7 @@ public class DriveSubsystem extends SubsystemBase{
     if(fieldRelative){
       var alliance = DriverStation.getAlliance();
       if((alliance.isPresent()) && (alliance.get() == DriverStation.Alliance.Red)){
-        speedCommands = ChassisSpeeds.fromFieldRelativeSpeeds(-xSpeed, -ySpeed, -rot, getGyroRotation2d());
+        speedCommands = ChassisSpeeds.fromFieldRelativeSpeeds(-xSpeed, -ySpeed, rot, getGyroRotation2d());
       }else{
         speedCommands = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, getGyroRotation2d());   
       }  
