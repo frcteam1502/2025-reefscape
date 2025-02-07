@@ -171,14 +171,32 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   }
 
   public void setElevatorDown(){//TODO: Change to "setElevatorLoadPosition"
-  System.out.println("Elevator Down");
   elevatorSetPosition = 0;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
   }
 
   public void setElevatorUp(){//TODO: Change to "setElevatorL1Position" and copy/paste for each setpoint L2 to L4
-    System.out.println("Elevator Up");
     elevatorSetPosition = 20;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
   }
+
+  public void setElevatorLoadPosition(){//TODO: Change to "setElevatorL1Position" and copy/paste for each setpoint L2 to L4
+    elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LOAD_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
+  }
+
+  public void setElevatorLONEPosition(){//TODO: Change to "setElevatorL1Position" and copy/paste for each setpoint L2 to L4
+    elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LONE_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
+  }
+
+  public void setElevatorLTWOPosition(){//TODO: Change to "setElevatorL1Position" and copy/paste for each setpoint L2 to L4
+    elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LTWO_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
+  }
+
+  public void setElevatorLTHREEPosition(){//TODO: Change to "setElevatorL1Position" and copy/paste for each setpoint L2 to L4
+    elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LTHREE_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
+  }
+
+  public void setElevatorLFOURPosition(){//TODO: Change to "setElevatorL1Position" and copy/paste for each setpoint L2 to L4
+  elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
+}
 
   public void setElevatorOn(){
     setElevatorPower(1);
@@ -201,6 +219,26 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     System.out.println("Pivot Up");
     pivotSetPosition = 90;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
   }
+
+  public void setPivotLoadPosition(){//TODO: Change to "setPivotL1Position" and copy/paste for each setpoint L2 to L4
+  pivotSetPosition = CoralDeliveryCfg.PIVOT_LOAD_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
+}
+
+public void setPivotLOnePosition(){//TODO: Change to "setPivotL1Position" and copy/paste for each setpoint L2 to L4
+  pivotSetPosition = CoralDeliveryCfg.PIVOT_LONE_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
+}
+
+public void setPivotLTwoPosition(){//TODO: Change to "setPivotL1Position" and copy/paste for each setpoint L2 to L4
+  pivotSetPosition = CoralDeliveryCfg.PIVOT_LTWO_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
+}
+
+public void setPivotLTHREEPosition(){//TODO: Change to "setPivotL1Position" and copy/paste for each setpoint L2 to L4
+  pivotSetPosition = CoralDeliveryCfg.PIVOT_LTHREE_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
+}
+
+public void setPivotLFOURPosition(){//TODO: Change to "setPivotL1Position" and copy/paste for each setpoint L2 to L4
+  pivotSetPosition = CoralDeliveryCfg.PIVOT_LFOUR_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
+}
   
   public void setPivotOn(){
     setPivotPower(1);

@@ -32,6 +32,17 @@ public final class Operator {
   public static final int CUST_CONTROLLER_BUTTON_12 = 12;
 
   public static boolean getButton1() {return CustomController.getRawButton(CUST_CONTROLLER_BUTTON_1);}
+  public static boolean getButton2() {return CustomController.getRawButton(CUST_CONTROLLER_BUTTON_2);}
+  public static boolean getButton3() {return CustomController.getRawButton(CUST_CONTROLLER_BUTTON_3);}
+  public static boolean getButton4() {return CustomController.getRawButton(CUST_CONTROLLER_BUTTON_4);}
+  public static boolean getButton5() {return CustomController.getRawButton(CUST_CONTROLLER_BUTTON_5);}
+  public static boolean getButton6() {return CustomController.getRawButton(CUST_CONTROLLER_BUTTON_6);}
+  public static boolean getButton7() {return CustomController.getRawButton(CUST_CONTROLLER_BUTTON_7);}
+  public static boolean getButton8() {return CustomController.getRawButton(CUST_CONTROLLER_BUTTON_8);}
+  public static boolean getButton9() {return CustomController.getRawButton(CUST_CONTROLLER_BUTTON_9);}
+  public static boolean getButton10() {return CustomController.getRawButton(CUST_CONTROLLER_BUTTON_10);}
+  public static boolean getButton11() {return CustomController.getRawButton(CUST_CONTROLLER_BUTTON_11);}
+  public static boolean getButton12() {return CustomController.getRawButton(CUST_CONTROLLER_BUTTON_12);}
   //TODO: Create methods for the other buttons by following this convention
 
   /*public static final class XboxButtons {

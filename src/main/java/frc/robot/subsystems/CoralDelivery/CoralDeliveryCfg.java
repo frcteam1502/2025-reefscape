@@ -51,6 +51,32 @@ public class CoralDeliveryCfg {
     //Create constants to store the Elevator positions (in cm) for each reef level
     public static final double ELEVATOR_LOAD_POSITION = 0.0;//TODO: Copy/paste/modify for L1 - L4, use dummy values for now
 
+     //Create constants to store the Elevator positions (in cm) for each reef level
+     public static final double ELEVATOR_LONE_POSITION = 10;//TODO: Copy/paste/modify for L1 - L4, use dummy values for now
+
+      //Create constants to store the Elevator positions (in cm) for each reef level
+    public static final double ELEVATOR_LTWO_POSITION = 20;//TODO: Copy/paste/modify for L1 - L4, use dummy values for now
+
+     //Create constants to store the Elevator positions (in cm) for each reef level
+     public static final double ELEVATOR_LTHREE_POSITION = 30;//TODO: Copy/paste/modify for L1 - L4, use dummy values for now
+
+     //Create constants to store the Elevator positions (in cm) for each reef level
+     public static final double ELEVATOR_LFOUR_POSITION = 40;//TODO: Copy/paste/modify for L1 - L4, use dummy values for now
+
+
     //Create constants to store the pivot positions (in degrees) for each reef level
     public static final double PIVOT_LOAD_POSITION = 0.0;//TODO: Copy/paste/modify for L1 - L4, use dummy values for now
+
+    //Create constants to store the pivot positions (in degrees) for each reef level
+    public static final double PIVOT_LONE_POSITION = 10;//TODO: Copy/paste/modify for L1 - L4, use dummy values for now
+
+     //Create constants to store the pivot positions (in degrees) for each reef level
+     public static final double PIVOT_LTWO_POSITION = 20;//TODO: Copy/paste/modify for L1 - L4, use dummy values for now
+
+     //Create constants to store the pivot positions (in degrees) for each reef level
+     public static final double PIVOT_LTHREE_POSITION = 30;//TODO: Copy/paste/modify for L1 - L4, use dummy values for now
+
+     //Create constants to store the pivot positions (in degrees) for each reef level
+     public static final double PIVOT_LFOUR_POSITION = 40;//TODO: Copy/paste/modify for L1 - L4, use dummy values for now
 }
+
