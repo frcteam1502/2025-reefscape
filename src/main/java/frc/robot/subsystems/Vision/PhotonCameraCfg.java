@@ -48,6 +48,9 @@ public class PhotonCameraCfg{
 								   Math.toRadians(RIGHT_APRILTAG_CAM_PITCH_DEG), 
 								   Math.toRadians(RIGHT_APRILTAG_CAM_YAW_DEG)));
 
+	//Minimum abiguity to trust the pose (i.e. anything greater than this number discard)
+	public static final double MINIMUM_TARGET_AMBIGUITY = 0.25; 
+
 	// The standard deviations of our vision estimated poses, which affect correction rate
     // (Fake values. Experiment and determine estimation noise on an actual robot.)
     public static final Matrix<N3, N1> SINGLE_TAG_STD_DEV = VecBuilder.fill(4, 4, 8);
