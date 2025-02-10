@@ -35,6 +35,20 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   private double elevatorSetPosition = 0;
   private double pivotSetPosition = 0;
 
+  private double elevator_p_gain = CoralDeliveryCfg.ELEVATOR_P_GAIN;
+  private double elevator_i_gain = CoralDeliveryCfg.ELEVATOR_I_GAIN;
+  private double elevator_d_gain = CoralDeliveryCfg.ELEVATOR_D_GAIN;
+
+  private double pivot_p_gain = CoralDeliveryCfg.PIVOT_P_GAIN;
+  private double pivot_i_gain = CoralDeliveryCfg.PIVOT_I_GAIN;
+  private double pivot_d_gain = CoralDeliveryCfg.PIVOT_D_GAIN;
+
+  ClosedLoopConfig elevatorPID_Config = new ClosedLoopConfig();
+  SparkMaxConfig elevatorConfig = new SparkMaxConfig();
+
+  ClosedLoopConfig pivotPID_Config = new ClosedLoopConfig();
+  SparkMaxConfig pivotConfig = new SparkMaxConfig();
+
   public CoralDeliverySubsystem() {
     elevator = CoralDeliveryCfg.ELEVATOR_MOTOR;
     pivot = CoralDeliveryCfg.PIVOT_MOTOR;
@@ -47,12 +61,11 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     elevatorEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.ELEVATOR_POS_CONVERSION_CM);
 
     elevatorPIDController = elevator.getClosedLoopController();
-    ClosedLoopConfig elevatorPID_Config = new ClosedLoopConfig();
     elevatorPID_Config.p(CoralDeliveryCfg.ELEVATOR_P_GAIN);
     elevatorPID_Config.i(CoralDeliveryCfg.ELEVATOR_I_GAIN);
     elevatorPID_Config.d(CoralDeliveryCfg.ELEVATOR_D_GAIN);
+    elevatorPID_Config.outputRange(-.25,1);
 
-    SparkMaxConfig elevatorConfig = new SparkMaxConfig();
     elevatorConfig.idleMode(CoralDeliveryCfg.ELEVATOR_IDLE_MODE);
     elevatorConfig.inverted(CoralDeliveryCfg.ELEVATOR_MOTOR_REVERSED);
     elevatorConfig.smartCurrentLimit(CoralDeliveryCfg.ELEVATOR_CURRENT_LIMIT);
@@ -71,12 +84,11 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     pivotEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.PIVOT_ANGLE_CONVERSION_DEG);
 
     pivotPIDController = pivot.getClosedLoopController();
-    ClosedLoopConfig pivotPID_Config = new ClosedLoopConfig();
     pivotPID_Config.p(CoralDeliveryCfg.PIVOT_P_GAIN);
     pivotPID_Config.i(CoralDeliveryCfg.PIVOT_I_GAIN);
     pivotPID_Config.d(CoralDeliveryCfg.PIVOT_D_GAIN);
+    elevatorPID_Config.outputRange(-.25,1);
 
-    SparkMaxConfig pivotConfig = new SparkMaxConfig();
     pivotConfig.idleMode(CoralDeliveryCfg.PIVOT_IDLE_MODE);
     pivotConfig.inverted(CoralDeliveryCfg.PIVOT_MOTOR_REVERSED);
     pivotConfig.smartCurrentLimit(CoralDeliveryCfg.PIVOT_CURRENT_LIMIT);
@@ -107,6 +119,43 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     pivotEncoder.setPosition(0);
     // Lazer or Laser
     
+    SmartDashboard.putNumber("Elevator P Gain", elevator_p_gain);
+    SmartDashboard.putNumber("Elevator I Gain", elevator_i_gain);
+    SmartDashboard.putNumber("Elevator D Gain", elevator_d_gain);
+
+    SmartDashboard.putNumber("Pivot P Gain", pivot_p_gain);
+    SmartDashboard.putNumber("Pivot I Gain", pivot_i_gain);
+    SmartDashboard.putNumber("Pivot D Gain", pivot_d_gain);
+  }
+
+  private void updateDashboard(){
+    elevator_p_gain = SmartDashboard.getNumber("Elevator P Gain",0);
+    elevator_i_gain = SmartDashboard.getNumber("Elevator I Gain",0);
+    elevator_d_gain = SmartDashboard.getNumber("Elevator D Gain",0);
+
+    elevatorPID_Config.p(elevator_p_gain);
+    elevatorPID_Config.i(elevator_i_gain);
+    elevatorPID_Config.d(elevator_d_gain);
+
+    elevatorConfig.apply(elevatorPID_Config);
+    elevator.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+
+    pivot_p_gain = SmartDashboard.getNumber("Pivot P Gain", 0);
+    pivot_i_gain = SmartDashboard.getNumber("Pivot I Gain", 0);
+    pivot_p_gain = SmartDashboard.getNumber("Pivot D Gain", 0);
+
+    pivotPID_Config.p(elevator_p_gain);
+    pivotPID_Config.i(elevator_i_gain);
+    pivotPID_Config.d(elevator_d_gain);
+
+    pivotConfig.apply(elevatorPID_Config);
+    pivot.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+
+    SmartDashboard.putNumber("ELEVATOR_CURRENT", elevator.getOutputCurrent());
+    SmartDashboard.putNumber("ELEVATOR_POS", getElevatorPosition());
+    SmartDashboard.putNumber("PIVOT_POS", getPivotPosition());
+    SmartDashboard.putNumber("ElevatorSetPosition", elevatorSetPosition);
+    SmartDashboard.putNumber("PivotSetPosition", pivotSetPosition);
   }
 
   @Override
@@ -114,11 +163,8 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     setElevatorPosition(elevatorSetPosition);
     setPivotPosition(pivotSetPosition);
-    SmartDashboard.putNumber("ELEVATOR_CURRENT", elevator.getOutputCurrent());
-    SmartDashboard.putNumber("ELEVATOR_POS", getElevatorPosition());
-    SmartDashboard.putNumber("PIVOT_POS", getPivotPosition());
-    SmartDashboard.putNumber("ElevatorSetPosition", elevatorSetPosition);
-    SmartDashboard.putNumber("PivotSetPosition", pivotSetPosition);
+
+    updateDashboard();
   }
 
   public void setElevatorPower(double power){
