@@ -103,7 +103,8 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     //Initialize LaserCan objects here (stuff from RobotInit() in example)
     entryCoralDeliveryTracker = CoralDeliveryCfg.FWD_LASER_CAN;
     exitCoralDeliveryTracker = CoralDeliveryCfg.RWD_LASER_CAN;
-
+    elevatorEncoder.setPosition(0);
+    pivotEncoder.setPosition(0);
     // Lazer or Laser
     
   }
@@ -113,6 +114,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     setElevatorPosition(elevatorSetPosition);
     setPivotPosition(pivotSetPosition);
+    SmartDashboard.putNumber("ELEVATOR_CURRENT", elevator.getOutputCurrent());
     SmartDashboard.putNumber("ELEVATOR_POS", getElevatorPosition());
     SmartDashboard.putNumber("PIVOT_POS", getPivotPosition());
     SmartDashboard.putNumber("ElevatorSetPosition", elevatorSetPosition);
@@ -198,9 +200,13 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
 }
 
-  public void setElevatorOn(){
-    setElevatorPower(1);
-  }
+public void setElevatorFwd(){
+  setElevatorPower(1);
+}
+
+public void setElevatorRwd(){
+  setElevatorPower(-0.5);
+}
   
   public void setElevatorOff(){
     setElevatorPower(0);
