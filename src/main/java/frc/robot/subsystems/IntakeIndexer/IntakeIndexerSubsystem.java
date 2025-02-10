@@ -22,49 +22,25 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   /** Creates a new CoralDSubsystem. */
   private final SparkMax leftPivot;
   private final SparkMax leftIntake;
-  private final SparkMax rightPivot;
-  private final SparkMax rightIntake;
   private final SparkMax indexer;
 
 
   private final RelativeEncoder leftPivotEncoder;
   private final RelativeEncoder leftIntakeEncoder;
-  private final RelativeEncoder rightPivotEncoder;
-  private final RelativeEncoder rightIntakeEncoder;
+
   private final RelativeEncoder indexerEncoder;
 
   private final SparkClosedLoopController leftPivotPIDController;
-  private final SparkClosedLoopController rightPivotPIDController;
+  
 
   public IntakeIndexerSubsystem() {
     leftPivot = IntakeIndexerCfg.LEFTPIVOT_MOTOR;
     leftIntake = IntakeIndexerCfg.LEFTINTAKE_MOTOR;
-    rightPivot = IntakeIndexerCfg.RIGHTPIVOT_MOTOR;
-    rightIntake = IntakeIndexerCfg.RIGHTINTAKE_MOTOR;
+    
     indexer = IntakeIndexerCfg.INDEXER_MOTOR;
 
     //Setup the Pivot motor config
-    rightPivotEncoder = rightPivot.getEncoder();
-    EncoderConfig rightPivotEncoderConfig = new EncoderConfig();
-    rightPivotEncoderConfig.positionConversionFactor(IntakeIndexerCfg.RIGHTPIVOT_GEAR_RATIO);
-    rightPivotEncoderConfig.velocityConversionFactor(IntakeIndexerCfg.RIGHTPIVOT_GEAR_RATIO);
-
-    rightPivotPIDController = rightPivot.getClosedLoopController();
-    ClosedLoopConfig rightPivotPIDConfig = new ClosedLoopConfig();
-    rightPivotPIDConfig.p(IntakeIndexerCfg.RIGHTPIVOT_P_GAIN);
-    rightPivotPIDConfig.i(IntakeIndexerCfg.RIGHTPIVOT_I_GAIN);
-    rightPivotPIDConfig.d(IntakeIndexerCfg.RIGHTPIVOT_D_GAIN);
-
-    SparkMaxConfig rightPivotConfig = new SparkMaxConfig();
-    rightPivotConfig.idleMode(IntakeIndexerCfg.RIGHTPIVOT_IDLE_MODE);
-    rightPivotConfig.inverted(IntakeIndexerCfg.RIGHTPIVOT_MOTOR_REVERSED);
-    rightPivotConfig.smartCurrentLimit(IntakeIndexerCfg.RIGHTPIVOT_CURRENT_LIMIT);
-
-    //Apply the encoder and PID configs to the Spark config
-    rightPivotConfig.apply(rightPivotConfig);
-    rightPivotConfig.apply(rightPivotPIDConfig);  
-    //Finally write the config to the spark
-    rightPivot.configure(rightPivotConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+   
 
     //Setup the Pivot motor config
     leftPivotEncoder = leftPivot.getEncoder();
@@ -102,18 +78,6 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
 
     leftIntakeConfig.apply(leftIntakeConfig); 
 
-    rightIntakeEncoder = rightIntake.getEncoder();
-    EncoderConfig rightIntakeEncoderConfig = new EncoderConfig();
-    rightIntakeEncoderConfig.positionConversionFactor(IntakeIndexerCfg.RIGHTINTAKE_GEAR_RATIO);
-    rightIntakeEncoderConfig.velocityConversionFactor(IntakeIndexerCfg.RIGHTINTAKE_GEAR_RATIO);
-
-    SparkMaxConfig rightIntakeConfig = new SparkMaxConfig();
-    rightIntakeConfig.idleMode(IntakeIndexerCfg.RIGHTINTAKE_IDLE_MODE);
-    rightIntakeConfig.inverted(IntakeIndexerCfg.RIGHTINTAKE_MOTOR_REVERSED);
-    rightIntakeConfig.smartCurrentLimit(IntakeIndexerCfg.RIGHTINTAKE_CURRENT_LIMIT);
-
-    rightIntakeConfig.apply(rightIntakeConfig);
-
     indexerEncoder = indexer.getEncoder();
     EncoderConfig indexerEncoderConfig = new EncoderConfig();
     indexerEncoderConfig.positionConversionFactor(IntakeIndexerCfg.INDEXER_GEAR_RATIO);
@@ -140,22 +104,13 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   public void setLeftIntakePower(double power){
     leftIntake.set(power);
   }
-  public void setRightPivotPower(double power){
-    rightPivot.set(power);
-  }
-  public void setRightIntakePower(double power){
-    rightIntake.set(power);
-  }
+ 
   public void setIndexerPower(double power){
     indexer.set(power);
   }
   public void setLeftPivotPosition(double position){
     leftPivotPIDController.setReference(position, SparkBase.ControlType.kPosition);
   }
-  public void setRightPivotPosition(double position){
-    rightPivotPIDController.setReference(position, SparkBase.ControlType.kPosition);
-  }
-
 
   public double getLeftPivotPosition(){
     return leftPivotEncoder.getPosition();
@@ -163,12 +118,7 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   public double getLeftIntakePosition(){
     return leftIntakeEncoder.getPosition();
   }
-  public double getRightPivotPosition(){
-    return rightPivotEncoder.getPosition();
-  }
-  public double getRightIntakePosition(){
-    return rightIntakeEncoder.getPosition();
-  }
+  
   public double getIndexerPosition(){
     return indexerEncoder.getPosition();
   }
