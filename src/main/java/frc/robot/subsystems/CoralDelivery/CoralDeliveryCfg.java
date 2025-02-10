@@ -13,8 +13,8 @@ public class CoralDeliveryCfg {
      public static final int PIVOT_MOTOR_ID = 18;
      public static final int DELIVERY_MOTOR_ID = 19;
      //Add 2 more ints for LaserCANs
-     public static final int LASER_CAN1_ID = 0;
-     public static final int LASER_CAN2_ID = 0;
+     public static final int FORWARD_LASER_CAN_ID = 1;
+     public static final int REARWARD_LASER_CAN_ID = 2;
 
     public static final SparkMax ELEVATOR_MOTOR = new SparkMax(ELEVATOR_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
     public static final SparkMax PIVOT_MOTOR = new SparkMax(PIVOT_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
@@ -45,8 +45,8 @@ public class CoralDeliveryCfg {
     public static final double ELEVATOR_I_GAIN = 0;
     public static final double ELEVATOR_D_GAIN = 0;
 
-    public static final LaserCan LASER_CAN1 = new LaserCan(LASER_CAN1_ID);
-    public static final LaserCan LASER_CAN2 = new LaserCan(LASER_CAN2_ID);
+    public static final LaserCan FWD_LASER_CAN = new LaserCan(FORWARD_LASER_CAN_ID);
+    public static final LaserCan RWD_LASER_CAN = new LaserCan(REARWARD_LASER_CAN_ID);
 
     //Create constants to store the Elevator positions (in cm) for each reef level
     public static final double ELEVATOR_LOAD_POSITION = 0.0;//TODO: Copy/paste/modify for L1 - L4, use dummy values for now

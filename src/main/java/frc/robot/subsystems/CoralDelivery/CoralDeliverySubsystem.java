@@ -101,8 +101,8 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     deliveryConfig.apply(deliveryEncoderConfig);
 
     //Initialize LaserCan objects here (stuff from RobotInit() in example)
-    entryCoralDeliveryTracker = CoralDeliveryCfg.LASER_CAN1;
-    exitCoralDeliveryTracker = CoralDeliveryCfg.LASER_CAN2;
+    entryCoralDeliveryTracker = CoralDeliveryCfg.FWD_LASER_CAN;
+    exitCoralDeliveryTracker = CoralDeliveryCfg.RWD_LASER_CAN;
 
     // Lazer or Laser
     

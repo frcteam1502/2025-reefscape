@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Logger;
 import frc.robot.subsystems.SwerveDrive.DriveSubsystem;
+import au.grapplerobotics.CanBridge;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.PneumaticHub;
@@ -56,26 +57,30 @@ public class Robot extends TimedRobot {
     null,             //"23"
 };
 
-private String[] pneumaticNames = {
-  null, //"0",
-  null, //"1",
-  null, //"2"
-  null, //"3"
-  null, //"4",
-  null, //"5",
-  null, //"6",
-  null, //"7",
-  null, //"8",
-  null, //"9",
-  null, //"10",
-  null, //"11",
-  null, //"12",
-  null, //"13",
-  null, //"14",
-  null, //"15",
+  private String[] pneumaticNames = {
+    null, //"0",
+    null, //"1",
+    null, //"2"
+    null, //"3"
+    null, //"4",
+    null, //"5",
+    null, //"6",
+    null, //"7",
+    null, //"8",
+    null, //"9",
+    null, //"10",
+    null, //"11",
+    null, //"12",
+    null, //"13",
+    null, //"14",
+    null, //"15",
 };
 
   private boolean wasAutonExecuted = false;
+
+  public Robot(){
+    CanBridge.runTCP();
+  }
 
   /**
    * This function is run when the robot is first started up and should be used for any
