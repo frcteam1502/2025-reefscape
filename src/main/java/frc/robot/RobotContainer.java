@@ -81,8 +81,8 @@ public class RobotContainer {
     //Driver.Controller.b().onTrue(new InstantCommand(coralSubsystem::setElevatorRwd)).onFalse(new InstantCommand(coralSubsystem::setElevatorOff));
     Driver.Controller.x().onTrue(new InstantCommand(coralSubsystem::setElevatorUp));
     Driver.Controller.b().onTrue(new InstantCommand(coralSubsystem::setElevatorDown));
-    //Driver.Controller.y().onTrue(new InstantCommand(coralSubsystem::setPivotUp));
-    //Driver.Controller.a().onTrue(new InstantCommand(coralSubsystem::setPivotDown));
+    Driver.Controller.y().onTrue(new InstantCommand(coralSubsystem::setPivotUp));
+    Driver.Controller.a().onTrue(new InstantCommand(coralSubsystem::setPivotDown));
     //SysID stuff - comment out on competition build!
     /*Driver.Controller.y().whileTrue(driveSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
     Driver.Controller.a().whileTrue(driveSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));

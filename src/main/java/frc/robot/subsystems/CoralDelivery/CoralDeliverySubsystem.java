@@ -87,7 +87,6 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     pivotPID_Config.p(CoralDeliveryCfg.PIVOT_P_GAIN);
     pivotPID_Config.i(CoralDeliveryCfg.PIVOT_I_GAIN);
     pivotPID_Config.d(CoralDeliveryCfg.PIVOT_D_GAIN);
-    elevatorPID_Config.outputRange(-.25,1);
 
     pivotConfig.idleMode(CoralDeliveryCfg.PIVOT_IDLE_MODE);
     pivotConfig.inverted(CoralDeliveryCfg.PIVOT_MOTOR_REVERSED);
@@ -137,8 +136,8 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     elevatorPID_Config.i(elevator_i_gain);
     elevatorPID_Config.d(elevator_d_gain);
 
-    elevatorConfig.apply(elevatorPID_Config);
-    elevator.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+    //elevatorConfig.apply(elevatorPID_Config);
+    //elevator.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
 
     pivot_p_gain = SmartDashboard.getNumber("Pivot P Gain", 0);
     pivot_i_gain = SmartDashboard.getNumber("Pivot I Gain", 0);
@@ -148,14 +147,16 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     pivotPID_Config.i(elevator_i_gain);
     pivotPID_Config.d(elevator_d_gain);
 
-    pivotConfig.apply(elevatorPID_Config);
-    pivot.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+   // pivotConfig.apply(elevatorPID_Config);
+    //pivot.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
 
     SmartDashboard.putNumber("ELEVATOR_CURRENT", elevator.getOutputCurrent());
     SmartDashboard.putNumber("ELEVATOR_POS", getElevatorPosition());
     SmartDashboard.putNumber("PIVOT_POS", getPivotPosition());
     SmartDashboard.putNumber("ElevatorSetPosition", elevatorSetPosition);
     SmartDashboard.putNumber("PivotSetPosition", pivotSetPosition);
+
+    SmartDashboard.putNumber("PIVOT_CURRENT", pivot.getOutputCurrent());
   }
 
   @Override
