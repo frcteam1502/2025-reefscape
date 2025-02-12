@@ -14,7 +14,7 @@ import com.revrobotics.spark.config.ClosedLoopConfig;
 import com.revrobotics.spark.config.EncoderConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
@@ -89,12 +89,14 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     indexerConfig.smartCurrentLimit(IntakeIndexerCfg.INDEXER_CURRENT_LIMIT);
 
     indexerConfig.apply(indexerConfig);
-  }
+    leftPivotEncoder.setPosition(0);
+    }
 
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Intake Pivot Position", getLeftPivotPosition());
   }
 
 

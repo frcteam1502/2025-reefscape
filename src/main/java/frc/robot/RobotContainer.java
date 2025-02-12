@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.subsystems.CoralDelivery.CoralDeliverySubsystem;
+import frc.robot.subsystems.IntakeIndexer.IntakeIndexerSubsystem;
 import frc.robot.subsystems.PowerManagement.MockDetector;
 import frc.robot.commands.DriverCommands;
 import frc.robot.commands.ResetGyro;
@@ -34,7 +35,7 @@ public class RobotContainer {
   public final DriveSubsystem driveSubsystem = new DriveSubsystem();
   //private final PdpSubsystem pdpSubsystem = new PdpSubsystem();
   public final CoralDeliverySubsystem coralSubsystem = new CoralDeliverySubsystem();
-  //Needed to invoke scheduler
+  public final IntakeIndexerSubsystem intakeSubsystem = new IntakeIndexerSubsystem();  //Needed to invoke scheduler
   //public final Vision visionSubsystem = new Vision();
 
   private final SendableChooser<Command> autoChooser; 
@@ -79,10 +80,12 @@ public class RobotContainer {
 
     //Driver.Controller.x().onTrue(new InstantCommand(coralSubsystem::setElevatorFwd)).onFalse(new InstantCommand(coralSubsystem::setElevatorOff));
     //Driver.Controller.b().onTrue(new InstantCommand(coralSubsystem::setElevatorRwd)).onFalse(new InstantCommand(coralSubsystem::setElevatorOff));
-    Driver.Controller.x().onTrue(new InstantCommand(coralSubsystem::setElevatorUp));
-    Driver.Controller.b().onTrue(new InstantCommand(coralSubsystem::setElevatorDown));
-    Driver.Controller.y().onTrue(new InstantCommand(coralSubsystem::setPivotUp));
-    Driver.Controller.a().onTrue(new InstantCommand(coralSubsystem::setPivotDown));
+    Operator.getButton9().onTrue(new InstantCommand(coralSubsystem::setElevatorLoadPosition));
+    Operator.getButton4().onTrue(new InstantCommand(coralSubsystem::setElevatorLONEPosition));
+    Operator.getButton3().onTrue(new InstantCommand(coralSubsystem::setElevatorLTWOPosition));
+    Operator.getButton2().onTrue(new InstantCommand(coralSubsystem::setElevatorLTHREEPosition));
+    Operator.getButton1().onTrue(new InstantCommand(coralSubsystem::setElevatorLFOURPosition));
+    
     //SysID stuff - comment out on competition build!
     /*Driver.Controller.y().whileTrue(driveSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
     Driver.Controller.a().whileTrue(driveSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));

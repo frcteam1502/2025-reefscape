@@ -1,7 +1,9 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 
 public final class Operator {
@@ -17,7 +19,7 @@ public final class Operator {
   public static double getRightTrigger() { return Controller.getRightTriggerAxis();}
 
   //Reefscape custom controller mapping
-  public static final GenericHID CustomController = new GenericHID(OperatorConstants.kCustomControllerPort);
+  public static final CommandGenericHID CustomController = new CommandGenericHID(OperatorConstants.kCustomControllerPort);
   public static final int CUST_CONTROLLER_BUTTON_1  = 1;
   public static final int CUST_CONTROLLER_BUTTON_2  = 2;
   public static final int CUST_CONTROLLER_BUTTON_3  = 3;
@@ -31,18 +33,43 @@ public final class Operator {
   public static final int CUST_CONTROLLER_BUTTON_11 = 11;
   public static final int CUST_CONTROLLER_BUTTON_12 = 12;
 
-  public static boolean getButton1() {return CustomController.getRawButton(CUST_CONTROLLER_BUTTON_1);}
-  public static boolean getButton2() {return CustomController.getRawButton(CUST_CONTROLLER_BUTTON_2);}
-  public static boolean getButton3() {return CustomController.getRawButton(CUST_CONTROLLER_BUTTON_3);}
-  public static boolean getButton4() {return CustomController.getRawButton(CUST_CONTROLLER_BUTTON_4);}
-  public static boolean getButton5() {return CustomController.getRawButton(CUST_CONTROLLER_BUTTON_5);}
-  public static boolean getButton6() {return CustomController.getRawButton(CUST_CONTROLLER_BUTTON_6);}
-  public static boolean getButton7() {return CustomController.getRawButton(CUST_CONTROLLER_BUTTON_7);}
-  public static boolean getButton8() {return CustomController.getRawButton(CUST_CONTROLLER_BUTTON_8);}
-  public static boolean getButton9() {return CustomController.getRawButton(CUST_CONTROLLER_BUTTON_9);}
-  public static boolean getButton10() {return CustomController.getRawButton(CUST_CONTROLLER_BUTTON_10);}
-  public static boolean getButton11() {return CustomController.getRawButton(CUST_CONTROLLER_BUTTON_11);}
-  public static boolean getButton12() {return CustomController.getRawButton(CUST_CONTROLLER_BUTTON_12);}
+  public static Trigger getButton1() {
+    return CustomController.button(CUST_CONTROLLER_BUTTON_1);
+  }
+  public static Trigger getButton2() {
+    return CustomController.button(CUST_CONTROLLER_BUTTON_2);
+  }
+  public static Trigger getButton3() {
+    return CustomController.button(CUST_CONTROLLER_BUTTON_3);
+  }
+  public static Trigger getButton4() {
+    return CustomController.button(CUST_CONTROLLER_BUTTON_4);
+  }
+  public static Trigger getButton5() {
+    return CustomController.button(CUST_CONTROLLER_BUTTON_5);
+  }
+  public static Trigger getButton6() {
+    return CustomController.button(CUST_CONTROLLER_BUTTON_6);
+  }
+  public static Trigger getButton7() {
+    return CustomController.button(CUST_CONTROLLER_BUTTON_7);
+  }
+  public static Trigger getButton8() {
+    return CustomController.button(CUST_CONTROLLER_BUTTON_8);
+  }
+  public static Trigger getButton9() {
+    return CustomController.button(CUST_CONTROLLER_BUTTON_9);
+  }
+  public static Trigger getButton10() {
+    return CustomController.button(CUST_CONTROLLER_BUTTON_10);
+  }
+  public static Trigger getButton11() {
+    return CustomController.button(CUST_CONTROLLER_BUTTON_11);
+  }
+  public static Trigger getButton12() {
+    return CustomController.button(CUST_CONTROLLER_BUTTON_12);
+  }
+  
   //TODO: Create methods for the other buttons by following this convention
 
   /*public static final class XboxButtons {
