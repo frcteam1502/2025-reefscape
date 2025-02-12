@@ -14,8 +14,8 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import au.grapplerobotics.LaserCan;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Logger;
 
 public class CoralDeliverySubsystem extends SubsystemBase {
   /** Creates a new CoralDSubsystem. */
@@ -114,8 +114,6 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     //Initialize LaserCan objects here (stuff from RobotInit() in example)
     entryCoralDeliveryTracker = CoralDeliveryCfg.FWD_LASER_CAN;
     exitCoralDeliveryTracker = CoralDeliveryCfg.RWD_LASER_CAN;
-    elevatorEncoder.setPosition(0);
-    pivotEncoder.setPosition(0);
     // Lazer or Laser
     
     SmartDashboard.putNumber("Elevator P Gain", elevator_p_gain);
@@ -125,6 +123,9 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Pivot P Gain", pivot_p_gain);
     SmartDashboard.putNumber("Pivot I Gain", pivot_i_gain);
     SmartDashboard.putNumber("Pivot D Gain", pivot_d_gain);
+
+    reset();
+    registerLoggerObjects();
   }
 
   private void updateDashboard(){
@@ -157,6 +158,17 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     SmartDashboard.putNumber("PivotSetPosition", pivotSetPosition);
 
     SmartDashboard.putNumber("PIVOT_CURRENT", pivot.getOutputCurrent());
+  }
+
+  private void registerLoggerObjects(){
+    Logger.RegisterSparkMax("Elevator", CoralDeliveryCfg.ELEVATOR_MOTOR);
+    Logger.RegisterSparkMax("Coral Pivot", CoralDeliveryCfg.PIVOT_MOTOR);
+    Logger.RegisterSparkMax("Coral Delivery", CoralDeliveryCfg.DELIVERY_MOTOR);
+  }
+
+  private void reset(){
+    elevatorEncoder.setPosition(0);
+    pivotEncoder.setPosition(0);
   }
 
   @Override
@@ -244,16 +256,16 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   }
 
   public void setElevatorLFOURPosition(){//TODO: Change to "setElevatorL1Position" and copy/paste for each setpoint L2 to L4
-  elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
-}
+    elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
+  }
 
-public void setElevatorFwd(){
-  setElevatorPower(1);
-}
+  public void setElevatorFwd(){
+    setElevatorPower(1);
+  }
 
-public void setElevatorRwd(){
-  setElevatorPower(-0.5);
-}
+  public void setElevatorRwd(){
+    setElevatorPower(-0.5);
+  }
   
   public void setElevatorOff(){
     setElevatorPower(0);
@@ -274,24 +286,24 @@ public void setElevatorRwd(){
   }
 
   public void setPivotLoadPosition(){//TODO: Change to "setPivotL1Position" and copy/paste for each setpoint L2 to L4
-  pivotSetPosition = CoralDeliveryCfg.PIVOT_LOAD_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
-}
+    pivotSetPosition = CoralDeliveryCfg.PIVOT_LOAD_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
+  }
 
-public void setPivotLOnePosition(){//TODO: Change to "setPivotL1Position" and copy/paste for each setpoint L2 to L4
-  pivotSetPosition = CoralDeliveryCfg.PIVOT_LONE_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
-}
+  public void setPivotLOnePosition(){//TODO: Change to "setPivotL1Position" and copy/paste for each setpoint L2 to L4
+    pivotSetPosition = CoralDeliveryCfg.PIVOT_LONE_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
+  }
 
-public void setPivotLTwoPosition(){//TODO: Change to "setPivotL1Position" and copy/paste for each setpoint L2 to L4
-  pivotSetPosition = CoralDeliveryCfg.PIVOT_LTWO_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
-}
+  public void setPivotLTwoPosition(){//TODO: Change to "setPivotL1Position" and copy/paste for each setpoint L2 to L4
+    pivotSetPosition = CoralDeliveryCfg.PIVOT_LTWO_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
+  }
 
-public void setPivotLTHREEPosition(){//TODO: Change to "setPivotL1Position" and copy/paste for each setpoint L2 to L4
-  pivotSetPosition = CoralDeliveryCfg.PIVOT_LTHREE_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
-}
+  public void setPivotLTHREEPosition(){//TODO: Change to "setPivotL1Position" and copy/paste for each setpoint L2 to L4
+    pivotSetPosition = CoralDeliveryCfg.PIVOT_LTHREE_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
+  }
 
-public void setPivotLFOURPosition(){//TODO: Change to "setPivotL1Position" and copy/paste for each setpoint L2 to L4
-  pivotSetPosition = CoralDeliveryCfg.PIVOT_LFOUR_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
-}
+  public void setPivotLFOURPosition(){//TODO: Change to "setPivotL1Position" and copy/paste for each setpoint L2 to L4
+    pivotSetPosition = CoralDeliveryCfg.PIVOT_LFOUR_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
+  }
   
   public void setPivotOn(){
     setPivotPower(1);

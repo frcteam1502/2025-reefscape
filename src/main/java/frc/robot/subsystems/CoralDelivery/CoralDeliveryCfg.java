@@ -41,9 +41,14 @@ public class CoralDeliveryCfg {
     public static final double PIVOT_P_GAIN = 0.05;
     public static final double PIVOT_I_GAIN = 0;
     public static final double PIVOT_D_GAIN = 0;
+    public static final double PIVOT_MAX_OUTPUT = 1;
+    public static final double PIVOT_MIN_OUTPUT = -0.25;
+
     public static final double ELEVATOR_P_GAIN = 0.2;
     public static final double ELEVATOR_I_GAIN = 0;
     public static final double ELEVATOR_D_GAIN = 0;
+    public static final double ELEVATOR_MAX_OUTPUT = 1;
+    public static final double ELEVATOR_MIN_OUTPUT = -0.25;
 
     public static final LaserCan FWD_LASER_CAN = new LaserCan(FORWARD_LASER_CAN_ID);
     public static final LaserCan RWD_LASER_CAN = new LaserCan(REARWARD_LASER_CAN_ID);
