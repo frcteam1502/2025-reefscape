@@ -53,6 +53,12 @@ public class CoralDeliveryCfg {
     public static final LaserCan FWD_LASER_CAN = new LaserCan(FORWARD_LASER_CAN_ID);
     public static final LaserCan RWD_LASER_CAN = new LaserCan(REARWARD_LASER_CAN_ID);
 
+    public static final double DELIVERY_OFF_SPEED = 0;
+    public static final double DELIVERY_FWD_SPEED = 1;
+    public static final double DELIVERY_RWD_SPEED = -1;
+    
+    public static final int CORAL_PRESENT_THRESH_MM = 10;
+
     //Create constants to store the Elevator positions (in cm) for each reef level
     public static final double ELEVATOR_LOAD_POSITION = 0.0;//TODO: Copy/paste/modify for L1 - L4, use dummy values for now
 

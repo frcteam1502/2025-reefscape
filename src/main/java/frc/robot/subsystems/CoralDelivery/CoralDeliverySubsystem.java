@@ -30,8 +30,8 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   private SparkClosedLoopController pivotPIDController;
   private SparkClosedLoopController elevatorPIDController;
 
-  private LaserCan entryCoralDeliveryTracker;//Change this name and duplicate for the 2nd sensor
-  private LaserCan exitCoralDeliveryTracker;
+  private LaserCan fwdCoralDeliveryTracker;//Change this name and duplicate for the 2nd sensor
+  private LaserCan rwdCoralDeliveryTracker;
   private double elevatorSetPosition = 0;
   private double pivotSetPosition = 0;
 
@@ -39,9 +39,17 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   private double elevator_i_gain = CoralDeliveryCfg.ELEVATOR_I_GAIN;
   private double elevator_d_gain = CoralDeliveryCfg.ELEVATOR_D_GAIN;
 
+  private double elevator_p_gain_prev = CoralDeliveryCfg.ELEVATOR_P_GAIN;
+  private double elevator_i_gain_prev = CoralDeliveryCfg.ELEVATOR_I_GAIN;
+  private double elevator_d_gain_prev = CoralDeliveryCfg.ELEVATOR_D_GAIN;
+
   private double pivot_p_gain = CoralDeliveryCfg.PIVOT_P_GAIN;
   private double pivot_i_gain = CoralDeliveryCfg.PIVOT_I_GAIN;
   private double pivot_d_gain = CoralDeliveryCfg.PIVOT_D_GAIN;
+
+  private double pivot_p_gain_prev = CoralDeliveryCfg.PIVOT_P_GAIN;
+  private double pivot_i_gain_prev = CoralDeliveryCfg.PIVOT_I_GAIN;
+  private double pivot_d_gain_prev = CoralDeliveryCfg.PIVOT_D_GAIN;
 
   private EncoderConfig elevatorEncoderConfig = new EncoderConfig();
   private ClosedLoopConfig elevatorPID_Config = new ClosedLoopConfig();
@@ -50,6 +58,17 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   private EncoderConfig pivotEncoderConfig = new EncoderConfig();
   private ClosedLoopConfig pivotPID_Config = new ClosedLoopConfig();
   private SparkMaxConfig pivotConfig = new SparkMaxConfig();
+
+  private enum CoralDeliveryState{
+    INIT,
+    UNLOADED,
+    LOADING_FROM_INDEX1,
+    LOADING_FROM_INDEX2,
+    LOADED,
+    UNLOADING
+  }
+
+  CoralDeliveryState deliveryState = CoralDeliveryState.LOADED;
 
   public CoralDeliverySubsystem() {
     elevator = CoralDeliveryCfg.ELEVATOR_MOTOR;
@@ -78,27 +97,36 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   }
 
   private void updateDashboard(){
+    boolean elevatorCfgChanged = false;
+    boolean pivotCfgChanged = false;
+    
     elevator_p_gain = SmartDashboard.getNumber("Elevator P Gain",0);
     elevator_i_gain = SmartDashboard.getNumber("Elevator I Gain",0);
     elevator_d_gain = SmartDashboard.getNumber("Elevator D Gain",0);
 
-    elevatorPID_Config.p(elevator_p_gain);
-    elevatorPID_Config.i(elevator_i_gain);
-    elevatorPID_Config.d(elevator_d_gain);
+    if(elevator_p_gain != elevator_p_gain_prev){elevatorPID_Config.p(elevator_p_gain); elevatorCfgChanged = true;}
+    if(elevator_i_gain != elevator_i_gain_prev){elevatorPID_Config.i(elevator_i_gain); elevatorCfgChanged = true;}
+    if(elevator_d_gain != elevator_d_gain_prev){elevatorPID_Config.d(elevator_i_gain); elevatorCfgChanged = true;}
 
-    //elevatorConfig.apply(elevatorPID_Config);
-    //elevator.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+    if(elevatorCfgChanged){
+      elevatorConfig.apply(elevatorPID_Config);
+      elevator.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+      elevatorCfgChanged = false;
+    }
 
     pivot_p_gain = SmartDashboard.getNumber("Pivot P Gain", 0);
     pivot_i_gain = SmartDashboard.getNumber("Pivot I Gain", 0);
     pivot_p_gain = SmartDashboard.getNumber("Pivot D Gain", 0);
 
-    pivotPID_Config.p(elevator_p_gain);
-    pivotPID_Config.i(elevator_i_gain);
-    pivotPID_Config.d(elevator_d_gain);
+    if(pivot_p_gain != pivot_p_gain_prev){pivotPID_Config.p(pivot_p_gain); pivotCfgChanged = true;}
+    if(pivot_i_gain != pivot_i_gain_prev){pivotPID_Config.i(pivot_i_gain); pivotCfgChanged = true;}
+    if(pivot_d_gain != pivot_d_gain_prev){pivotPID_Config.d(pivot_i_gain); pivotCfgChanged = true;}
 
-   // pivotConfig.apply(elevatorPID_Config);
-    //pivot.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+    if(pivotCfgChanged){
+      pivotConfig.apply(elevatorPID_Config);
+      pivot.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+      elevatorCfgChanged = false;
+    }
 
     SmartDashboard.putNumber("ELEVATOR_CURRENT", elevator.getOutputCurrent());
     SmartDashboard.putNumber("ELEVATOR_POS", getElevatorPosition());
@@ -171,8 +199,8 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     deliveryConfig.apply(deliveryEncoderConfig);
 
     //Initialize LaserCan objects here (stuff from RobotInit() in example)
-    entryCoralDeliveryTracker = CoralDeliveryCfg.FWD_LASER_CAN;
-    exitCoralDeliveryTracker = CoralDeliveryCfg.RWD_LASER_CAN;
+    fwdCoralDeliveryTracker = CoralDeliveryCfg.FWD_LASER_CAN;
+    rwdCoralDeliveryTracker = CoralDeliveryCfg.RWD_LASER_CAN;
   }
 
   private void registerLoggerObjects(){
@@ -193,6 +221,61 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     setPivotPosition(pivotSetPosition);
 
     updateDashboard();
+  }
+
+  private void updateCoralDeliveryState(){
+    switch(deliveryState){
+      case INIT:
+        if(isFwdCoralPresent()){
+          deliveryState = CoralDeliveryState.LOADED;
+        }else{
+          deliveryState = CoralDeliveryState.UNLOADED;
+        }
+        break;
+      case UNLOADED:
+        //State transition will be handled by setDeliveryStateLoading
+        break;
+      case LOADING_FROM_INDEX1:
+        if((isFwdCoralPresent())&&
+           (isRwdCoralPresent())){
+            deliveryState = CoralDeliveryState.LOADING_FROM_INDEX2;
+           }
+        break;
+      case LOADING_FROM_INDEX2:
+        if((isFwdCoralPresent())&&
+           (!isRwdCoralPresent())){
+            delivery.set(CoralDeliveryCfg.DELIVERY_OFF_SPEED);
+            deliveryState = CoralDeliveryState.LOADED;
+           }
+        break;
+      case LOADED:
+        //State Transition will be handled from setDeliveryStateUnloading
+        break;
+      case UNLOADING:
+        if((!isFwdCoralPresent())&&
+           (!isRwdCoralPresent())){
+              delivery.set(CoralDeliveryCfg.DELIVERY_OFF_SPEED);
+              deliveryState = CoralDeliveryState.UNLOADED;
+           }
+    }
+  }
+
+  public void setDeliveryStateLoading(){
+    if(deliveryState == CoralDeliveryState.LOADED){
+      if(elevatorSetPosition == CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION){
+        delivery.set(CoralDeliveryCfg.DELIVERY_RWD_SPEED);
+      }else{
+        delivery.set(CoralDeliveryCfg.DELIVERY_FWD_SPEED);
+      }
+      deliveryState = CoralDeliveryState.UNLOADING;
+    }
+  }
+
+  public void setDeliveryStateUnloading(){
+    if(deliveryState == CoralDeliveryState.UNLOADED){
+      delivery.set(CoralDeliveryCfg.DELIVERY_FWD_SPEED);
+      deliveryState = CoralDeliveryState.LOADING_FROM_INDEX1;
+    }
   }
 
   public void setElevatorPower(double power){
@@ -219,26 +302,44 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     return deliveryEncoder.getPosition();
   }
 
-  public void getEntryLaserCanDistance(){
+  public int getFwdLaserCanDistance(){
     // Put example code from robotPeriodic() here
-    LaserCan.Measurement measurement = entryCoralDeliveryTracker.getMeasurement();
+    LaserCan.Measurement measurement = fwdCoralDeliveryTracker.getMeasurement();
     if (measurement != null && measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {
-      System.out.println("The target is " + measurement.distance_mm + "mm away!");
+      return (measurement.distance_mm);
     } else {
-      System.out.println("Oh no! The target is out of range, or we can't get a reliable measurement!");
-      // You can still use distance_mm in here, if you're ok tolerating a clamped value or an unreliable measurement.
+      return Integer.MAX_VALUE;
     }
   }
 
-  public void getExitLaserCanDistance(){
-    // Put example code from robotPeriodic() here
-    LaserCan.Measurement measurement = exitCoralDeliveryTracker.getMeasurement();
-    if (measurement != null && measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {
-      System.out.println("The target is " + measurement.distance_mm + "mm away!");
-    } else {
-      System.out.println("Oh no! The target is out of range, or we can't get a reliable measurement!");
-      // You can still use distance_mm in here, if you're ok tolerating a clamped value or an unreliable measurement.
+  public boolean isFwdCoralPresent(){
+    boolean isPresent;
+    if(getFwdLaserCanDistance() < CoralDeliveryCfg.CORAL_PRESENT_THRESH_MM){
+      isPresent = true;
+    }else{
+      isPresent = false;
     }
+    return isPresent;
+  }
+
+  public int getRwdLaserCanDistance(){
+    // Put example code from robotPeriodic() here
+    LaserCan.Measurement measurement = rwdCoralDeliveryTracker.getMeasurement();
+    if (measurement != null && measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {
+      return (measurement.distance_mm);
+    } else {
+      return Integer.MAX_VALUE;
+    }
+  }
+
+  public boolean isRwdCoralPresent(){
+    boolean isPresent;
+    if(getRwdLaserCanDistance() < CoralDeliveryCfg.CORAL_PRESENT_THRESH_MM){
+      isPresent = true;
+    }else{
+      isPresent = false;
+    }
+    return isPresent;
   }
     
   public void setElevatorPosition(double position){
