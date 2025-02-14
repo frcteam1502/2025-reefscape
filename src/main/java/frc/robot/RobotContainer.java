@@ -78,13 +78,17 @@ public class RobotContainer {
     driveSubsystem.setDefaultCommand(new DriverCommands(driveSubsystem, new MockDetector())); //USES THE LEFT BUMPER TO SLOW DOWN
     Driver.Controller.start().onTrue(new ResetGyro(driveSubsystem));
 
-    //Driver.Controller.x().onTrue(new InstantCommand(coralSubsystem::setElevatorFwd)).onFalse(new InstantCommand(coralSubsystem::setElevatorOff));
-    //Driver.Controller.b().onTrue(new InstantCommand(coralSubsystem::setElevatorRwd)).onFalse(new InstantCommand(coralSubsystem::setElevatorOff));
+    Driver.Controller.x().onTrue(new InstantCommand(coralSubsystem::setPivotUp));
+    Driver.Controller.b().onTrue(new InstantCommand(coralSubsystem::setPivotDown));
+    Operator.getButton11().onTrue(new InstantCommand(coralSubsystem::setDeliveryStateLoading));
+    Operator.getButton10().onTrue(new InstantCommand(coralSubsystem::setDeliveryStateUnloading));
     Operator.getButton9().onTrue(new InstantCommand(coralSubsystem::setElevatorLoadPosition));
     Operator.getButton4().onTrue(new InstantCommand(coralSubsystem::setElevatorLONEPosition));
     Operator.getButton3().onTrue(new InstantCommand(coralSubsystem::setElevatorLTWOPosition));
     Operator.getButton2().onTrue(new InstantCommand(coralSubsystem::setElevatorLTHREEPosition));
     Operator.getButton1().onTrue(new InstantCommand(coralSubsystem::setElevatorLFOURPosition));
+
+    
     
     //SysID stuff - comment out on competition build!
     /*Driver.Controller.y().whileTrue(driveSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));

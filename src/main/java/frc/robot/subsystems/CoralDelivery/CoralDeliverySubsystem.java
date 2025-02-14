@@ -68,7 +68,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     UNLOADING
   }
 
-  CoralDeliveryState deliveryState = CoralDeliveryState.LOADED;
+  CoralDeliveryState deliveryState = CoralDeliveryState.INIT;
 
   public CoralDeliverySubsystem() {
     elevator = CoralDeliveryCfg.ELEVATOR_MOTOR;
@@ -123,9 +123,9 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     if(pivot_d_gain != pivot_d_gain_prev){pivotPID_Config.d(pivot_i_gain); pivotCfgChanged = true;}
 
     if(pivotCfgChanged){
-      pivotConfig.apply(elevatorPID_Config);
-      pivot.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
-      elevatorCfgChanged = false;
+    //pivotConfig.apply(elevatorPID_Config);
+    //pivot.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+    //elevatorCfgChanged = false;
     }
 
     SmartDashboard.putNumber("ELEVATOR_CURRENT", elevator.getOutputCurrent());
@@ -135,6 +135,11 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     SmartDashboard.putNumber("PivotSetPosition", pivotSetPosition);
 
     SmartDashboard.putNumber("PIVOT_CURRENT", pivot.getOutputCurrent());
+    SmartDashboard.putNumber("Forward Sensor Distance", getFwdLaserCanDistance());
+    SmartDashboard.putNumber("Rearward Sensor Distance", getRwdLaserCanDistance());
+    SmartDashboard.putBoolean("Is Forward Present", isFwdCoralPresent());
+    SmartDashboard.putBoolean("Is Rearward Present", isRwdCoralPresent());
+    SmartDashboard.putString("Delivery State", deliveryState.name());
   }
 
   private void configureElevator(){
@@ -147,7 +152,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     elevatorPID_Config.p(CoralDeliveryCfg.ELEVATOR_P_GAIN);
     elevatorPID_Config.i(CoralDeliveryCfg.ELEVATOR_I_GAIN);
     elevatorPID_Config.d(CoralDeliveryCfg.ELEVATOR_D_GAIN);
-    elevatorPID_Config.outputRange(-.25,1);
+    elevatorPID_Config.outputRange(-.25,0.75);
     
     elevatorConfig.idleMode(CoralDeliveryCfg.ELEVATOR_IDLE_MODE);
     elevatorConfig.inverted(CoralDeliveryCfg.ELEVATOR_MOTOR_REVERSED);
@@ -172,6 +177,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     pivotPID_Config.p(CoralDeliveryCfg.PIVOT_P_GAIN);
     pivotPID_Config.i(CoralDeliveryCfg.PIVOT_I_GAIN);
     pivotPID_Config.d(CoralDeliveryCfg.PIVOT_D_GAIN);
+    pivotPID_Config.outputRange(-.25,0.4);
 
     pivotConfig.idleMode(CoralDeliveryCfg.PIVOT_IDLE_MODE);
     pivotConfig.inverted(CoralDeliveryCfg.PIVOT_MOTOR_REVERSED);
@@ -219,7 +225,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     setElevatorPosition(elevatorSetPosition);
     setPivotPosition(pivotSetPosition);
-
+    updateCoralDeliveryState();
     updateDashboard();
   }
 
@@ -260,10 +266,10 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     }
   }
 
-  public void setDeliveryStateLoading(){
+  public void setDeliveryStateUnloading(){
     if(deliveryState == CoralDeliveryState.LOADED){
       if(elevatorSetPosition == CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION){
-        delivery.set(CoralDeliveryCfg.DELIVERY_RWD_SPEED);
+        delivery.set(CoralDeliveryCfg.DELIVERY_UNLOAD_SPD);
       }else{
         delivery.set(CoralDeliveryCfg.DELIVERY_FWD_SPEED);
       }
@@ -271,9 +277,9 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     }
   }
 
-  public void setDeliveryStateUnloading(){
+  public void setDeliveryStateLoading(){
     if(deliveryState == CoralDeliveryState.UNLOADED){
-      delivery.set(CoralDeliveryCfg.DELIVERY_FWD_SPEED);
+      delivery.set(CoralDeliveryCfg.DELIVERY_LOAD_SPD);
       deliveryState = CoralDeliveryState.LOADING_FROM_INDEX1;
     }
   }
@@ -348,22 +354,27 @@ public class CoralDeliverySubsystem extends SubsystemBase {
 
   public void setElevatorLoadPosition(){
     elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LOAD_POSITION;
+    pivotSetPosition = CoralDeliveryCfg.PIVOT_LOAD_POSITION;
   }
 
   public void setElevatorLONEPosition(){
     elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LONE_POSITION;
+    pivotSetPosition = CoralDeliveryCfg.PIVOT_LONE_POSITION;  
   }
 
   public void setElevatorLTWOPosition(){
     elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LTWO_POSITION;
+    pivotSetPosition = CoralDeliveryCfg.PIVOT_LTWO_POSITION;  
   }
 
   public void setElevatorLTHREEPosition(){
     elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LTHREE_POSITION;
+    pivotSetPosition = CoralDeliveryCfg.PIVOT_LTHREE_POSITION;
   }
 
   public void setElevatorLFOURPosition(){
     elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION;
+    pivotSetPosition = CoralDeliveryCfg.PIVOT_LFOUR_POSITION;
   }
 
   public void setElevatorFwd(){

@@ -53,41 +53,25 @@ public class CoralDeliveryCfg {
     public static final LaserCan FWD_LASER_CAN = new LaserCan(FORWARD_LASER_CAN_ID);
     public static final LaserCan RWD_LASER_CAN = new LaserCan(REARWARD_LASER_CAN_ID);
 
-    public static final double DELIVERY_OFF_SPEED = 0;
-    public static final double DELIVERY_FWD_SPEED = 1;
-    public static final double DELIVERY_RWD_SPEED = -1;
-    
-    public static final int CORAL_PRESENT_THRESH_MM = 10;
+     public static final double DELIVERY_OFF_SPEED = 0;
+     public static final double DELIVERY_FWD_SPEED = 1;
+     public static final double DELIVERY_RWD_SPEED = -1;
+     public static final double DELIVERY_UNLOAD_SPD = -0.25;
+     public static final double DELIVERY_LOAD_SPD = 0.15;
 
-    //Create constants to store the Elevator positions (in cm) for each reef level
-    public static final double ELEVATOR_LOAD_POSITION = 0.0;//TODO: Copy/paste/modify for L1 - L4, use dummy values for now
+     public static final int CORAL_PRESENT_THRESH_MM = 15;
 
-     //Create constants to store the Elevator positions (in cm) for each reef level
-     public static final double ELEVATOR_LONE_POSITION = 10;//TODO: Copy/paste/modify for L1 - L4, use dummy values for now
+     public static final double ELEVATOR_LOAD_POSITION = 0.0;
+     public static final double ELEVATOR_LONE_POSITION = 25;
+     public static final double ELEVATOR_LTWO_POSITION = 53;
+     public static final double ELEVATOR_LTHREE_POSITION = 90;
+     public static final double ELEVATOR_LFOUR_POSITION = 120;
 
-      //Create constants to store the Elevator positions (in cm) for each reef level
-    public static final double ELEVATOR_LTWO_POSITION = 20;//TODO: Copy/paste/modify for L1 - L4, use dummy values for now
-
-     //Create constants to store the Elevator positions (in cm) for each reef level
-     public static final double ELEVATOR_LTHREE_POSITION = 30;//TODO: Copy/paste/modify for L1 - L4, use dummy values for now
-
-     //Create constants to store the Elevator positions (in cm) for each reef level
-     public static final double ELEVATOR_LFOUR_POSITION = 40;//TODO: Copy/paste/modify for L1 - L4, use dummy values for now
+     public static final double PIVOT_LOAD_POSITION = 0.0;
+     public static final double PIVOT_LONE_POSITION = 0;
+     public static final double PIVOT_LTWO_POSITION = 0;
+     public static final double PIVOT_LTHREE_POSITION = 0;
+     public static final double PIVOT_LFOUR_POSITION = 125;
 
 
-    //Create constants to store the pivot positions (in degrees) for each reef level
-    public static final double PIVOT_LOAD_POSITION = 0.0;//TODO: Copy/paste/modify for L1 - L4, use dummy values for now
-
-    //Create constants to store the pivot positions (in degrees) for each reef level
-    public static final double PIVOT_LONE_POSITION = 10;//TODO: Copy/paste/modify for L1 - L4, use dummy values for now
-
-     //Create constants to store the pivot positions (in degrees) for each reef level
-     public static final double PIVOT_LTWO_POSITION = 20;//TODO: Copy/paste/modify for L1 - L4, use dummy values for now
-
-     //Create constants to store the pivot positions (in degrees) for each reef level
-     public static final double PIVOT_LTHREE_POSITION = 30;//TODO: Copy/paste/modify for L1 - L4, use dummy values for now
-
-     //Create constants to store the pivot positions (in degrees) for each reef level
-     public static final double PIVOT_LFOUR_POSITION = 40;//TODO: Copy/paste/modify for L1 - L4, use dummy values for now
 }
-
