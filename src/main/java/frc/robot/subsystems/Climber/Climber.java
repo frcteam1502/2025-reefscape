@@ -14,6 +14,7 @@ import com.revrobotics.spark.config.ClosedLoopConfig;
 import com.revrobotics.spark.config.EncoderConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
@@ -72,6 +73,8 @@ public class Climber extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     setClimberPosition(climberSetPos);
+    SmartDashboard.putNumber("Climber Position", getClimberPosition());
+    SmartDashboard.putString("Climber State", climberState.name());
   }
 
   private void reset(){
