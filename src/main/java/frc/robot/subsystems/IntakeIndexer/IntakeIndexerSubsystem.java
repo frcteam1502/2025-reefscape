@@ -16,6 +16,8 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Logger;
+import frc.robot.subsystems.CoralDelivery.CoralDeliveryCfg;
 
 
 public class IntakeIndexerSubsystem extends SubsystemBase {
@@ -31,7 +33,14 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   private final RelativeEncoder indexerEncoder;
 
   private final SparkClosedLoopController leftPivotPIDController;
+  private double intakeSetPosition = 0;
+  private enum IntakeState{
+    IN,
+    OUT,
+    CLIMB
+  }
   
+  private IntakeState intakeState = IntakeState.IN;
 
   public IntakeIndexerSubsystem() {
     leftPivot = IntakeIndexerCfg.LEFTPIVOT_MOTOR;
@@ -53,6 +62,7 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     leftPivotPIDConfig.p(IntakeIndexerCfg.LEFTPIVOT_P_GAIN);
     leftPivotPIDConfig.i(IntakeIndexerCfg.LEFTPIVOT_I_GAIN);
     leftPivotPIDConfig.d(IntakeIndexerCfg.LEFTPIVOT_D_GAIN);
+    leftPivotPIDConfig.outputRange(-0.5, 0.5);
     
     SparkMaxConfig leftPivotConfig = new SparkMaxConfig();
     leftPivotConfig.idleMode(IntakeIndexerCfg.LEFTPIVOT_IDLE_MODE);
@@ -89,7 +99,8 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     indexerConfig.smartCurrentLimit(IntakeIndexerCfg.INDEXER_CURRENT_LIMIT);
 
     indexerConfig.apply(indexerConfig);
-    leftPivotEncoder.setPosition(0);
+    reset();
+    registerLoggerObjects();
     }
 
 
@@ -97,8 +108,43 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Intake Pivot Position", getLeftPivotPosition());
+    setLeftPivotPosition(intakeSetPosition);
   }
 
+  private void reset(){
+    leftPivotEncoder.setPosition(0);
+  }
+
+  private void registerLoggerObjects(){
+    Logger.RegisterSparkMax("Pivot Motor", IntakeIndexerCfg.LEFTPIVOT_MOTOR);
+    Logger.RegisterSparkMax("Intake Motor", IntakeIndexerCfg.LEFTINTAKE_MOTOR);
+  }
+
+  public void setLeftIntakeIn(){
+    intakeSetPosition = IntakeIndexerCfg.LEFTPIVOT_IN_POS;
+  }
+
+  public void setLeftIntakeOut(){
+    intakeSetPosition = IntakeIndexerCfg.LEFTPIVOT_OUT_POS;
+  }
+
+  public void setLeftIntakeClimb(){
+    intakeSetPosition = IntakeIndexerCfg.LEFTPIVOT_CLIMB_POS;
+  }
+
+  public void setIntakeState(){
+    switch(intakeState){
+      case CLIMB:
+      case IN:
+        intakeState = IntakeState.OUT;
+        setLeftIntakeOut();
+        break;
+      case OUT:
+        intakeState = IntakeState.IN;
+        setLeftIntakeIn();
+        break;
+    }
+  }
 
   public void setLeftPivotPower(double power){
     leftPivot.set(power);

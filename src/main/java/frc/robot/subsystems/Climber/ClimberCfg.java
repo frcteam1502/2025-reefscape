@@ -1,6 +1,5 @@
 package frc.robot.subsystems.Climber;
 
-import java.io.File;
 
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
@@ -21,4 +20,7 @@ public class ClimberCfg {
     public static final double CLIMBER_I_GAIN = 0;
     public static final double CLIMBER_D_GAIN = 0;
 
+    public static final double CLIMBER_STOWED_POS = 0;
+    public static final double CLIMBER_DEPLOYED_POS = 50;
+    public static final double CLIMBER_CLIMB_POS = 25;
 }

@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems.Climber;
 
+import frc.robot.Logger;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -12,7 +14,6 @@ import com.revrobotics.spark.config.ClosedLoopConfig;
 import com.revrobotics.spark.config.EncoderConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
-import edu.wpi.first.wpilibj.ADIS16448_IMU.CalibrationTime;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
@@ -22,6 +23,18 @@ public class Climber extends SubsystemBase {
   private final RelativeEncoder climberEncoder;
   
   private final SparkClosedLoopController climberPIDComController;
+  private enum ClimberState{
+    STOWING,
+    STOWED,
+    DEPLOYING,
+    DEPLOYED,
+    CLIMBING,
+    CLIMBED,
+    HOLDING
+  }
+
+  private ClimberState climberState = ClimberState.STOWED;
+  private double climberSetPos = 0;
 
   public Climber() {
     //Do intialization stuff here
@@ -51,11 +64,76 @@ public class Climber extends SubsystemBase {
 
     //Finally write config to the spark
     climber.configure(climbMotorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+    reset();
+    registerLoggerObjects();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    setClimberPosition(climberSetPos);
+  }
+
+  private void reset(){
+    climberEncoder.setPosition(0);
+  }
+
+  private void registerLoggerObjects(){
+    Logger.RegisterSparkMax("Climber Motor", ClimberCfg.CLIMBER);
+  }
+
+  public void updateClimberState(){
+    switch(climberState){
+      case STOWING:
+        if((getClimberPosition()>=(ClimberCfg.CLIMBER_STOWED_POS-5))&&
+           (getClimberPosition()<=(ClimberCfg.CLIMBER_STOWED_POS+5))){
+            climberState = ClimberState.STOWED;
+        }
+      case STOWED:
+        //Set climber out method will handle state transition
+        break;
+      case DEPLOYING:
+        if((getClimberPosition()>=(ClimberCfg.CLIMBER_DEPLOYED_POS-5))&&
+           (getClimberPosition()<=(ClimberCfg.CLIMBER_DEPLOYED_POS+5))){
+            climberState = ClimberState.DEPLOYED;
+        }
+        break;
+      case DEPLOYED:
+        //Set climber in method will handle state transition
+        break;
+      case CLIMBING:
+        if((getClimberPosition()>=(ClimberCfg.CLIMBER_CLIMB_POS-5))&&
+           (getClimberPosition()<=(ClimberCfg.CLIMBER_CLIMB_POS+5))){
+            climberState = ClimberState.CLIMBED;
+        }
+        break;
+      case CLIMBED:
+      //Set climber in method will handle state transition
+        break;  
+      case HOLDING:
+      //Just Wait For Driver To Press Button
+        break;
+   }
+  }
+
+  public void setClimberIn(){
+    climberSetPos = ClimberCfg.CLIMBER_STOWED_POS;
+    climberState = ClimberState.STOWING;
+  }
+
+  public void setClimberOut(){
+    climberSetPos = ClimberCfg.CLIMBER_DEPLOYED_POS;
+    climberState = ClimberState.DEPLOYING;
+  }
+
+  public void setClimberClimbed(){
+    climberSetPos = ClimberCfg.CLIMBER_CLIMB_POS;
+    climberState = ClimberState.CLIMBING;
+  }
+
+  public void setClimberHold(){
+    climberSetPos = getClimberPosition();
+    climberState = ClimberState.HOLDING;
   }
 
   public void setClimberPower(double power){

@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.subsystems.Climber.Climber;
 import frc.robot.subsystems.CoralDelivery.CoralDeliverySubsystem;
 import frc.robot.subsystems.IntakeIndexer.IntakeIndexerSubsystem;
 import frc.robot.subsystems.PowerManagement.MockDetector;
@@ -35,7 +36,8 @@ public class RobotContainer {
   public final DriveSubsystem driveSubsystem = new DriveSubsystem();
   //private final PdpSubsystem pdpSubsystem = new PdpSubsystem();
   public final CoralDeliverySubsystem coralSubsystem = new CoralDeliverySubsystem();
-  public final IntakeIndexerSubsystem intakeSubsystem = new IntakeIndexerSubsystem();  //Needed to invoke scheduler
+  public final IntakeIndexerSubsystem intakeSubsystem = new IntakeIndexerSubsystem();
+  public final Climber climberSubsystem = new Climber();  //Needed to invoke scheduler
   //public final Vision visionSubsystem = new Vision();
 
   private final SendableChooser<Command> autoChooser; 
@@ -78,8 +80,14 @@ public class RobotContainer {
     driveSubsystem.setDefaultCommand(new DriverCommands(driveSubsystem, new MockDetector())); //USES THE LEFT BUMPER TO SLOW DOWN
     Driver.Controller.start().onTrue(new ResetGyro(driveSubsystem));
 
-    Driver.Controller.x().onTrue(new InstantCommand(coralSubsystem::setPivotUp));
-    Driver.Controller.b().onTrue(new InstantCommand(coralSubsystem::setPivotDown));
+    /*Driver.Controller.x().onTrue(new InstantCommand(coralSubsystem::setPivotUp));
+    Driver.Controller.b().onTrue(new InstantCommand(coralSubsystem::setPivotDown));*/
+    Driver.Controller.b().onTrue(new InstantCommand(climberSubsystem::setClimberIn));
+    Driver.Controller.y().onTrue(new InstantCommand(climberSubsystem::setClimberOut));
+    Driver.Controller.a().whileTrue(new InstantCommand(climberSubsystem::setClimberClimbed))
+                         .onFalse(new InstantCommand(climberSubsystem::setClimberHold));
+    
+    Operator.getButton7().onTrue(new InstantCommand(intakeSubsystem::setIntakeState));
     Operator.getButton11().onTrue(new InstantCommand(coralSubsystem::setDeliveryStateLoading));
     Operator.getButton10().onTrue(new InstantCommand(coralSubsystem::setDeliveryStateUnloading));
     Operator.getButton9().onTrue(new InstantCommand(coralSubsystem::setElevatorLoadPosition));
