@@ -108,6 +108,7 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Intake Pivot Position", getLeftPivotPosition());
+    SmartDashboard.putString("Intake State", intakeState.toString());
     setLeftPivotPosition(intakeSetPosition);
   }
 

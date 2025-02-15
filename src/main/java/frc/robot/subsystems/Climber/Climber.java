@@ -52,12 +52,14 @@ public class Climber extends SubsystemBase {
     climberPIDConfig.p(ClimberCfg.CLIMBER_P_GAIN);
     climberPIDConfig.i(ClimberCfg.CLIMBER_I_GAIN);
     climberPIDConfig.d(ClimberCfg.CLIMBER_D_GAIN);
+    climberPIDConfig.outputRange(-0.25, 1);
 
     //Setup Motor Config
     SparkMaxConfig climbMotorConfig = new SparkMaxConfig();
     climbMotorConfig.idleMode(ClimberCfg.CLIMBER_IDLE_MODE);
     climbMotorConfig.inverted(ClimberCfg.CLIMBER_MOTOR_REVERSED);
     climbMotorConfig.smartCurrentLimit(ClimberCfg.CLIMBER_CURRENT_LIMIT);
+    
     
     //Apply the encoder config to the SparkMax
     climbMotorConfig.apply(climbEncoderConfig);
@@ -73,8 +75,10 @@ public class Climber extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     setClimberPosition(climberSetPos);
+    updateClimberState();
     SmartDashboard.putNumber("Climber Position", getClimberPosition());
     SmartDashboard.putString("Climber State", climberState.name());
+    SmartDashboard.putNumber("Climber Set Positino", climberSetPos);
   }
 
   private void reset(){
