@@ -56,8 +56,9 @@ public class CoralDeliveryCfg {
      public static final double DELIVERY_OFF_SPEED = 0;
      public static final double DELIVERY_FWD_SPEED = 1;
      public static final double DELIVERY_RWD_SPEED = -1;
-     public static final double DELIVERY_UNLOAD_SPD = -0.25;
+     public static final double DELIVERY_L4_UNLOAD_SPD = -0.25;
      public static final double DELIVERY_LOAD_SPD = 0.15;
+     public static final double DELIVERY_L1_UNLOAD_SPD = 0.15;
 
      public static final int CORAL_PRESENT_THRESH_MM = 15;
 
