@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.subsystems.Algae.AlgaeSubsystem;
 import frc.robot.subsystems.Climber.Climber;
 import frc.robot.subsystems.CoralDelivery.CoralDeliverySubsystem;
 import frc.robot.subsystems.IntakeIndexer.IntakeIndexerSubsystem;
@@ -38,6 +39,7 @@ public class RobotContainer {
   public final CoralDeliverySubsystem coralSubsystem = new CoralDeliverySubsystem();
   public final IntakeIndexerSubsystem intakeSubsystem = new IntakeIndexerSubsystem();
   public final Climber climberSubsystem = new Climber();  //Needed to invoke scheduler
+  public final AlgaeSubsystem algaeSubsystem = new AlgaeSubsystem();
   //public final Vision visionSubsystem = new Vision();
 
   private final SendableChooser<Command> autoChooser; 
@@ -100,6 +102,10 @@ public class RobotContainer {
                          .onFalse(new InstantCommand(intakeSubsystem::intakeOff));
     Operator.getButton6().onTrue(new InstantCommand(intakeSubsystem::ejectCoral))
                          .onFalse(new InstantCommand(intakeSubsystem::intakeOff));
+
+    Operator.getButton5().onTrue(new InstantCommand(algaeSubsystem::setAlgaePivotFloor));
+    Operator.getButton12().onTrue(new InstantCommand(algaeSubsystem::setAlgaePivotHome));
+
 
     
     //SysID stuff - comment out on competition build!

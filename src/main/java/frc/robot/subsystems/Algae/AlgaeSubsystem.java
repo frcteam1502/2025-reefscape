@@ -12,6 +12,7 @@ import com.revrobotics.spark.config.ClosedLoopConfig;
 import com.revrobotics.spark.config.EncoderConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class AlgaeSubsystem extends SubsystemBase {
@@ -23,6 +24,8 @@ public class AlgaeSubsystem extends SubsystemBase {
   private final RelativeEncoder algaeIntakeEncoder;
 
   private final SparkClosedLoopController algaePivotPIDController;
+
+  private double algaePivotSetPosition = 0;
 
 
   public AlgaeSubsystem() {
@@ -39,26 +42,39 @@ public class AlgaeSubsystem extends SubsystemBase {
     algaePivotPIDConfig.p(AlgaeCfg.ALGAE_PIVOT_P_GAIN);
     algaePivotPIDConfig.i(AlgaeCfg.ALGAE_PIVOT_I_GAIN);
     algaePivotPIDConfig.d(AlgaeCfg.ALGAE_PIVOT_D_GAIN);
+    algaePivotPIDConfig.outputRange(-0.25, 0.25);
+
+    SparkMaxConfig algaePivotConfig = new SparkMaxConfig();
+    algaePivotConfig.idleMode(AlgaeCfg.ALGAE_PIVOT_IDLE_MODE);
+    algaePivotConfig.inverted(AlgaeCfg.ALGAE_PIVOT_MOTOR_REVERSED);
+    algaePivotConfig.smartCurrentLimit(AlgaeCfg.ALGAE_PIVOT_CURRENT_LIMIT);
+
+    algaePivotConfig.apply(pivotEncoderConfig);
+    algaePivotConfig.apply(algaePivotPIDConfig);
+
+    algaePivot.configure(algaePivotConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
 
     algaeIntakeEncoder = algaeIntake.getEncoder();
     EncoderConfig intakeEncoderConfig = new EncoderConfig();
     intakeEncoderConfig.positionConversionFactor(AlgaeCfg.ALGAE_PIVOT_GEAR_RATIO);
     intakeEncoderConfig.velocityConversionFactor(AlgaeCfg.ALGAE_PIVOT_GEAR_RATIO);
 
-
     SparkMaxConfig intakeMotorConfig = new SparkMaxConfig();
-    intakeMotorConfig.idleMode(AlgaeCfg.ALGAE_PIVOT_IDLE_MODE);
-    intakeMotorConfig.inverted(AlgaeCfg.ALGAE_PIVOT_MOTOR_REVERSED);
-    intakeMotorConfig.smartCurrentLimit(AlgaeCfg.ALGAE_PIVOT_CURRENT_LIMIT);
+    intakeMotorConfig.idleMode(AlgaeCfg.ALGAE_INTAKE_IDLE_MODE);
+    intakeMotorConfig.inverted(AlgaeCfg.ALGAE_INTAKE_MOTOR_REVERSED);
+    intakeMotorConfig.smartCurrentLimit(AlgaeCfg.ALGAE_INTAKE_CURRENT_LIMIT);
 
-    intakeMotorConfig.apply(pivotEncoderConfig);
     intakeMotorConfig.apply(algaePivotPIDConfig);
     
+    algaeIntake.configure(intakeMotorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+   
   }
-
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    setAlgaePivotPosition(algaePivotSetPosition);
+    SmartDashboard.putNumber("Algae Pivot Position", getAlgaePivotPosition());
   }
 
   public void setAlgaePivotPower(double power){
@@ -67,6 +83,14 @@ public class AlgaeSubsystem extends SubsystemBase {
 
   public void setAlgaePivotPosition(double position){
     algaePivotPIDController.setReference(position, SparkBase.ControlType.kPosition);
+  }
+  
+  public void setAlgaePivotFloor(){
+    algaePivotSetPosition = AlgaeCfg.ALGAE_FLOOR_POS;
+  }
+
+  public void setAlgaePivotHome(){
+    algaePivotSetPosition = AlgaeCfg.ALGAE_HOME_POS;
   }
 
   public void setAlgaeIntakePower(double power){
