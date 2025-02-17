@@ -16,16 +16,19 @@ import au.grapplerobotics.LaserCan;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Logger;
+import frc.robot.subsystems.IntakeIndexer.IntakeIndexerCfg;
 
 public class CoralDeliverySubsystem extends SubsystemBase {
   /** Creates a new CoralDSubsystem. */
   private final SparkMax elevator;
   private final SparkMax pivot;
   private final SparkMax delivery;
+  private final SparkMax indexer; 
 
   private RelativeEncoder elevatorEncoder;
   private RelativeEncoder pivotEncoder;
   private RelativeEncoder deliveryEncoder;
+  private RelativeEncoder indexerEncoder;
   
   private SparkClosedLoopController pivotPIDController;
   private SparkClosedLoopController elevatorPIDController;
@@ -58,6 +61,9 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   private EncoderConfig pivotEncoderConfig = new EncoderConfig();
   private ClosedLoopConfig pivotPID_Config = new ClosedLoopConfig();
   private SparkMaxConfig pivotConfig = new SparkMaxConfig();
+  
+  EncoderConfig indexerEncoderConfig = new EncoderConfig();
+  SparkMaxConfig indexerConfig = new SparkMaxConfig();
 
   private enum CoralDeliveryState{
     INIT,
@@ -74,6 +80,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     elevator = CoralDeliveryCfg.ELEVATOR_MOTOR;
     pivot = CoralDeliveryCfg.PIVOT_MOTOR;
     delivery = CoralDeliveryCfg.DELIVERY_MOTOR;
+    indexer = CoralDeliveryCfg.INDEXER_MOTOR;
 
     //Configure the elevator controller
     configureElevator();
@@ -83,6 +90,8 @@ public class CoralDeliverySubsystem extends SubsystemBase {
 
     //Configure the delivery controller (and distance sensors)
     configureCoralDelivery();
+
+    configureIndexer();
     
     SmartDashboard.putNumber("Elevator P Gain", elevator_p_gain);
     SmartDashboard.putNumber("Elevator I Gain", elevator_i_gain);
@@ -208,7 +217,18 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     fwdCoralDeliveryTracker = CoralDeliveryCfg.FWD_LASER_CAN;
     rwdCoralDeliveryTracker = CoralDeliveryCfg.RWD_LASER_CAN;
   }
+  private void configureIndexer(){
+    indexerEncoder = indexer.getEncoder();
+    indexerEncoderConfig.positionConversionFactor(CoralDeliveryCfg.INDEXER_GEAR_RATIO);
+    indexerEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.INDEXER_GEAR_RATIO);
 
+    indexerConfig.idleMode(CoralDeliveryCfg.INDEXER_IDLE_MODE);
+    indexerConfig.inverted(CoralDeliveryCfg.INDEXER_MOTOR_REVERSED);
+    indexerConfig.smartCurrentLimit(CoralDeliveryCfg.INDEXER_CURRENT_LIMIT);
+
+    indexerConfig.apply(indexerConfig);
+    indexer.configure(indexerConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+  }
   private void registerLoggerObjects(){
     Logger.RegisterSparkMax("Elevator", CoralDeliveryCfg.ELEVATOR_MOTOR);
     Logger.RegisterSparkMax("Coral Pivot", CoralDeliveryCfg.PIVOT_MOTOR);
@@ -245,19 +265,20 @@ public class CoralDeliverySubsystem extends SubsystemBase {
         }
         break;
       case LOADING_FROM_INDEX1:
-        /*if((isFwdCoralPresent())&&
+        if((isFwdCoralPresent())&&
            (isRwdCoralPresent())){
             deliveryState = CoralDeliveryState.LOADING_FROM_INDEX2;
-           }*/
-        if((isFwdCoralPresent())){
+           }
+        /*if((isFwdCoralPresent())){
             delivery.set(CoralDeliveryCfg.DELIVERY_OFF_SPEED);
             deliveryState = CoralDeliveryState.LOADED;
-           }
+           }*/
         break;
       case LOADING_FROM_INDEX2:
         if((isFwdCoralPresent())&&
            (!isRwdCoralPresent())){
             delivery.set(CoralDeliveryCfg.DELIVERY_OFF_SPEED);
+            indexer.set(CoralDeliveryCfg.INDEXER_OFF_SPEED);
             deliveryState = CoralDeliveryState.LOADED;
            }
         break;
@@ -295,6 +316,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   public void setDeliveryStateLoading(){
     if(deliveryState == CoralDeliveryState.UNLOADED){
       delivery.set(CoralDeliveryCfg.DELIVERY_LOAD_SPD);
+      indexer.set(CoralDeliveryCfg.INDEXER_ON_SPEED);
       deliveryState = CoralDeliveryState.LOADING_FROM_INDEX1;
     }
   }
@@ -445,4 +467,11 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   public void setPivotOff(){
     setPivotPower(0);
   }
+  public void setIndexerPower(double power){
+    indexer.set(power);
+  }
+  public double getIndexerPosition(){
+    return indexerEncoder.getPosition();
+  }
+
 }

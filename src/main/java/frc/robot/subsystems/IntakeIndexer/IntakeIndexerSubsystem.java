@@ -24,13 +24,11 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   /** Creates a new CoralDSubsystem. */
   private final SparkMax leftPivot;
   private final SparkMax leftIntake;
-  private final SparkMax indexer;
+
 
 
   private final RelativeEncoder leftPivotEncoder;
   private final RelativeEncoder leftIntakeEncoder;
-
-  private final RelativeEncoder indexerEncoder;
 
   private final SparkClosedLoopController leftPivotPIDController;
   private double intakeSetPosition = 0;
@@ -46,7 +44,6 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     leftPivot = IntakeIndexerCfg.LEFTPIVOT_MOTOR;
     leftIntake = IntakeIndexerCfg.LEFTINTAKE_MOTOR;
     
-    indexer = IntakeIndexerCfg.INDEXER_MOTOR;
 
     //Setup the Pivot motor config
    
@@ -88,17 +85,6 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
 
     leftIntakeConfig.apply(leftIntakeConfig); 
 
-    indexerEncoder = indexer.getEncoder();
-    EncoderConfig indexerEncoderConfig = new EncoderConfig();
-    indexerEncoderConfig.positionConversionFactor(IntakeIndexerCfg.INDEXER_GEAR_RATIO);
-    indexerEncoderConfig.velocityConversionFactor(IntakeIndexerCfg.INDEXER_GEAR_RATIO);
-
-    SparkMaxConfig indexerConfig = new SparkMaxConfig();
-    indexerConfig.idleMode(IntakeIndexerCfg.INDEXER_IDLE_MODE);
-    indexerConfig.inverted(IntakeIndexerCfg.INDEXER_MOTOR_REVERSED);
-    indexerConfig.smartCurrentLimit(IntakeIndexerCfg.INDEXER_CURRENT_LIMIT);
-
-    indexerConfig.apply(indexerConfig);
     reset();
     registerLoggerObjects();
     }
@@ -154,9 +140,7 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     leftIntake.set(power);
   }
  
-  public void setIndexerPower(double power){
-    indexer.set(power);
-  }
+  
   public void setLeftPivotPosition(double position){
     leftPivotPIDController.setReference(position, SparkBase.ControlType.kPosition);
   }
@@ -168,10 +152,7 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     return leftIntakeEncoder.getPosition();
   }
   
-  public double getIndexerPosition(){
-    return indexerEncoder.getPosition();
-  }
-
+ 
 
 }
 
