@@ -84,6 +84,8 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     leftIntakeConfig.smartCurrentLimit(IntakeIndexerCfg.LEFTINTAKE_CURRENT_LIMIT);
 
     leftIntakeConfig.apply(leftIntakeConfig); 
+    leftIntake.configure(leftIntakeConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+    
 
     reset();
     registerLoggerObjects();
@@ -139,8 +141,15 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   public void setLeftIntakePower(double power){
     leftIntake.set(power);
   }
- 
-  
+  public void intakeCoral(){
+    setLeftIntakePower(IntakeIndexerCfg.INTAKE_IN_SPEED);
+  }
+  public void ejectCoral(){
+    setLeftIntakePower(IntakeIndexerCfg.INTAKE_OUT_SPEED);
+  }
+  public void intakeOff(){
+    setLeftIntakePower(IntakeIndexerCfg.INTAKE_OFF_SPEED);
+  }
   public void setLeftPivotPosition(double position){
     leftPivotPIDController.setReference(position, SparkBase.ControlType.kPosition);
   }

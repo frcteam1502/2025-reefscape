@@ -96,7 +96,11 @@ public class RobotContainer {
     Operator.getButton2().onTrue(new InstantCommand(coralSubsystem::setElevatorLTHREEPosition));
     Operator.getButton1().onTrue(new InstantCommand(coralSubsystem::setElevatorLFOURPosition));
 
-    
+    Operator.getButton8().onTrue(new InstantCommand(intakeSubsystem::intakeCoral))
+                         .onFalse(new InstantCommand(intakeSubsystem::intakeOff));
+    Operator.getButton6().onTrue(new InstantCommand(intakeSubsystem::ejectCoral))
+                         .onFalse(new InstantCommand(intakeSubsystem::intakeOff));
+
     
     //SysID stuff - comment out on competition build!
     /*Driver.Controller.y().whileTrue(driveSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));

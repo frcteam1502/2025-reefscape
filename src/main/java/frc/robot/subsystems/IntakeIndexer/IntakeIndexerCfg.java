@@ -18,7 +18,7 @@ public class IntakeIndexerCfg {
     public static final SparkBaseConfig.IdleMode LEFTPIVOT_IDLE_MODE = SparkBaseConfig.IdleMode.kBrake;
     public static final SparkBaseConfig.IdleMode LEFTINTAKE_IDLE_MODE = SparkBaseConfig.IdleMode.kBrake;
     public static final boolean LEFTPIVOT_MOTOR_REVERSED = false;
-    public static final boolean LEFTINTAKE_MOTOR_REVERSED = false;
+    public static final boolean LEFTINTAKE_MOTOR_REVERSED = true;
     public static final int LEFTPIVOT_CURRENT_LIMIT = 50;
     public static final int LEFTINTAKE_CURRENT_LIMIT = 50;
 
@@ -29,5 +29,8 @@ public class IntakeIndexerCfg {
     public static final double LEFTPIVOT_IN_POS = 0;
     public static final double LEFTPIVOT_CLIMB_POS = 9;
     public static final double LEFTPIVOT_OUT_POS = 18.5;
+    public static final double INTAKE_IN_SPEED = 1;
+    public static final double INTAKE_OUT_SPEED = -1;
+    public static final double INTAKE_OFF_SPEED = 0;
 }
 
