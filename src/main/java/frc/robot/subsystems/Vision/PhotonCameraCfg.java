@@ -14,13 +14,13 @@ public class PhotonCameraCfg{
 	public static final String RIGHT_APRILTAG_CAM = "rightAprilTagCam";
 
 	//Left AprilTag Cam Pose Config wrt robot center
-	public static final double LEFT_APRILTAG_CAM_XPOS_METERS = 0;//"Forward" from center, in meters
-	public static final double LEFT_APRILTAG_CAM_YPOS_METERS = 0;//"Left" from center, in meters
-	public static final double LEFT_APRILTAG_CAM_ZPOS_METERS = 0;//"Up" from center, in meters
+	public static final double LEFT_APRILTAG_CAM_XPOS_METERS = 0.08;//"Forward" from center, in meters
+	public static final double LEFT_APRILTAG_CAM_YPOS_METERS = 0.24;//"Left" from center, in meters
+	public static final double LEFT_APRILTAG_CAM_ZPOS_METERS = 1.015;//"Up" from center, in meters
 	
 	public static final double LEFT_APRILTAG_CAM_ROLL_DEG	= 0;
-	public static final double LEFT_APRILTAG_CAM_PITCH_DEG	= 0;
-	public static final double LEFT_APRILTAG_CAM_YAW_DEG	= 0;
+	public static final double LEFT_APRILTAG_CAM_PITCH_DEG	= 20;
+	public static final double LEFT_APRILTAG_CAM_YAW_DEG	= 90;
 	
 	public static final Transform3d LEFT_APRILTAG_CAM_TRANSFORM = new Transform3d(
 					new Translation3d(LEFT_APRILTAG_CAM_XPOS_METERS,
@@ -32,13 +32,13 @@ public class PhotonCameraCfg{
 
 	
 	//Right AprilTag Cam Pose Config wrt robot center
-	public static final double RIGHT_APRILTAG_CAM_XPOS_METERS = 0;//"Forward" from center, in meters
-	public static final double RIGHT_APRILTAG_CAM_YPOS_METERS = 0;//"Left" from center, in meters
+	public static final double RIGHT_APRILTAG_CAM_XPOS_METERS = 0.08;//"Forward" from center, in meters
+	public static final double RIGHT_APRILTAG_CAM_YPOS_METERS = 0.24;//"Left" from center, in meters
 	public static final double RIGHT_APRILTAG_CAM_ZPOS_METERS = 0;//"Up" from center, in meters
 	
 	public static final double RIGHT_APRILTAG_CAM_ROLL_DEG	= 0;
-	public static final double RIGHT_APRILTAG_CAM_PITCH_DEG	= 0;
-	public static final double RIGHT_APRILTAG_CAM_YAW_DEG	= 0;
+	public static final double RIGHT_APRILTAG_CAM_PITCH_DEG	= 20;
+	public static final double RIGHT_APRILTAG_CAM_YAW_DEG	= 270;
 
 	public static final Transform3d RIGHT_APRILTAG_CAM_TRANSFORM = new Transform3d(
 					new Translation3d(RIGHT_APRILTAG_CAM_XPOS_METERS,
@@ -58,6 +58,7 @@ public class PhotonCameraCfg{
 	
 	public static final AprilTagFields FIELD_VERSION = AprilTagFields.kDefaultField;
 	public static final AprilTagFieldLayout FIELD_TAG_LAYOUT = AprilTagFieldLayout.loadField(FIELD_VERSION);
+	public static final double DISTANCE_THRESHOLD_M = 4;
 
 
 }

@@ -181,6 +181,11 @@ public class DriveSubsystem extends SubsystemBase{
     return(currentHeading.getValueAsDouble());
   }
 
+  private double getIMU_YawRate(){
+    var currentRate = gyro.getAngularVelocityZWorld();
+    return(currentRate.getValueAsDouble());
+  }
+
   private void updateDashboard(){
 
     //Field Oriented inputs
@@ -231,6 +236,7 @@ public class DriveSubsystem extends SubsystemBase{
     updateDashboard();
   }
   
+  //Drive command consumer
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     //Set Dashboard variables
     fieldXCommand = xSpeed;
@@ -252,6 +258,7 @@ public class DriveSubsystem extends SubsystemBase{
     driveRobotRelative(speedCommands);
   }
 
+  //ChassisSpeed consumer
   public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds){
     //This method is a consumer of ChassisSpeed and sets the corresponding module states.  This is required for PathPlanner 2024
     //Save off to SmartDashboard
@@ -265,22 +272,24 @@ public class DriveSubsystem extends SubsystemBase{
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DrivebaseCfg.MAX_SPEED_METERS_PER_SECOND);
 
     //Set the speed and angle of each module
-    setDesiredState(swerveModuleStates);
+    setDesiredModuleStates(swerveModuleStates);
   }
 
+  //ChassisSpeed Supplier
   public ChassisSpeeds getRobotRelativeSpeeds(){
     //This method is a supplier of ChassisSpeeds as determined by the module states.  This is required for PathPlanner 2024
     return kinematics.toChassisSpeeds(getModuleStates());
   }
 
-  public void setDesiredState(SwerveModuleState[] swerveModuleStates) {
+  //Interface with swerve modules
+  private void setDesiredModuleStates(SwerveModuleState[] swerveModuleStates) {
     frontLeft.setDesiredState(swerveModuleStates[0]);
     frontRight.setDesiredState(swerveModuleStates[1]);
     backLeft.setDesiredState(swerveModuleStates[2]);
     backRight.setDesiredState(swerveModuleStates[3]);
   }
 
-  public SwerveModuleState[] getModuleStates(){
+  private SwerveModuleState[] getModuleStates(){
     return new SwerveModuleState[] {
       frontLeft.getState(),
       frontRight.getState(),
@@ -288,7 +297,7 @@ public class DriveSubsystem extends SubsystemBase{
       backRight.getState()};
   }
 
-  public void updateOdometry() {
+  private void updateOdometry() {
     pose = odometry.update(
         getGyroRotation2d(),
         new SwerveModulePosition[] {
@@ -299,7 +308,7 @@ public class DriveSubsystem extends SubsystemBase{
         });
   }
 
-  public void updateEstimatedPose(){
+  private void updateEstimatedPose(){
     estimatedPose = poseEstimator.update(getGyroRotation2d(), getModulePositions());
   }
 
@@ -312,7 +321,7 @@ public class DriveSubsystem extends SubsystemBase{
     poseEstimator.resetPosition(getGyroRotation2d(), getModulePositions(), pose);
   }
   
-  public SwerveModulePosition[] getModulePositions() {
+  private SwerveModulePosition[] getModulePositions() {
     //Returns 
     return new SwerveModulePosition[] {
       frontLeft.getPosition(),
@@ -321,45 +330,31 @@ public class DriveSubsystem extends SubsystemBase{
       backRight.getPosition()
     };
   }
-  
-  public SwerveModuleState[] makeSwerveModuleState(double[] speeds, double[] angles) {
-    SwerveModuleState[] moduleStates = new SwerveModuleState[angles.length];
-    for(int i = 0; i < angles.length; i++) moduleStates[i] = new SwerveModuleState(speeds[i], new Rotation2d(Units.degreesToRadians(angles[i])));
-    return moduleStates;
-  }
 
-  public void setToBrake() {
-    resetModules();
-    double[] speeds = {0, 0, 0, 0};
-    double[] angles = {90, 90, 90, 90};
-    SwerveModuleState[] moduleStates = makeSwerveModuleState(speeds, angles);
-    setDesiredState(moduleStates);
-  }
-
-  public Rotation2d getGyroRotation2d() {
+  private Rotation2d getGyroRotation2d() {
     return new Rotation2d(Units.degreesToRadians(getIMU_Yaw()));
   }
 
-  public Pose2d getPose2d() {
+  public Pose2d getOdometryPose2d() {
     return odometry.getPoseMeters();
   }
 
-  public double getPoseRotationDegrees(){
-    return pose.getRotation().getDegrees();
+  public Pose2d getEstimatedPose2d(){
+    return poseEstimator.getEstimatedPosition();
   }
 
   public void resetGyro(double angle) {
     gyro.setYaw(angle);
   }
 
-  public void resetModules() {
+  private void resetModules() {
     frontLeft.zeroModule();
     frontRight.zeroModule();
     backLeft.zeroModule();
     backRight.zeroModule();
   }
 
-  public void reset() {
+  private void reset() {
     resetModules();
     resetOdometry(pose);
   }
@@ -374,9 +369,8 @@ public class DriveSubsystem extends SubsystemBase{
   }
 
   private void updateLimelightPose(){
-    // First, tell Limelight your robot's current orientation
-    double robotYaw = getIMU_Yaw(); 
-    LimelightHelpers.SetRobotOrientation("", robotYaw, 0.0, 0.0, 0.0, 0.0, 0.0);
+    // First, tell Limelight your robot's current orientation 
+    LimelightHelpers.SetRobotOrientation("", getIMU_Yaw(), 0.0, 0.0, 0.0, 0.0, 0.0);
 
     //Check if a valid target was found by the limelight
     if(LimelightHelpers.getTV("")){
@@ -384,45 +378,58 @@ public class DriveSubsystem extends SubsystemBase{
       RawFiducial[] fiducials = LimelightHelpers.getRawFiducials("");
       if(fiducials.length > 0){
         limelightFiducialID = fiducials[0].id;
-      }
 
-      // Get the pose estimate
-      LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("");
-      limelightPose = limelightMeasurement.pose;
-      // Add it to your pose estimator
-      poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.5, .5, 9999999));
-      poseEstimator.addVisionMeasurement(
-      limelightMeasurement.pose,
-      limelightMeasurement.timestampSeconds);
+        if(!DrivebaseCfg.USE_MEGATAG2){
+          LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("");
+          limelightPose = limelightMeasurement.pose;
+          if((fiducials[0].ambiguity <= DrivebaseCfg.AMBIGUITY_LIMIT)&&
+             (fiducials[0].distToCamera <= DrivebaseCfg.DIST_LIMIT_M)){
+              //Limelight pose is good, add it to the pose estimator
+              poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.5, .5, 9999999));
+              poseEstimator.addVisionMeasurement(limelightMeasurement.pose,
+                                                 limelightMeasurement.timestampSeconds);
+          }
+        }else{
+          LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("");
+          limelightPose = limelightMeasurement.pose;
+          if(Math.abs(getIMU_YawRate()) <= DrivebaseCfg.YAW_LIMIT_DPS){
+              //Only process the pose if the robot is turning less than 720 deg/s
+              poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7, .7, 9999999));
+              poseEstimator.addVisionMeasurement(limelightMeasurement.pose,
+                                                 limelightMeasurement.timestampSeconds);
+          }
+        }
+      }
     }
   }
 
-  public int getLimelightFiducialId(){
+  private int getLimelightFiducialId(){
     return limelightFiducialID;
   }
 
-  public void updatePhotonVisionPose(){
-    var leftPoseEstimate = leftPhotonCamera.getEstimatedGlobalPose();
+  private void updatePhotonVisionPose(){
+    //var leftPoseEstimate = leftPhotonCamera.getEstimatedGlobalPose();
+    var leftPoseEstimate = leftPhotonCamera.processCamera(getEstimatedPose2d());
     
     if(leftPoseEstimate.isPresent()){
       photonLeftPose = leftPoseEstimate.get().estimatedPose.toPose2d();
       var timestampLeft = leftPoseEstimate.get().timestampSeconds;
-      var estStdDevLeft = leftPhotonCamera.getEstimationStdDevs();
+
       poseEstimator.addVisionMeasurement(photonLeftPose,
                                          timestampLeft,
-                                         estStdDevLeft);
+                                         VecBuilder.fill(0.5,0.5,9999999));
 
     }
 
-    var rightPoseEstimate = rightPhotonCamera.getEstimatedGlobalPose();
+    //var rightPoseEstimate = rightPhotonCamera.getEstimatedGlobalPose();
+    var rightPoseEstimate = rightPhotonCamera.processCamera(getEstimatedPose2d());
 
     if(rightPoseEstimate.isPresent()){
       photonRightPose = rightPoseEstimate.get().estimatedPose.toPose2d();
       var timestampRight = rightPoseEstimate.get().timestampSeconds;
-      var estStdDevRight = leftPhotonCamera.getEstimationStdDevs();
       poseEstimator.addVisionMeasurement(photonRightPose,
                                          timestampRight,
-                                         estStdDevRight);
+                                         VecBuilder.fill(0.5,0.5,9999999));
     }
   }
 
@@ -472,7 +479,6 @@ public class DriveSubsystem extends SubsystemBase{
     } 
   }
 
-  @SuppressWarnings("unused")
   private void configAutoBuilder(){
     //Wrapper for AutoBuilder.configure, must be called from DriveTrain config....
 
@@ -486,7 +492,8 @@ public class DriveSubsystem extends SubsystemBase{
       config = RobotConfig.fromGUISettings();
 
       AutoBuilder.configure(
-        this::getPose2d, //Robot pose supplier
+        //this::getOdometryPose2d, //Robot pose supplier
+        this::getEstimatedPose2d,
         this::resetOdometry, //Method to reset odometry (will be called if the robot has a starting pose)
         this::getRobotRelativeSpeeds, //ChassisSpeeds provider.  MUST BE ROBOT RELATIVE!!! 
         this::driveRobotRelative, //ChassisSpeeds consumer.  MUST BE ROBOT RELATIVE!!!

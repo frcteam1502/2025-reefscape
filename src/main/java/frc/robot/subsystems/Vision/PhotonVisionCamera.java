@@ -29,6 +29,7 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.kinematics.Odometry;
@@ -44,6 +45,7 @@ import java.util.function.Supplier;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonUtils;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.SimCameraProperties;
@@ -69,7 +71,19 @@ public class PhotonVisionCamera {
 		photonEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
     }
 
-    public void processCamera(Pose2d referencePose){
+    /**
+     * The latest estimated robot pose on the field from vision data. This may be empty. This should
+     * only be called once per loop.
+     *
+     * <p>Also includes updates for the standard deviations, which can (optionally) be retrieved with
+     * {@link getEstimationStdDevs}
+     *
+     * @param referencePose A {@link Pose2d} of the current pose of the robot to determine what is the closest AprilTag
+     *      from the list of observed AprilTags
+     * @return An {@link EstimatedRobotPose} with an estimated pose, estimate timestamp, and targets
+     *     used for estimation.
+     */
+    public Optional<EstimatedRobotPose> processCamera(Pose2d referencePose){
         //Clear Estimated Pose in case no valid pose is found
         estimatedGlobalPose = Optional.empty();
         //Read all results from the camera.
@@ -77,23 +91,28 @@ public class PhotonVisionCamera {
         //Pass in the reference pose for the robot
         photonEstimator.setReferencePose(referencePose);
         //Return if no new results were received
-        if(pipelineResult.getTimestampSeconds() == lastTimestamp) return;
-        //Find the targets too inaccurate to be used.  
+        if(pipelineResult.getTimestampSeconds() == lastTimestamp) return estimatedGlobalPose;
+        //Find the targets too inaccurate to be used. 
         LinkedList<PhotonTrackedTarget> toRemove = new LinkedList<PhotonTrackedTarget>();
         for(int i=0; i<pipelineResult.targets.size(); i++){
             var result = pipelineResult.targets.get(i);
-            if(result.getPoseAmbiguity() > PhotonCameraCfg.MINIMUM_TARGET_AMBIGUITY){
+            int tagID = result.fiducialId;
+            Pose2d tagPose = PhotonCameraCfg.FIELD_TAG_LAYOUT.getTagPose(tagID).get().toPose2d();
+            double distanceToTarget = PhotonUtils.getDistanceToPose(referencePose, tagPose);
+            if((result.getPoseAmbiguity() > PhotonCameraCfg.MINIMUM_TARGET_AMBIGUITY)||
+               (distanceToTarget > PhotonCameraCfg.DISTANCE_THRESHOLD_M)){
                 toRemove.add(result);
             }
         }
-        //Remove all the inaccurate targets
+        //Remove all the ambiguous targets
         pipelineResult.targets.removeAll(toRemove);
 
         //Return if the list of targets is non-existant or invalid
-        if(!pipelineResult.hasTargets()) return;
+        if(!pipelineResult.hasTargets()) return estimatedGlobalPose;
 
         var calculatedPose = photonEstimator.update(pipelineResult);
         
+        boolean useResult = false;
         if(calculatedPose.isPresent()){
             //Make sure the estimated pose is on the field
             if((calculatedPose.get().estimatedPose.getX() >= 0.0) && 
@@ -102,9 +121,11 @@ public class PhotonVisionCamera {
                (calculatedPose.get().estimatedPose.getY() <= PhotonCameraCfg.FIELD_TAG_LAYOUT.getFieldWidth())){
                     //Estimated pose is on the field!
                     estimatedGlobalPose = calculatedPose;
+                    lastTimestamp = calculatedPose.get().timestampSeconds;
+                    return estimatedGlobalPose;
                }
         };
-
+        return estimatedGlobalPose;
     }
     /**
      * The latest estimated robot pose on the field from vision data. This may be empty. This should
@@ -116,7 +137,7 @@ public class PhotonVisionCamera {
      * @return An {@link EstimatedRobotPose} with an estimated pose, estimate timestamp, and targets
      *     used for estimation.
      */
-     public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
+    public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
         Optional<EstimatedRobotPose> visionEst = Optional.empty();
         for (var change : camera.getAllUnreadResults()) {
             visionEst = photonEstimator.update(change);

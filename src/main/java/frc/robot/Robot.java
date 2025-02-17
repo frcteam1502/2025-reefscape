@@ -4,11 +4,6 @@
 
 package frc.robot;
 
-import frc.robot.Logger;
-import frc.robot.subsystems.SwerveDrive.DriveSubsystem;
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.RobotController;
@@ -74,9 +69,6 @@ private String[] pneumaticNames = {
   null, //"14",
   null, //"15",
 };
-
-  private boolean wasAutonExecuted = false;
-
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -130,8 +122,6 @@ private String[] pneumaticNames = {
   public void autonomousInit() {
     GameState.autonomousInit();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
-    wasAutonExecuted = true;
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {

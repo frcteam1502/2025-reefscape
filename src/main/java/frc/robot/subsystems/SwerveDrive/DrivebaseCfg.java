@@ -46,4 +46,10 @@ public class DrivebaseCfg {
     public static final double MAX_ROTATION_RADIANS_PER_SECOND = ((MAX_SPEED_METERS_PER_SECOND)/(Math.PI*WHEEL_BASE_DIAMETER))*(2*Math.PI);
 
     public static final boolean ADAPTIVE_LIMITING_ENABLED = false;
+
+    //Limelight stuff
+    public static final boolean USE_MEGATAG2 = false;
+    public static final double AMBIGUITY_LIMIT = 0.3;
+    public static final double DIST_LIMIT_M = 3;
+    public static final double YAW_LIMIT_DPS = 720;
 }
