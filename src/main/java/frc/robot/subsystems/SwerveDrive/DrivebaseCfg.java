@@ -47,8 +47,8 @@ public class DrivebaseCfg {
 
     public static final boolean ADAPTIVE_LIMITING_ENABLED = false;
      
-    public static final double STRAFE_RAMP_TIME_SEC = 0.5;
+    public static final double STRAFE_RAMP_TIME_SEC = 0.25;
     public static final double STRAFE_SLEW_RATE_M_PER_SEC = MAX_SPEED_METERS_PER_SECOND/STRAFE_RAMP_TIME_SEC;
-    public static final double FORWARD_RAMP_TIME_SEC = 0.5;
+    public static final double FORWARD_RAMP_TIME_SEC = 0.25;
     public static final double FORWARD_SLEW_RATE_M_PER_SEC = MAX_SPEED_METERS_PER_SECOND/FORWARD_RAMP_TIME_SEC;
 }

@@ -90,7 +90,7 @@ public class RobotContainer {
                          .onFalse(new InstantCommand(climberSubsystem::setClimberHold));
     
     //Coral Delivery/Elevator
-    coralSubsystem.setDefaultCommand(new OperatorCommands(coralSubsystem));//Used for manual control of the elevator & Pivot
+    //coralSubsystem.setDefaultCommand(new OperatorCommands(coralSubsystem));//Used for manual control of the elevator & Pivot
     Operator.getButton11().onTrue(new InstantCommand(coralSubsystem::setDeliveryStateLoading));
     Operator.getButton10().onTrue(new InstantCommand(coralSubsystem::setDeliveryStateUnloading));
     Operator.getButton9().onTrue(new InstantCommand(coralSubsystem::setElevatorLoadPosition));
