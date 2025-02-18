@@ -38,8 +38,8 @@ public class RobotContainer {
   //private final PdpSubsystem pdpSubsystem = new PdpSubsystem();
   public final CoralDeliverySubsystem coralSubsystem = new CoralDeliverySubsystem();
   public final IntakeIndexerSubsystem intakeSubsystem = new IntakeIndexerSubsystem();
-  public final Climber climberSubsystem = new Climber();  //Needed to invoke scheduler
   public final AlgaeSubsystem algaeSubsystem = new AlgaeSubsystem();
+  public final Climber climberSubsystem = new Climber();  //Needed to invoke scheduler
   //public final Vision visionSubsystem = new Vision();
 
   private final SendableChooser<Command> autoChooser; 
@@ -103,8 +103,9 @@ public class RobotContainer {
     Operator.getButton6().onTrue(new InstantCommand(intakeSubsystem::ejectCoral))
                          .onFalse(new InstantCommand(intakeSubsystem::intakeOff));
 
-    Operator.getButton5().onTrue(new InstantCommand(algaeSubsystem::setAlgaePivotFloor));
-    Operator.getButton12().onTrue(new InstantCommand(algaeSubsystem::setAlgaePivotHome));
+    /*Operator.getButton5().onTrue(new InstantCommand(algaeSubsystem::setAlgaePivotFloor));
+    Operator.getButton12().onTrue(new InstantCommand(algaeSubsystem::setAlgaePivotHome));*/
+    Operator.getButton5().onTrue(new InstantCommand(algaeSubsystem::updateAlgaeState));
 
 
     

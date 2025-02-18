@@ -14,6 +14,8 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.CoralDelivery.CoralDeliveryCfg;
+
 
 public class AlgaeSubsystem extends SubsystemBase {
   /** Creates a new AlgaeSubsystem. */
@@ -27,6 +29,14 @@ public class AlgaeSubsystem extends SubsystemBase {
 
   private double algaePivotSetPosition = 0;
 
+  private enum AlgaeDeliveryState{
+    HOME,
+    REEF,
+    FLOOR,
+    LFOUR
+  }
+
+  AlgaeDeliveryState algaeState = AlgaeDeliveryState.HOME;
 
   public AlgaeSubsystem() {
     algaePivot = AlgaeCfg.ALGAE_PIVOT_MOTOR;
@@ -77,6 +87,51 @@ public class AlgaeSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Algae Pivot Position", getAlgaePivotPosition());
   }
 
+  public void updateAlgaeState(){
+    switch(algaeState){
+      case HOME:
+        setAlgaeStateReef();
+        break;
+      case REEF:
+        setAlgaeStateFloor();
+        break;
+      case FLOOR:
+        setAlgaeStateL4();
+        break;
+      case LFOUR:
+        setAlgaeStateHome();
+        break;
+    }
+  }
+
+  public void setAlgaeStateHome(){
+    if(algaeState == AlgaeDeliveryState.LFOUR){
+      setAlgaePivotHome();
+      algaeState = AlgaeDeliveryState.HOME;
+    }
+  }
+
+  public void setAlgaeStateReef(){
+    if(algaeState == AlgaeDeliveryState.HOME){
+      setAlgaePivotReef();
+      algaeState = AlgaeDeliveryState.REEF;
+    }
+  }
+
+  public void setAlgaeStateFloor(){
+    if(algaeState == AlgaeDeliveryState.REEF){
+      setAlgaePivotFloor();
+      algaeState = AlgaeDeliveryState.FLOOR;
+    }
+  }
+
+  public void setAlgaeStateL4(){
+    if(algaeState == AlgaeDeliveryState.FLOOR){
+      setAlgaePivotL4();
+      algaeState = AlgaeDeliveryState.LFOUR;
+    }
+  }
+
   public void setAlgaePivotPower(double power){
     algaePivot.set(power);
   }
@@ -89,8 +144,16 @@ public class AlgaeSubsystem extends SubsystemBase {
     algaePivotSetPosition = AlgaeCfg.ALGAE_FLOOR_POS;
   }
 
+  public void setAlgaePivotReef(){
+    algaePivotSetPosition = AlgaeCfg.ALGAE_REEF_POS;
+  }
+
   public void setAlgaePivotHome(){
     algaePivotSetPosition = AlgaeCfg.ALGAE_HOME_POS;
+  }
+
+  public void setAlgaePivotL4(){
+    algaePivotSetPosition = AlgaeCfg.ALGAE_L4_POS;
   }
 
   public void setAlgaeIntakePower(double power){
