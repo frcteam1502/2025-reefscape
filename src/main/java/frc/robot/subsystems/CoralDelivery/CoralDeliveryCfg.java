@@ -81,6 +81,11 @@ public class CoralDeliveryCfg {
      public static final double PIVOT_LFOUR_POSITION = 125;
      public static final double INDEXER_ON_SPEED = 0.5;
      public static final double INDEXER_OFF_SPEED = 0;
+    
+     public static final double ELEVATOR_CHANGE = 2;
+     public static final double ELEVATOR_MAX_LIMIT = 130;
+     public static final double PIVOT_CHANGE = 5;
+    public static final double PIVOT_MAX_LIMIT = 130;
 
 
 }

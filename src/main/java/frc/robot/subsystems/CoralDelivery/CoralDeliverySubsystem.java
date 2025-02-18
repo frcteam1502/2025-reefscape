@@ -134,7 +134,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     if(pivotCfgChanged){
     //pivotConfig.apply(elevatorPID_Config);
     //pivot.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
-    //elevatorCfgChanged = false;
+    //pivotCfgChanged = false;
     }
 
     SmartDashboard.putNumber("ELEVATOR_CURRENT", elevator.getOutputCurrent());
@@ -321,14 +321,6 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     }
   }
 
-  public void setElevatorPower(double power){
-    elevator.set(power);
-  }
-
-  public void setPivotPower(double power){
-    pivot.set(power);
-  }
-
   public void setDeliveryPower(double power){
     delivery.set(power);
   }
@@ -413,65 +405,44 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION;
     pivotSetPosition = CoralDeliveryCfg.PIVOT_LFOUR_POSITION;
   }
-
-  public void setElevatorFwd(){
-    setElevatorPower(1);
-  }
-
-  public void setElevatorRwd(){
-    setElevatorPower(-0.5);
-  }
-  
-  public void setElevatorOff(){
-    setElevatorPower(0);
-  }
   
   public void setPivotPosition(double position){
     pivotPIDController.setReference(position, SparkMax.ControlType.kPosition);
   }
-
-  public void setPivotDown(){//TODO: Change to "setPivotLoadPosition"
-    System.out.println("Pivot Down");
-    pivotSetPosition = 0;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
-  }
-
-  public void setPivotUp(){//TODO: Change to "setPivotL1Position" and copy/paste for each setpoint L2 to L4
-    System.out.println("Pivot Up");
-    pivotSetPosition = 90;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
-  }
-
-  public void setPivotLoadPosition(){//TODO: Change to "setPivotL1Position" and copy/paste for each setpoint L2 to L4
-    pivotSetPosition = CoralDeliveryCfg.PIVOT_LOAD_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
-  }
-
-  public void setPivotLOnePosition(){//TODO: Change to "setPivotL1Position" and copy/paste for each setpoint L2 to L4
-    pivotSetPosition = CoralDeliveryCfg.PIVOT_LONE_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
-  }
-
-  public void setPivotLTwoPosition(){//TODO: Change to "setPivotL1Position" and copy/paste for each setpoint L2 to L4
-    pivotSetPosition = CoralDeliveryCfg.PIVOT_LTWO_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
-  }
-
-  public void setPivotLTHREEPosition(){//TODO: Change to "setPivotL1Position" and copy/paste for each setpoint L2 to L4
-    pivotSetPosition = CoralDeliveryCfg.PIVOT_LTHREE_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
-  }
-
-  public void setPivotLFOURPosition(){//TODO: Change to "setPivotL1Position" and copy/paste for each setpoint L2 to L4
-    pivotSetPosition = CoralDeliveryCfg.PIVOT_LFOUR_POSITION;//Use constant values from CoralDeliveryCfg instead of "magic numbers"
-  }
   
-  public void setPivotOn(){
-    setPivotPower(1);
-  }
-
-  public void setPivotOff(){
-    setPivotPower(0);
-  }
   public void setIndexerPower(double power){
     indexer.set(power);
   }
   public double getIndexerPosition(){
     return indexerEncoder.getPosition();
+  }
+
+  public void moveElevatorManually(double input){
+    double change = Math.signum(input) * CoralDeliveryCfg.ELEVATOR_CHANGE;
+    double newPosition = elevatorSetPosition + change;
+    if(newPosition > 0){
+      if(newPosition <= CoralDeliveryCfg.ELEVATOR_MAX_LIMIT){
+        elevatorSetPosition = newPosition;
+      }else{
+        elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_MAX_LIMIT;
+      }
+    }else{
+      elevatorSetPosition = 0;
+    }
+  }
+
+  public void movePivotManually(double input){
+    double change = Math.signum(input) * CoralDeliveryCfg.PIVOT_CHANGE;
+    double newPosition = pivotSetPosition + change;
+    if(newPosition > 0){
+      if(newPosition <= CoralDeliveryCfg.PIVOT_MAX_LIMIT){
+        pivotSetPosition = newPosition;
+      }else{
+        pivotSetPosition = CoralDeliveryCfg.PIVOT_MAX_LIMIT;
+      }
+    }else{
+      pivotSetPosition = 0;
+    }
   }
 
 }

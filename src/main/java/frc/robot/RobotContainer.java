@@ -10,6 +10,7 @@ import frc.robot.subsystems.CoralDelivery.CoralDeliverySubsystem;
 import frc.robot.subsystems.IntakeIndexer.IntakeIndexerSubsystem;
 import frc.robot.subsystems.PowerManagement.MockDetector;
 import frc.robot.commands.DriverCommands;
+import frc.robot.commands.OperatorCommands;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.StopDriveMotors;
 import frc.robot.subsystems.SwerveDrive.DriveSubsystem;
@@ -79,17 +80,17 @@ public class RobotContainer {
    */
   private void configureBindings() {
     //Drivetrain
-    driveSubsystem.setDefaultCommand(new DriverCommands(driveSubsystem, new MockDetector())); //USES THE LEFT BUMPER TO SLOW DOWN
+    driveSubsystem.setDefaultCommand(new DriverCommands(driveSubsystem, new MockDetector())); //USES THE Right BUMPER TO SLOW DOWN
     Driver.Controller.start().onTrue(new ResetGyro(driveSubsystem));
 
-    /*Driver.Controller.x().onTrue(new InstantCommand(coralSubsystem::setPivotUp));
-    Driver.Controller.b().onTrue(new InstantCommand(coralSubsystem::setPivotDown));*/
+    //Climber
     Driver.Controller.b().onTrue(new InstantCommand(climberSubsystem::setClimberIn));
     Driver.Controller.y().onTrue(new InstantCommand(climberSubsystem::setClimberOut));
     Driver.Controller.a().whileTrue(new InstantCommand(climberSubsystem::setClimberClimbed))
                          .onFalse(new InstantCommand(climberSubsystem::setClimberHold));
     
-    Operator.getButton7().onTrue(new InstantCommand(intakeSubsystem::setIntakeState));
+    //Coral Delivery/Elevator
+    coralSubsystem.setDefaultCommand(new OperatorCommands(coralSubsystem));//Used for manual control of the elevator & Pivot
     Operator.getButton11().onTrue(new InstantCommand(coralSubsystem::setDeliveryStateLoading));
     Operator.getButton10().onTrue(new InstantCommand(coralSubsystem::setDeliveryStateUnloading));
     Operator.getButton9().onTrue(new InstantCommand(coralSubsystem::setElevatorLoadPosition));
@@ -98,6 +99,8 @@ public class RobotContainer {
     Operator.getButton2().onTrue(new InstantCommand(coralSubsystem::setElevatorLTHREEPosition));
     Operator.getButton1().onTrue(new InstantCommand(coralSubsystem::setElevatorLFOURPosition));
 
+    //Intake
+    Operator.getButton7().onTrue(new InstantCommand(intakeSubsystem::setIntakeState));
     Operator.getButton8().onTrue(new InstantCommand(intakeSubsystem::intakeCoral))
                          .onFalse(new InstantCommand(intakeSubsystem::intakeOff));
     Operator.getButton6().onTrue(new InstantCommand(intakeSubsystem::ejectCoral))

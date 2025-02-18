@@ -32,6 +32,8 @@ public final class Operator {
   public static final int CUST_CONTROLLER_BUTTON_10 = 10;
   public static final int CUST_CONTROLLER_BUTTON_11 = 11;
   public static final int CUST_CONTROLLER_BUTTON_12 = 12;
+  public static final int CUST_CONTROLLER_Y_AXIS    = 1;
+  public static final int CUST_CONTROLLER_X_AXIS    = 2;
 
   public static Trigger getButton1() {
     return CustomController.button(CUST_CONTROLLER_BUTTON_1);
@@ -68,6 +70,14 @@ public final class Operator {
   }
   public static Trigger getButton12() {
     return CustomController.button(CUST_CONTROLLER_BUTTON_12);
+  }
+
+  public static double getXAxis(){
+    return CustomController.getRawAxis(CUST_CONTROLLER_X_AXIS);
+  }
+
+  public static double getYAxis(){
+    return CustomController.getRawAxis(CUST_CONTROLLER_Y_AXIS);
   }
   
   //TODO: Create methods for the other buttons by following this convention
