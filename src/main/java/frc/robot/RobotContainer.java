@@ -82,7 +82,7 @@ public class RobotContainer {
     //Drivetrain
     driveSubsystem.setDefaultCommand(new DriverCommands(driveSubsystem, new MockDetector())); //USES THE Right BUMPER TO SLOW DOWN
     Driver.Controller.start().onTrue(new ResetGyro(driveSubsystem));
-
+ 
     //Climber
     Driver.Controller.b().onTrue(new InstantCommand(climberSubsystem::setClimberIn));
     Driver.Controller.y().onTrue(new InstantCommand(climberSubsystem::setClimberOut));

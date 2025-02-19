@@ -52,7 +52,7 @@ public class Climber extends SubsystemBase {
     climberPIDConfig.p(ClimberCfg.CLIMBER_P_GAIN);
     climberPIDConfig.i(ClimberCfg.CLIMBER_I_GAIN);
     climberPIDConfig.d(ClimberCfg.CLIMBER_D_GAIN);
-    climberPIDConfig.outputRange(-0.25, 1);
+    climberPIDConfig.outputRange(-1, 1);
 
     //Setup Motor Config
     SparkMaxConfig climbMotorConfig = new SparkMaxConfig();
