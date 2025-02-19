@@ -299,7 +299,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   }
 
   public void setDeliveryStateUnloading(){
-    if(deliveryState == CoralDeliveryState.LOADED){
+    if((deliveryState == CoralDeliveryState.LOADED)&&(elevatorSetPosition<=1)){
       if(elevatorSetPosition == CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION){
         delivery.set(CoralDeliveryCfg.DELIVERY_L4_UNLOAD_SPD);
       }
