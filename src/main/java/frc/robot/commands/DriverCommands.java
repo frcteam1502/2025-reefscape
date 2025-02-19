@@ -18,8 +18,8 @@ public class DriverCommands extends Command {
   private final String kDriver1 = "Driver1";
   private final String kDriver2 = "Driver2";
 
-  private SlewRateLimiter forwardLimiter = new SlewRateLimiter(DrivebaseCfg.FORWARD_SLEW_RATE_M_PER_SEC);
-  private SlewRateLimiter strafeLimiter = new SlewRateLimiter(DrivebaseCfg.STRAFE_SLEW_RATE_M_PER_SEC);
+  private SlewRateLimiter forwardLimiter = new SlewRateLimiter(10);
+  private SlewRateLimiter strafeLimiter = new SlewRateLimiter(10);
   private final SendableChooser<String> driverChooser = new SendableChooser<>();
 
   boolean finesse_mode = false;
@@ -66,11 +66,11 @@ public class DriverCommands extends Command {
       teleopRotationGain = DrivebaseCfg.ROTATION_GAIN;
     }
     //Need to convert joystick input (-1 to 1) into m/s!!! 100% == MAX Attainable Speed
-    forwardSpeed = ((MathUtil.applyDeadband(Driver.getLeftY(), 0.1)) * teleopSpeedGain) *
-        DrivebaseCfg.MAX_SPEED_METERS_PER_SECOND;
+    forwardSpeed = forwardLimiter.calculate(((MathUtil.applyDeadband(Driver.getLeftY(), 0.1)) * teleopSpeedGain) *
+        DrivebaseCfg.MAX_SPEED_METERS_PER_SECOND);
 
-    strafeSpeed = ((MathUtil.applyDeadband(Driver.getLeftX(), 0.1)) * teleopSpeedGain) *
-        DrivebaseCfg.MAX_SPEED_METERS_PER_SECOND;
+    strafeSpeed = strafeLimiter.calculate(((MathUtil.applyDeadband(Driver.getLeftX(), 0.1)) * teleopSpeedGain) *
+        DrivebaseCfg.MAX_SPEED_METERS_PER_SECOND);
 
     //Need to convert joystick input (-1 to 1) into rad/s!!! 100% == MAX Attainable Rotation
     /*rotationSpeed = turnLimiter.calculate(((MathUtil.applyDeadband(Driver.getRightX(), 0.1)) * 

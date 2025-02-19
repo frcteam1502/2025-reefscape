@@ -77,7 +77,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     intakeMotorConfig.apply(algaePivotPIDConfig);
     
     algaeIntake.configure(intakeMotorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
-   
+    algaePivotEncoder.setPosition(0);
   }
   
   @Override
