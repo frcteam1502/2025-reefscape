@@ -15,6 +15,8 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.CoralDelivery.CoralDeliveryCfg;
+import frc.robot.subsystems.CoralDelivery.CoralDeliverySubsystem;
+
 
 
 public class AlgaeSubsystem extends SubsystemBase {

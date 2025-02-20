@@ -60,16 +60,16 @@ public class CoralDeliveryCfg {
     public static final LaserCan RWD_LASER_CAN = new LaserCan(REARWARD_LASER_CAN_ID);
 
      public static final double DELIVERY_OFF_SPEED = 0;
-     public static final double DELIVERY_FWD_SPEED = 1;
-     public static final double DELIVERY_RWD_SPEED = -1;
-     public static final double DELIVERY_L4_UNLOAD_SPD = -0.25;
-     public static final double DELIVERY_LOAD_SPD = 0.15;
-     public static final double DELIVERY_L1_UNLOAD_SPD = 0.25;
+     public static final double DELIVERY_FWD_SPEED = 2000;
+     public static final double DELIVERY_RWD_SPEED = -2000;
+     public static final double DELIVERY_L4_UNLOAD_SPD = -700;
+     public static final double DELIVERY_LOAD_SPD = 300;
+     public static final double DELIVERY_L1_UNLOAD_SPD = 700;
 
      public static final int CORAL_PRESENT_THRESH_MM = 60;
 
      public static final double ELEVATOR_LOAD_POSITION = 0.0;
-     public static final double ELEVATOR_LONE_POSITION = 28;
+     public static final double ELEVATOR_LONE_POSITION = 35;
      public static final double ELEVATOR_LTWO_POSITION = 53;
      public static final double ELEVATOR_LTHREE_POSITION = 90;
      public static final double ELEVATOR_LFOUR_POSITION = 120;
@@ -86,6 +86,11 @@ public class CoralDeliveryCfg {
      public static final double ELEVATOR_MAX_LIMIT = 130;
      public static final double PIVOT_CHANGE = 5;
     public static final double PIVOT_MAX_LIMIT = 130;
-
+    
+    public static final double HOME_POS_THRESH = 1;
+    public static final double DELIVERY_P_GAIN = 0.001;
+    public static final double DELIVERY_I_GAIN = 0.000005;
+    public static final double DELIVERY_D_GAIN = 0.00005;
+    public static final double DELIVERY_F_GAIN = 0;
 
 }
