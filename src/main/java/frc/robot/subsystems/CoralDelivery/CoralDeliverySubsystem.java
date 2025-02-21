@@ -80,7 +80,8 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     LOADING_FROM_INDEX1,
     LOADING_FROM_INDEX2,
     LOADED,
-    UNLOADING
+    UNLOADING,
+    STOPPED
   }
 
   CoralDeliveryState deliveryState = CoralDeliveryState.INIT;
@@ -159,6 +160,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("Is Rearward Present", isRwdCoralPresent());
     SmartDashboard.putString("Delivery State", deliveryState.name());
     SmartDashboard.putNumber("Delivery Speed", deliveryEncoder.getVelocity());
+    SmartDashboard.putNumber("Delivery Set Speed",deliverySetSpd);
   }
 
   private void configureElevator(){
@@ -251,6 +253,8 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     Logger.RegisterSparkMax("Elevator", CoralDeliveryCfg.ELEVATOR_MOTOR);
     Logger.RegisterSparkMax("Coral Pivot", CoralDeliveryCfg.PIVOT_MOTOR);
     Logger.RegisterSparkMax("Coral Delivery", CoralDeliveryCfg.DELIVERY_MOTOR);
+
+    Logger.RegisterSensor("Delivery Speed", ()->deliveryEncoder.getVelocity());
   }
 
   private void reset(){
@@ -288,10 +292,6 @@ public class CoralDeliverySubsystem extends SubsystemBase {
            (isRwdCoralPresent())){
             deliveryState = CoralDeliveryState.LOADING_FROM_INDEX2;
            }
-        /*if((isFwdCoralPresent())){
-            delivery.set(CoralDeliveryCfg.DELIVERY_OFF_SPEED);
-            deliveryState = CoralDeliveryState.LOADED;
-           }*/
         break;
       case LOADING_FROM_INDEX2:
         if((isFwdCoralPresent())&&
@@ -314,6 +314,8 @@ public class CoralDeliverySubsystem extends SubsystemBase {
               deliverySetSpd = CoralDeliveryCfg.DELIVERY_OFF_SPEED;
               deliveryState = CoralDeliveryState.UNLOADED;
            }
+      case STOPPED:
+           //This will be handled by the setDeliveryStateLoading() method.  Always goes to LOADING_FROM_INDEX1 (same as UNLOADED)
     }
   }
 
@@ -333,7 +335,15 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   }
 
   public void setDeliveryStateLoading(){
-    if((deliveryState == CoralDeliveryState.UNLOADED)&&(getElevatorPosition()<=CoralDeliveryCfg.HOME_POS_THRESH)){
+    if((deliveryState == CoralDeliveryState.LOADING_FROM_INDEX1)||
+       (deliveryState == CoralDeliveryState.LOADING_FROM_INDEX2)){
+      //Stop loading!!
+      deliverySetSpd = CoralDeliveryCfg.DELIVERY_OFF_SPEED;
+      indexer.set(CoralDeliveryCfg.INDEXER_OFF_SPEED);
+      deliveryState = CoralDeliveryState.STOPPED;
+    }else if(((deliveryState == CoralDeliveryState.STOPPED)||
+              (deliveryState == CoralDeliveryState.UNLOADED))&&
+             (getElevatorPosition()<=CoralDeliveryCfg.HOME_POS_THRESH)){
       deliverySetSpd = CoralDeliveryCfg.DELIVERY_LOAD_SPD;
       indexer.set(CoralDeliveryCfg.INDEXER_ON_SPEED);
       deliveryState = CoralDeliveryState.LOADING_FROM_INDEX1;
@@ -401,15 +411,13 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   }
 
   public void setDeliverySpd(double speed){
-    var ff = deliveryFeedforward.calculate(speed);
-
-    //deliveryPIDF_Config.velocityFF(ff);
-    //deliveryConfig.apply(deliveryPIDF_Config);
-    //delivery.configure(deliveryConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
-
-    SmartDashboard.putNumber("Delivery FF", ff);
-    deliveryPIDController.setReference(speed, SparkMax.ControlType.kVelocity, ClosedLoopSlot.kSlot0, ff, SparkClosedLoopController.ArbFFUnits.kVoltage);
-    //deliveryPIDController.setReference(speed, SparkMax.ControlType.kVelocity);
+    if(CoralDeliveryCfg.DELIVERY_USE_ARBFF){
+      var ff = deliveryFeedforward.calculate(speed);
+      SmartDashboard.putNumber("Delivery FF", ff);
+      deliveryPIDController.setReference(speed, SparkMax.ControlType.kVelocity, ClosedLoopSlot.kSlot0, ff, SparkClosedLoopController.ArbFFUnits.kVoltage);
+    }else{
+      deliveryPIDController.setReference(speed, SparkMax.ControlType.kVelocity);
+    }
   }
 
   public void setElevatorLoadPosition(){

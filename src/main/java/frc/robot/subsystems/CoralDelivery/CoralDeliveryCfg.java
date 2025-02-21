@@ -41,7 +41,7 @@ public class CoralDeliveryCfg {
     public static final boolean INDEXER_MOTOR_REVERSED = false;
     public static final int ELEVATOR_CURRENT_LIMIT = 60;
     public static final int PIVOT_CURRENT_LIMIT = 40;
-    public static final int DELIVERY_CURRENT_LIMIT = 20;
+    public static final int DELIVERY_CURRENT_LIMIT = 50;
     public static final int INDEXER_CURRENT_LIMIT = 20;
     
     public static final double PIVOT_P_GAIN = 0.05;
@@ -88,9 +88,11 @@ public class CoralDeliveryCfg {
     public static final double PIVOT_MAX_LIMIT = 130;
     
     public static final double HOME_POS_THRESH = 1;
-    public static final double DELIVERY_P_GAIN = 0.001;
-    public static final double DELIVERY_I_GAIN = 0.000005;
-    public static final double DELIVERY_D_GAIN = 0.00005;
-    public static final double DELIVERY_F_GAIN = 0;
+    public static final double NEO550_KV = 917; //Published data from REV
+    public static final double DELIVERY_P_GAIN = 0.0004;
+    public static final double DELIVERY_I_GAIN = 0;
+    public static final double DELIVERY_D_GAIN = 0;
+    public static final double DELIVERY_F_GAIN = .0005;
+    public static final boolean DELIVERY_USE_ARBFF = false;
 
 }
