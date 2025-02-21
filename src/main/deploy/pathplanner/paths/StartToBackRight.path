@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.2,
-        "y": 6.05
+        "x": 6.385916095890411,
+        "y": 6.091031678082191
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.289041095890411,
-        "y": 5.399850171232877
+        "x": 5.5,
+        "y": 5.75
       },
       "prevControl": {
-        "x": 5.664041095890411,
-        "y": 6.049369224071206
+        "x": 6.236259179819889,
+        "y": 6.0805636916430394
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "EndStartToBackRight"
     }
   ],
   "rotationTargets": [],
@@ -34,9 +34,9 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 2.0,
-    "maxAcceleration": 11.6,
+    "maxAcceleration": 5.0,
     "maxAngularVelocity": 600.0,
-    "maxAngularAcceleration": 3522.0,
+    "maxAngularAcceleration": 1799.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },

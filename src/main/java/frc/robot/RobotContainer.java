@@ -52,6 +52,8 @@ public class RobotContainer {
 
     //Register named commands. Must register all commands we want Pathplanner to execute.
     NamedCommands.registerCommand("Stop Drive Motors", new StopDriveMotors(driveSubsystem));
+    NamedCommands.registerCommand("Align to Left", new InstantCommand(driveSubsystem::moveToReefLeft));
+    NamedCommands.registerCommand("Align to Right", new InstantCommand(driveSubsystem::moveToReefRight));
   
     //Build an Autochooser from SmartDashboard selection.  Default will be Commands.none()
     //e.g new PathPlannerAuto("MiddleAutoAMPFinal");

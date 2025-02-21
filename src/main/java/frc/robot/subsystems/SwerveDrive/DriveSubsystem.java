@@ -9,6 +9,7 @@ import frc.robot.subsystems.Vision.ReefMap.Side;
 import frc.robot.subsystems.Vision.LimelightHelpers.RawFiducial;
 
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -29,6 +30,7 @@ import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -394,7 +396,7 @@ public class DriveSubsystem extends SubsystemBase{
           limelightPose = limelightMeasurement.pose;
           if(Math.abs(getIMU_YawRate()) <= DrivebaseCfg.YAW_LIMIT_DPS){
               //Only process the pose if the robot is turning less than 720 deg/s
-              poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7, .7, 9999999));
+              poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.5, .5, 9999999));
               poseEstimator.addVisionMeasurement(limelightMeasurement.pose,
                                                  limelightMeasurement.timestampSeconds);
           }
@@ -417,7 +419,7 @@ public class DriveSubsystem extends SubsystemBase{
 
       poseEstimator.addVisionMeasurement(photonLeftPose,
                                          timestampLeft,
-                                         VecBuilder.fill(0.5,0.5,9999999));
+                                         VecBuilder.fill(7,7,9999999));
 
     }
 
@@ -429,7 +431,7 @@ public class DriveSubsystem extends SubsystemBase{
       var timestampRight = rightPoseEstimate.get().timestampSeconds;
       poseEstimator.addVisionMeasurement(photonRightPose,
                                          timestampRight,
-                                         VecBuilder.fill(0.5,0.5,9999999));
+                                         VecBuilder.fill(7,7,9999999));
     }
   }
 
@@ -452,7 +454,17 @@ public class DriveSubsystem extends SubsystemBase{
                                                  new GoalEndState(tagId, targetPose.getRotation())
                                  );
       path.preventFlipping = true;
-      AutoBuilder.followPath(path).schedule();
+      //AutoBuilder.followPath(path).schedule();
+      AutoBuilder.followPath(path)
+        .until(()->{
+          var poseError = getEstimatedPose2d().minus(targetPose);
+            if((Math.abs(poseError.getX())<=0.05)&&(Math.abs(poseError.getY())<=0.05)){
+              return true;
+            }
+            return false;
+          })
+        .withTimeout(5)
+        .schedule();
     }else{
       System.out.println("No Reef pose found!");
     } 
@@ -473,7 +485,17 @@ public class DriveSubsystem extends SubsystemBase{
                                                  new GoalEndState(tagId, targetPose.getRotation())
                                  );
       path.preventFlipping = true;
-      AutoBuilder.followPath(path).schedule();
+      //AutoBuilder.followPath(path).schedule();
+      AutoBuilder.followPath(path)
+        .until(()->{
+          var poseError = getEstimatedPose2d().minus(targetPose);
+          if((Math.abs(poseError.getX())<=0.05)&&(Math.abs(poseError.getY())<=0.05)){
+              return true;
+            }
+            return false;
+          })
+        .withTimeout(5)
+        .schedule();
     }else{
       System.out.println("No Reef pose found!");
     } 

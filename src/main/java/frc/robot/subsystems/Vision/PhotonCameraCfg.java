@@ -58,7 +58,7 @@ public class PhotonCameraCfg{
 	
 	public static final AprilTagFields FIELD_VERSION = AprilTagFields.kDefaultField;
 	public static final AprilTagFieldLayout FIELD_TAG_LAYOUT = AprilTagFieldLayout.loadField(FIELD_VERSION);
-	public static final double DISTANCE_THRESHOLD_M = 4;
+	public static final double DISTANCE_THRESHOLD_M = 3;
 
 
 }
