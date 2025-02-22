@@ -41,7 +41,7 @@ public class CoralDeliveryCfg {
     public static final boolean INDEXER_MOTOR_REVERSED = false;
     public static final int ELEVATOR_CURRENT_LIMIT = 60;
     public static final int PIVOT_CURRENT_LIMIT = 40;
-    public static final int DELIVERY_CURRENT_LIMIT = 50;
+    public static final int DELIVERY_CURRENT_LIMIT = 20;
     public static final int INDEXER_CURRENT_LIMIT = 20;
     
     public static final double PIVOT_P_GAIN = 0.05;
@@ -65,13 +65,13 @@ public class CoralDeliveryCfg {
      public static final double DELIVERY_L4_UNLOAD_SPD = -700;
      public static final double DELIVERY_LOAD1_SPD = 100;
      public static final double DELIVERY_LOAD3_SPD = -75;
-     public static final double DELIVERY_L1_UNLOAD_SPD = 700;
+     public static final double DELIVERY_L1_UNLOAD_SPD = 250;
 
      public static final int CORAL_PRESENT_THRESH_MM = 60;
 
      public static final double ELEVATOR_LOAD_POSITION = 0.0;
-     public static final double ELEVATOR_LONE_POSITION = 35;
-     public static final double ELEVATOR_LTWO_POSITION = 53;
+     public static final double ELEVATOR_LONE_POSITION = 40;
+     public static final double ELEVATOR_LTWO_POSITION = 50;
      public static final double ELEVATOR_LTHREE_POSITION = 90;
      public static final double ELEVATOR_LFOUR_POSITION = 120;
 
