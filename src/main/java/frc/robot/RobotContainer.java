@@ -54,6 +54,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Stop Drive Motors", new StopDriveMotors(driveSubsystem));
     NamedCommands.registerCommand("Align to Left", new InstantCommand(driveSubsystem::moveToReefLeft));
     NamedCommands.registerCommand("Align to Right", new InstantCommand(driveSubsystem::moveToReefRight));
+    NamedCommands.registerCommand("Move to Left Coral Station", new InstantCommand(driveSubsystem::moveToLeftCoralStation));
   
     //Build an Autochooser from SmartDashboard selection.  Default will be Commands.none()
     //e.g new PathPlannerAuto("MiddleAutoAMPFinal");
@@ -77,8 +78,10 @@ public class RobotContainer {
     driveSubsystem.setDefaultCommand(new DriverCommands(driveSubsystem, new MockDetector())); //USES THE LEFT BUMPER TO SLOW DOWN
     
     Driver.Controller.start().onTrue(new ResetGyro(driveSubsystem));
-    Driver.Controller.leftTrigger(0.5).onTrue(new InstantCommand(driveSubsystem::moveToReefLeft));
-    Driver.Controller.rightTrigger(0.5).onTrue(new InstantCommand(driveSubsystem::moveToReefRight));
+    Driver.Controller.leftTrigger(0.5).onTrue(new InstantCommand(driveSubsystem::moveToReefLeft))
+                                      .onFalse(new InstantCommand(driveSubsystem::cancelReefPath));
+    Driver.Controller.rightTrigger(0.5).onTrue(new InstantCommand(driveSubsystem::moveToReefRight))
+                                      .onFalse(new InstantCommand(driveSubsystem::cancelReefPath));
 
     //SysID stuff - comment out on competition build!
     /*Driver.Controller.y().whileTrue(driveSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));

@@ -97,6 +97,9 @@ public class DriveSubsystem extends SubsystemBase{
 
   private int limelightFiducialID = -1;
 
+  Command reefPath = null;
+  Command coralStationPath = null;
+
   //Create a SysIdRoutine object for characterizing the drive
   private final SysIdRoutine sysIdRoutine = 
   new SysIdRoutine(
@@ -405,7 +408,7 @@ public class DriveSubsystem extends SubsystemBase{
     }
   }
 
-  private int getLimelightFiducialId(){
+  public int getLimelightFiducialId(){
     return limelightFiducialID;
   }
 
@@ -444,7 +447,7 @@ public class DriveSubsystem extends SubsystemBase{
     if(reefMap.isPosePresent(tagId, Side.LEFT)){
       System.out.println("Building Path to Left!");
       targetPose = reefMap.getReefPose2d(tagId, Side.LEFT);
-      List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(pose,targetPose);
+      List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(estimatedPose,targetPose);
       PathPlannerPath path = new PathPlannerPath(waypoints,
                                                  new PathConstraints(3.0,
                                                                      3.0, 
@@ -455,16 +458,8 @@ public class DriveSubsystem extends SubsystemBase{
                                  );
       path.preventFlipping = true;
       //AutoBuilder.followPath(path).schedule();
-      AutoBuilder.followPath(path)
-        .until(()->{
-          var poseError = getEstimatedPose2d().minus(targetPose);
-            if((Math.abs(poseError.getX())<=0.05)&&(Math.abs(poseError.getY())<=0.05)){
-              return true;
-            }
-            return false;
-          })
-        .withTimeout(5)
-        .schedule();
+      reefPath = AutoBuilder.followPath(path);
+      reefPath.schedule();
     }else{
       System.out.println("No Reef pose found!");
     } 
@@ -475,30 +470,40 @@ public class DriveSubsystem extends SubsystemBase{
     if(reefMap.isPosePresent(tagId, Side.RIGHT)){
       System.out.println("Building Path to Right!");
       targetPose = reefMap.getReefPose2d(tagId, Side.RIGHT);
-      List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(pose,targetPose);
+      List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(estimatedPose,targetPose);
       PathPlannerPath path = new PathPlannerPath(waypoints,
                                                  new PathConstraints(3.0,
                                                                      3.0, 
                                                                      Units.degreesToRadians(360), 
                                                                      Units.degreesToRadians(540)),
                                                  null,
-                                                 new GoalEndState(tagId, targetPose.getRotation())
+                                                 new GoalEndState(0, targetPose.getRotation())
                                  );
       path.preventFlipping = true;
       //AutoBuilder.followPath(path).schedule();
-      AutoBuilder.followPath(path)
-        .until(()->{
-          var poseError = getEstimatedPose2d().minus(targetPose);
-          if((Math.abs(poseError.getX())<=0.05)&&(Math.abs(poseError.getY())<=0.05)){
-              return true;
-            }
-            return false;
-          })
-        .withTimeout(5)
-        .schedule();
+      reefPath = AutoBuilder.followPath(path);
+      reefPath.schedule();
     }else{
       System.out.println("No Reef pose found!");
     } 
+  }
+
+  public boolean isReefPathScheduled(){
+    boolean isScheduled = false;
+    if((reefPath != null) &&
+       (reefPath.isScheduled())){
+        isScheduled = true;
+       }
+    return isScheduled;
+  }
+
+  public void cancelReefPath(){
+    if((reefPath == null)||
+       (!reefPath.isScheduled())){
+        return;
+    }
+    reefPath.cancel();
+    reefPath = null;
   }
 
   private void configAutoBuilder(){
