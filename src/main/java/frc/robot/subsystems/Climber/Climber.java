@@ -35,7 +35,7 @@ public class Climber extends SubsystemBase {
   }
 
   private ClimberState climberState = ClimberState.STOWED;
-  private double climberSetPos = 0;
+  private double climberSetPos = ClimberCfg.CLIMBER_STOWED_POS;
 
   public Climber() {
     //Do intialization stuff here
@@ -52,7 +52,7 @@ public class Climber extends SubsystemBase {
     climberPIDConfig.p(ClimberCfg.CLIMBER_P_GAIN);
     climberPIDConfig.i(ClimberCfg.CLIMBER_I_GAIN);
     climberPIDConfig.d(ClimberCfg.CLIMBER_D_GAIN);
-    climberPIDConfig.outputRange(-1, 1);
+    climberPIDConfig.outputRange(ClimberCfg.CLIMBER_MIN_OUTPUT, ClimberCfg.CLIMBER_MAX_OUTPUT);
 
     //Setup Motor Config
     SparkMaxConfig climbMotorConfig = new SparkMaxConfig();
@@ -82,7 +82,7 @@ public class Climber extends SubsystemBase {
   }
 
   private void reset(){
-    climberEncoder.setPosition(0);
+    climberEncoder.setPosition(ClimberCfg.CLIMBER_ENCODER_RESET);
   }
 
   private void registerLoggerObjects(){

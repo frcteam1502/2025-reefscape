@@ -31,7 +31,7 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   private final RelativeEncoder leftIntakeEncoder;
 
   private final SparkClosedLoopController leftPivotPIDController;
-  private double intakeSetPosition = 0;
+  private double intakeSetPosition = IntakeIndexerCfg.LEFTPIVOT_IN_POS;
   private enum IntakeState{
     IN,
     OUT,
@@ -59,7 +59,7 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     leftPivotPIDConfig.p(IntakeIndexerCfg.LEFTPIVOT_P_GAIN);
     leftPivotPIDConfig.i(IntakeIndexerCfg.LEFTPIVOT_I_GAIN);
     leftPivotPIDConfig.d(IntakeIndexerCfg.LEFTPIVOT_D_GAIN);
-    leftPivotPIDConfig.outputRange(-0.5, 0.5);
+    leftPivotPIDConfig.outputRange(IntakeIndexerCfg.LEFTPIVOT_MIN_OUTPUT, IntakeIndexerCfg.LEFTPIVOT_MAX_OUTPUT);
     
     SparkMaxConfig leftPivotConfig = new SparkMaxConfig();
     leftPivotConfig.idleMode(IntakeIndexerCfg.LEFTPIVOT_IDLE_MODE);
@@ -101,7 +101,7 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   }
 
   private void reset(){
-    leftPivotEncoder.setPosition(0);
+    leftPivotEncoder.setPosition(IntakeIndexerCfg.LEFTPIVOT_ENCODER_RESET);
   }
 
   private void registerLoggerObjects(){

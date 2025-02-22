@@ -38,9 +38,9 @@ public class CoralDeliverySubsystem extends SubsystemBase {
 
   private LaserCan fwdCoralDeliveryTracker;//Change this name and duplicate for the 2nd sensor
   private LaserCan rwdCoralDeliveryTracker;
-  private double elevatorSetPosition = 0;
-  private double pivotSetPosition = 0;
-  private double deliverySetSpd = 0;
+  private double elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LOAD_POSITION;
+  private double pivotSetPosition = CoralDeliveryCfg.PIVOT_LOAD_POSITION;
+  private double deliverySetSpd = CoralDeliveryCfg.DELIVERY_OFF_SPEED;
 
   private double elevator_p_gain = CoralDeliveryCfg.ELEVATOR_P_GAIN;
   private double elevator_i_gain = CoralDeliveryCfg.ELEVATOR_I_GAIN;
@@ -174,7 +174,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     elevatorPID_Config.p(CoralDeliveryCfg.ELEVATOR_P_GAIN);
     elevatorPID_Config.i(CoralDeliveryCfg.ELEVATOR_I_GAIN);
     elevatorPID_Config.d(CoralDeliveryCfg.ELEVATOR_D_GAIN);
-    elevatorPID_Config.outputRange(-.25,0.75);
+    elevatorPID_Config.outputRange(CoralDeliveryCfg.ELEVATOR_MIN_OUTPUT, CoralDeliveryCfg.ELEVATOR_MAX_OUTPUT);
     
     elevatorConfig.idleMode(CoralDeliveryCfg.ELEVATOR_IDLE_MODE);
     elevatorConfig.inverted(CoralDeliveryCfg.ELEVATOR_MOTOR_REVERSED);
@@ -199,8 +199,8 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     pivotPID_Config.p(CoralDeliveryCfg.PIVOT_P_GAIN);
     pivotPID_Config.i(CoralDeliveryCfg.PIVOT_I_GAIN);
     pivotPID_Config.d(CoralDeliveryCfg.PIVOT_D_GAIN);
-    pivotPID_Config.outputRange(-.25,0.4);
-
+    pivotPID_Config.outputRange(CoralDeliveryCfg.PIVOT_MIN_OUTPUT, CoralDeliveryCfg.PIVOT_MAX_OUTPUT);
+    
     pivotConfig.idleMode(CoralDeliveryCfg.PIVOT_IDLE_MODE);
     pivotConfig.inverted(CoralDeliveryCfg.PIVOT_MOTOR_REVERSED);
     pivotConfig.smartCurrentLimit(CoralDeliveryCfg.PIVOT_CURRENT_LIMIT);
@@ -259,8 +259,8 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   }
 
   private void reset(){
-    elevatorEncoder.setPosition(0);
-    pivotEncoder.setPosition(0);
+    elevatorEncoder.setPosition(CoralDeliveryCfg.ELEVATOR_ENCODER_RESET);
+    pivotEncoder.setPosition(CoralDeliveryCfg.PIVOT_ENCODER_RESET);
   }
 
   @Override
@@ -473,7 +473,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
         elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_MAX_LIMIT;
       }
     }else{
-      elevatorSetPosition = 0;
+      elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LOAD_POSITION;
     }
   }
 
@@ -487,7 +487,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
         pivotSetPosition = CoralDeliveryCfg.PIVOT_MAX_LIMIT;
       }
     }else{
-      pivotSetPosition = 0;
+      pivotSetPosition = CoralDeliveryCfg.PIVOT_LOAD_POSITION;
     }
   }
 

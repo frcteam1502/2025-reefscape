@@ -19,6 +19,9 @@ public class ClimberCfg {
     public static final double CLIMBER_P_GAIN = 0.2;
     public static final double CLIMBER_I_GAIN = 0;
     public static final double CLIMBER_D_GAIN = 0;
+    public static final double CLIMBER_MAX_OUTPUT = 1;
+    public static final double CLIMBER_MIN_OUTPUT = -1;
+    public static final double CLIMBER_ENCODER_RESET = 0;
 
     public static final double CLIMBER_STOWED_POS = 0;
     public static final double CLIMBER_DEPLOYED_POS = 19;

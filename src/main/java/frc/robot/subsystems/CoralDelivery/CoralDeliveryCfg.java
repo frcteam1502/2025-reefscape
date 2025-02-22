@@ -47,13 +47,13 @@ public class CoralDeliveryCfg {
     public static final double PIVOT_P_GAIN = 0.05;
     public static final double PIVOT_I_GAIN = 0;
     public static final double PIVOT_D_GAIN = 0;
-    public static final double PIVOT_MAX_OUTPUT = 1;
+    public static final double PIVOT_MAX_OUTPUT = 0.4;
     public static final double PIVOT_MIN_OUTPUT = -0.25;
 
     public static final double ELEVATOR_P_GAIN = 0.2;
     public static final double ELEVATOR_I_GAIN = 0;
     public static final double ELEVATOR_D_GAIN = 0;
-    public static final double ELEVATOR_MAX_OUTPUT = 1;
+    public static final double ELEVATOR_MAX_OUTPUT = 0.75;
     public static final double ELEVATOR_MIN_OUTPUT = -0.25;
 
     public static final LaserCan FWD_LASER_CAN = new LaserCan(FORWARD_LASER_CAN_ID);
@@ -74,12 +74,14 @@ public class CoralDeliveryCfg {
      public static final double ELEVATOR_LTWO_POSITION = 50;
      public static final double ELEVATOR_LTHREE_POSITION = 90;
      public static final double ELEVATOR_LFOUR_POSITION = 120;
+     public static final double ELEVATOR_ENCODER_RESET = 0;
 
      public static final double PIVOT_LOAD_POSITION = 0.0;
      public static final double PIVOT_LONE_POSITION = 0;
      public static final double PIVOT_LTWO_POSITION = 0;
      public static final double PIVOT_LTHREE_POSITION = 0;
      public static final double PIVOT_LFOUR_POSITION = 125;
+     public static final double PIVOT_ENCODER_RESET = 0;
      public static final double INDEXER_ON_SPEED = 0.60;
      public static final double INDEXER_OFF_SPEED = 0;
     

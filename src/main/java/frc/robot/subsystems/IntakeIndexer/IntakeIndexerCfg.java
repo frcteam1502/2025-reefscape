@@ -25,6 +25,9 @@ public class IntakeIndexerCfg {
     public static final double LEFTPIVOT_P_GAIN = 0.1;
     public static final double LEFTPIVOT_I_GAIN = 0;
     public static final double LEFTPIVOT_D_GAIN = 0;
+    public static final double LEFTPIVOT_MAX_OUTPUT = 0.5;
+    public static final double LEFTPIVOT_MIN_OUTPUT = -0.5;
+    public static final double LEFTPIVOT_ENCODER_RESET = 0;
 
     public static final double LEFTPIVOT_IN_POS = 0;
     public static final double LEFTPIVOT_CLIMB_POS = 9;
