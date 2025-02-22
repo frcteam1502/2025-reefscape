@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Logger;
 import frc.robot.subsystems.CoralDelivery.CoralDeliveryCfg;
 import frc.robot.subsystems.CoralDelivery.CoralDeliverySubsystem;
+import frc.robot.subsystems.IntakeIndexer.IntakeIndexerCfg;
 
 
 
@@ -63,7 +64,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     algaePivotPIDConfig.p(AlgaeCfg.ALGAE_PIVOT_P_GAIN);
     algaePivotPIDConfig.i(AlgaeCfg.ALGAE_PIVOT_I_GAIN);
     algaePivotPIDConfig.d(AlgaeCfg.ALGAE_PIVOT_D_GAIN);
-    algaePivotPIDConfig.outputRange(-0.25, 0.25);
+    algaePivotPIDConfig.outputRange(AlgaeCfg.ALGAE_PIVOT_MIN_OUTPUT, AlgaeCfg.ALGAE_PIVOT_MAX_OUTPUT);
 
     SparkMaxConfig algaePivotConfig = new SparkMaxConfig();
     algaePivotConfig.idleMode(AlgaeCfg.ALGAE_PIVOT_IDLE_MODE);
@@ -88,7 +89,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     intakeMotorConfig.apply(algaePivotPIDConfig);
     
     algaeIntake.configure(intakeMotorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
-    algaePivotEncoder.setPosition(0);
+    algaePivotEncoder.setPosition(AlgaeCfg.ALGAE_HOME_POS);
 
     registerLoggerObjects();
   }
@@ -97,6 +98,7 @@ public class AlgaeSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     setAlgaePivotPosition(algaePivotSetPosition);
+    setAlgaeIntakeOnState();
     SmartDashboard.putNumber("Algae Pivot Position", getAlgaePivotPosition());
   }
 
@@ -108,13 +110,13 @@ public class AlgaeSubsystem extends SubsystemBase {
   public void setAlgaePivotState(){
     switch(algaePivotState){
       case HOME:
-        setAlgaeStateReef();
+        //setAlgaeStateReef();
         break;
       case REEF:
-        setAlgaeStateFloor();
+        //setAlgaeStateFloor();
         break;
       case FLOOR:
-        setAlgaeStateHome();
+        //setAlgaeStateHome();
         //setAlgaeStateL4();
         break;
       case LFOUR:
@@ -126,12 +128,12 @@ public class AlgaeSubsystem extends SubsystemBase {
   public void setAlgaeIntakeOnState(){
     switch(algaeIntakeState){
       case EMPTY:
-        algaeIntake.set(1.0);
-        algaeIntakeState = AlgaeIntakeState.LOADING;
+        //algaeIntake.set(AlgaeCfg.ALGAE_INTAKE_LOAD));
+        //algaeIntakeState = AlgaeIntakeState.LOADING;
         break;
       case LOADED:
-        algaeIntake.set(-1);
-        algaeIntakeState = AlgaeIntakeState.DISCHARGE;
+        //algaeIntake.set(AlgaeCfg.ALGAE_INTAKE_DISCHARGE);
+        //algaeIntakeState = AlgaeIntakeState.DISCHARGE;
         break;
       case LOADING:
       case DISCHARGE:
@@ -140,14 +142,15 @@ public class AlgaeSubsystem extends SubsystemBase {
     }
   }
 
+
   public void setAlgaeIntakeOffState(){
     switch(algaeIntakeState){
       case LOADING:
-        algaeIntake.set(0);
+        algaeIntake.set(AlgaeCfg.ALGAE_INTAKE_LOAD);
         algaeIntakeState = AlgaeIntakeState.LOADED;
         break;
       case DISCHARGE:
-        algaeIntake.set(0);
+        algaeIntake.set(AlgaeCfg.ALGAE_INTAKE_DISCHARGE);
         algaeIntakeState = AlgaeIntakeState.EMPTY;
         break;
       case LOADED:
@@ -155,6 +158,29 @@ public class AlgaeSubsystem extends SubsystemBase {
         //Handled by updateAlgaeIntakeOffState()
         break;
     }
+  }
+
+  public void algaeIntakeLoad(){
+    algaeIntake.set(AlgaeCfg.ALGAE_INTAKE_LOAD);
+  }
+  public void algaeIntakeDischarge(){
+    algaeIntake.set(AlgaeCfg.ALGAE_INTAKE_DISCHARGE);
+  }
+  public void algaeIntakeOff(){
+    algaeIntake.set(AlgaeCfg.ALGAE_INTAKE_OFF);
+  }
+
+  public void algaePivotHome(){
+    algaePivotSetPosition = AlgaeCfg.ALGAE_HOME_POS;
+  }
+  public void algaePivotReef(){
+    algaePivotSetPosition = AlgaeCfg.ALGAE_REEF_POS;
+  }
+  public void algaePivotFloor(){
+    algaePivotSetPosition = AlgaeCfg.ALGAE_FLOOR_POS;
+  }
+  public void algaePivotLFour(){
+    algaePivotSetPosition = AlgaeCfg.ALGAE_L4_POS;
   }
 
   public void setAlgaeStateHome(){
