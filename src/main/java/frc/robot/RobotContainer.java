@@ -91,19 +91,19 @@ public class RobotContainer {
     
     //Coral Delivery/Elevator
     //coralSubsystem.setDefaultCommand(new OperatorCommands(coralSubsystem));//Used for manual control of the elevator & Pivot
-    Operator.getButton11().onTrue(new InstantCommand(coralSubsystem::setDeliveryStateLoading));
-    Operator.getButton10().onTrue(new InstantCommand(coralSubsystem::setDeliveryStateUnloading));
-    Operator.getButton9().onTrue(new InstantCommand(coralSubsystem::setElevatorLoadPosition));
-    Operator.getButton4().onTrue(new InstantCommand(coralSubsystem::setElevatorLONEPosition));
-    Operator.getButton3().onTrue(new InstantCommand(coralSubsystem::setElevatorLTWOPosition));
-    Operator.getButton2().onTrue(new InstantCommand(coralSubsystem::setElevatorLTHREEPosition));
-    Operator.getButton1().onTrue(new InstantCommand(coralSubsystem::setElevatorLFOURPosition));
+    Operator.getCustCont1Button11().onTrue(new InstantCommand(coralSubsystem::setDeliveryStateLoading));
+    Operator.getCustCont1Button10().onTrue(new InstantCommand(coralSubsystem::setDeliveryStateUnloading));
+    Operator.getCustCont1Button9().onTrue(new InstantCommand(coralSubsystem::setElevatorLoadPosition));
+    Operator.getCustCont1Button4().onTrue(new InstantCommand(coralSubsystem::setElevatorLONEPosition));
+    Operator.getCustCont1Button3().onTrue(new InstantCommand(coralSubsystem::setElevatorLTWOPosition));
+    Operator.getCustCont1Button2().onTrue(new InstantCommand(coralSubsystem::setElevatorLTHREEPosition));
+    Operator.getCustCont1Button1().onTrue(new InstantCommand(coralSubsystem::setElevatorLFOURPosition));
 
     //Intake
-    Operator.getButton7().onTrue(new InstantCommand(intakeSubsystem::setIntakeState));
-    Operator.getButton8().onTrue(new InstantCommand(intakeSubsystem::intakeCoral))
+    Operator.getCustCont1Button7().onTrue(new InstantCommand(intakeSubsystem::setIntakeState));
+    Operator.getCustCont1Button8().onTrue(new InstantCommand(intakeSubsystem::intakeCoral))
                          .onFalse(new InstantCommand(intakeSubsystem::intakeOff));
-    Operator.getButton6().onTrue(new InstantCommand(intakeSubsystem::ejectCoral))
+    Operator.getCustCont1Button6().onTrue(new InstantCommand(intakeSubsystem::ejectCoral))
                          .onFalse(new InstantCommand(intakeSubsystem::intakeOff));
 
     /*Operator.getButton12().onTrue(new InstantCommand(algaeSubsystem::setAlgaeIntakeOnState))

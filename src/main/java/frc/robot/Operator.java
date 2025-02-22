@@ -19,7 +19,8 @@ public final class Operator {
   public static double getRightTrigger() { return Controller.getRightTriggerAxis();}
 
   //Reefscape custom controller mapping
-  public static final CommandGenericHID CustomController = new CommandGenericHID(OperatorConstants.kCustomControllerPort);
+  public static final CommandGenericHID CustomController1 = new CommandGenericHID(OperatorConstants.kCustomControllerPort1);
+  public static final CommandGenericHID CustomController2 = new CommandGenericHID(OperatorConstants.kCustomControllerPort2); 
   public static final int CUST_CONTROLLER_BUTTON_1  = 1;
   public static final int CUST_CONTROLLER_BUTTON_2  = 2;
   public static final int CUST_CONTROLLER_BUTTON_3  = 3;
@@ -32,85 +33,100 @@ public final class Operator {
   public static final int CUST_CONTROLLER_BUTTON_10 = 10;
   public static final int CUST_CONTROLLER_BUTTON_11 = 11;
   public static final int CUST_CONTROLLER_BUTTON_12 = 12;
-  public static final int CUST_CONTROLLER_BUTTON_13 = 13;
-  public static final int CUST_CONTROLLER_BUTTON_14 = 14;
-  public static final int CUST_CONTROLLER_BUTTON_15 = 15;
-  public static final int CUST_CONTROLLER_BUTTON_16 = 16;
-  public static final int CUST_CONTROLLER_BUTTON_17 = 17;
-  public static final int CUST_CONTROLLER_BUTTON_18 = 18;
-  public static final int CUST_CONTROLLER_BUTTON_19 = 19;
-  public static final int CUST_CONTROLLER_BUTTON_20 = 20;
+
   public static final int CUST_CONTROLLER_Y_AXIS    = 1;
   public static final int CUST_CONTROLLER_X_AXIS    = 2;
 
-  public static Trigger getButton1() {
-    return CustomController.button(CUST_CONTROLLER_BUTTON_1);
+  //Cust Controller 1
+  public static Trigger getCustCont1Button1() {
+    return CustomController1.button(CUST_CONTROLLER_BUTTON_1);
   }
-  public static Trigger getButton2() {
-    return CustomController.button(CUST_CONTROLLER_BUTTON_2);
+  public static Trigger getCustCont1Button2() {
+    return CustomController1.button(CUST_CONTROLLER_BUTTON_2);
   }
-  public static Trigger getButton3() {
-    return CustomController.button(CUST_CONTROLLER_BUTTON_3);
+  public static Trigger getCustCont1Button3() {
+    return CustomController1.button(CUST_CONTROLLER_BUTTON_3);
   }
-  public static Trigger getButton4() {
-    return CustomController.button(CUST_CONTROLLER_BUTTON_4);
+  public static Trigger getCustCont1Button4() {
+    return CustomController1.button(CUST_CONTROLLER_BUTTON_4);
   }
-  public static Trigger getButton5() {
-    return CustomController.button(CUST_CONTROLLER_BUTTON_5);
+  public static Trigger getCustCont1Button5() {
+    return CustomController1.button(CUST_CONTROLLER_BUTTON_5);
   }
-  public static Trigger getButton6() {
-    return CustomController.button(CUST_CONTROLLER_BUTTON_6);
+  public static Trigger getCustCont1Button6() {
+    return CustomController1.button(CUST_CONTROLLER_BUTTON_6);
   }
-  public static Trigger getButton7() {
-    return CustomController.button(CUST_CONTROLLER_BUTTON_7);
+  public static Trigger getCustCont1Button7() {
+    return CustomController1.button(CUST_CONTROLLER_BUTTON_7);
   }
-  public static Trigger getButton8() {
-    return CustomController.button(CUST_CONTROLLER_BUTTON_8);
+  public static Trigger getCustCont1Button8() {
+    return CustomController1.button(CUST_CONTROLLER_BUTTON_8);
   }
-  public static Trigger getButton9() {
-    return CustomController.button(CUST_CONTROLLER_BUTTON_9);
+  public static Trigger getCustCont1Button9() {
+    return CustomController1.button(CUST_CONTROLLER_BUTTON_9);
   }
-  public static Trigger getButton10() {
-    return CustomController.button(CUST_CONTROLLER_BUTTON_10);
+  public static Trigger getCustCont1Button10() {
+    return CustomController1.button(CUST_CONTROLLER_BUTTON_10);
   }
-  public static Trigger getButton11() {
-    return CustomController.button(CUST_CONTROLLER_BUTTON_11);
+  public static Trigger getCustCont1Button11() {
+    return CustomController1.button(CUST_CONTROLLER_BUTTON_11);
   }
-  public static Trigger getButton12() {
-    return CustomController.button(CUST_CONTROLLER_BUTTON_12);
-  }
-  public static Trigger getButton13() {
-    return CustomController.button(CUST_CONTROLLER_BUTTON_12);
-  }
-  public static Trigger getButton14() {
-    return CustomController.button(CUST_CONTROLLER_BUTTON_12);
-  }
-  public static Trigger getButton15() {
-    return CustomController.button(CUST_CONTROLLER_BUTTON_12);
-  }
-  public static Trigger getButton16() {
-    return CustomController.button(CUST_CONTROLLER_BUTTON_12);
-  }
-  public static Trigger getButton17() {
-    return CustomController.button(CUST_CONTROLLER_BUTTON_12);
-  }
-  public static Trigger getButton18() {
-    return CustomController.button(CUST_CONTROLLER_BUTTON_12);
-  }
-  public static Trigger getButton19() {
-    return CustomController.button(CUST_CONTROLLER_BUTTON_12);
-  }
-  public static Trigger getButton20() {
-    return CustomController.button(CUST_CONTROLLER_BUTTON_12);
+  public static Trigger getCustCont1Button12() {
+    return CustomController1.button(CUST_CONTROLLER_BUTTON_12);
   }
 
-
-  public static double getXAxis(){
-    return CustomController.getRawAxis(CUST_CONTROLLER_X_AXIS);
+  public static double getCustCont1XAxis(){
+    return CustomController1.getRawAxis(CUST_CONTROLLER_X_AXIS);
   }
 
-  public static double getYAxis(){
-    return CustomController.getRawAxis(CUST_CONTROLLER_Y_AXIS);
+  public static double getCustCont1YAxis(){
+    return CustomController1.getRawAxis(CUST_CONTROLLER_Y_AXIS);
+  }
+
+  //Cust Controller 2
+  public static Trigger getCustCont2Button1() {
+    return CustomController2.button(CUST_CONTROLLER_BUTTON_1);
+  }
+  public static Trigger getCustCont2Button2() {
+    return CustomController2.button(CUST_CONTROLLER_BUTTON_2);
+  }
+  public static Trigger getCustCont2Button3() {
+    return CustomController2.button(CUST_CONTROLLER_BUTTON_3);
+  }
+  public static Trigger getCustCont2Button4() {
+    return CustomController2.button(CUST_CONTROLLER_BUTTON_4);
+  }
+  public static Trigger getCustCont2Button5() {
+    return CustomController2.button(CUST_CONTROLLER_BUTTON_5);
+  }
+  public static Trigger getCustCont2Button6() {
+    return CustomController2.button(CUST_CONTROLLER_BUTTON_6);
+  }
+  public static Trigger getCustCont2Button7() {
+    return CustomController2.button(CUST_CONTROLLER_BUTTON_7);
+  }
+  public static Trigger getCustCont2Button8() {
+    return CustomController2.button(CUST_CONTROLLER_BUTTON_8);
+  }
+  public static Trigger getCustCont2Button9() {
+    return CustomController2.button(CUST_CONTROLLER_BUTTON_9);
+  }
+  public static Trigger getCustCont2Button10() {
+    return CustomController2.button(CUST_CONTROLLER_BUTTON_10);
+  }
+  public static Trigger getCustCont2Button11() {
+    return CustomController2.button(CUST_CONTROLLER_BUTTON_11);
+  }
+  public static Trigger getCustCont2Button12() {
+    return CustomController2.button(CUST_CONTROLLER_BUTTON_12);
+  }
+
+  public static double getCustCont2XAxis(){
+    return CustomController2.getRawAxis(CUST_CONTROLLER_X_AXIS);
+  }
+
+  public static double getCustCont2YAxis(){
+    return CustomController2.getRawAxis(CUST_CONTROLLER_Y_AXIS);
   }
   
   //TODO: Create methods for the other buttons by following this convention

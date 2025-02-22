@@ -26,8 +26,8 @@ public class OperatorCommands extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    coralSubsystem.moveElevatorManually(Operator.getYAxis());
-    coralSubsystem.movePivotManually(Operator.getXAxis());
+    coralSubsystem.moveElevatorManually(Operator.getCustCont1YAxis());
+    coralSubsystem.movePivotManually(Operator.getCustCont1XAxis());
   }
 
   // Called once the command ends or is interrupted.
