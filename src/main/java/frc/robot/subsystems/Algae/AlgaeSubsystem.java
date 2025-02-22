@@ -14,6 +14,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Logger;
 import frc.robot.subsystems.CoralDelivery.CoralDeliveryCfg;
 import frc.robot.subsystems.CoralDelivery.CoralDeliverySubsystem;
 
@@ -31,14 +32,22 @@ public class AlgaeSubsystem extends SubsystemBase {
 
   private double algaePivotSetPosition = 0;
 
-  private enum AlgaeDeliveryState{
+  private enum AlgaePivotState{
     HOME,
     REEF,
     FLOOR,
     LFOUR
   }
 
-  AlgaeDeliveryState algaeState = AlgaeDeliveryState.HOME;
+  private enum AlgaeIntakeState{
+    LOADING,
+    LOADED,
+    DISCHARGE,
+    EMPTY
+  }
+
+  AlgaePivotState algaePivotState = AlgaePivotState.HOME;
+  AlgaeIntakeState algaeIntakeState = AlgaeIntakeState.EMPTY;
 
   public AlgaeSubsystem() {
     algaePivot = AlgaeCfg.ALGAE_PIVOT_MOTOR;
@@ -80,6 +89,8 @@ public class AlgaeSubsystem extends SubsystemBase {
     
     algaeIntake.configure(intakeMotorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
     algaePivotEncoder.setPosition(0);
+
+    registerLoggerObjects();
   }
   
   @Override
@@ -89,8 +100,13 @@ public class AlgaeSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Algae Pivot Position", getAlgaePivotPosition());
   }
 
-  public void updateAlgaeState(){
-    switch(algaeState){
+  public void registerLoggerObjects(){
+    Logger.RegisterSparkMax("Algae Pivot", AlgaeCfg.ALGAE_PIVOT_MOTOR);
+    Logger.RegisterSparkMax("Algae Intake", AlgaeCfg.ALGAE_INTAKE_MOTOR);
+  }
+
+  public void setAlgaePivotState(){
+    switch(algaePivotState){
       case HOME:
         setAlgaeStateReef();
         break;
@@ -98,39 +114,74 @@ public class AlgaeSubsystem extends SubsystemBase {
         setAlgaeStateFloor();
         break;
       case FLOOR:
-        setAlgaeStateL4();
+        setAlgaeStateHome();
+        //setAlgaeStateL4();
         break;
       case LFOUR:
-        setAlgaeStateHome();
+        //setAlgaeStateHome();
+        break;
+    }
+  }
+
+  public void setAlgaeIntakeOnState(){
+    switch(algaeIntakeState){
+      case EMPTY:
+        algaeIntake.set(1.0);
+        algaeIntakeState = AlgaeIntakeState.LOADING;
+        break;
+      case LOADED:
+        algaeIntake.set(-1);
+        algaeIntakeState = AlgaeIntakeState.DISCHARGE;
+        break;
+      case LOADING:
+      case DISCHARGE:
+        //Handled by updateAlgaeIntakeOffState()
+        break;
+    }
+  }
+
+  public void setAlgaeIntakeOffState(){
+    switch(algaeIntakeState){
+      case LOADING:
+        algaeIntake.set(0);
+        algaeIntakeState = AlgaeIntakeState.LOADED;
+        break;
+      case DISCHARGE:
+        algaeIntake.set(0);
+        algaeIntakeState = AlgaeIntakeState.EMPTY;
+        break;
+      case LOADED:
+      case EMPTY:
+        //Handled by updateAlgaeIntakeOffState()
         break;
     }
   }
 
   public void setAlgaeStateHome(){
-    if(algaeState == AlgaeDeliveryState.LFOUR){
+    if(algaePivotState == AlgaePivotState.LFOUR){
       setAlgaePivotHome();
-      algaeState = AlgaeDeliveryState.HOME;
+      algaePivotState = AlgaePivotState.HOME;
     }
   }
 
   public void setAlgaeStateReef(){
-    if(algaeState == AlgaeDeliveryState.HOME){
+    if(algaePivotState == AlgaePivotState.HOME){
       setAlgaePivotReef();
-      algaeState = AlgaeDeliveryState.REEF;
+      algaePivotState = AlgaePivotState.REEF;
     }
   }
 
   public void setAlgaeStateFloor(){
-    if(algaeState == AlgaeDeliveryState.REEF){
+    if(algaePivotState == AlgaePivotState.REEF){
       setAlgaePivotFloor();
-      algaeState = AlgaeDeliveryState.FLOOR;
+      algaePivotState = AlgaePivotState.FLOOR;
     }
   }
 
   public void setAlgaeStateL4(){
-    if(algaeState == AlgaeDeliveryState.FLOOR){
+    if(algaePivotState == AlgaePivotState.FLOOR){
       setAlgaePivotL4();
-      algaeState = AlgaeDeliveryState.LFOUR;
+      algaePivotState = AlgaePivotState.LFOUR;
     }
   }
 

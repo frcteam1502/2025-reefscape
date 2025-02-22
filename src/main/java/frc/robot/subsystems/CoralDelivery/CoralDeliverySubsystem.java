@@ -79,6 +79,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     UNLOADED,
     LOADING_FROM_INDEX1,
     LOADING_FROM_INDEX2,
+    LOADING_FROM_INDEX3,
     LOADED,
     UNLOADING,
     STOPPED
@@ -296,11 +297,16 @@ public class CoralDeliverySubsystem extends SubsystemBase {
       case LOADING_FROM_INDEX2:
         if((isFwdCoralPresent())&&
            (!isRwdCoralPresent())){
-            deliverySetSpd = CoralDeliveryCfg.DELIVERY_OFF_SPEED;
+            deliverySetSpd = CoralDeliveryCfg.DELIVERY_LOAD3_SPD;
             indexer.set(CoralDeliveryCfg.INDEXER_OFF_SPEED);
-            deliveryState = CoralDeliveryState.LOADED;
+            deliveryState = CoralDeliveryState.LOADING_FROM_INDEX3;
            }
         break;
+      case LOADING_FROM_INDEX3:
+        if(isRwdCoralPresent()){
+          deliverySetSpd = CoralDeliveryCfg.DELIVERY_OFF_SPEED;
+          deliveryState = CoralDeliveryState.LOADED;
+         }
       case LOADED:
         if((!isFwdCoralPresent())&&
         (!isRwdCoralPresent())){
@@ -344,7 +350,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     }else if(((deliveryState == CoralDeliveryState.STOPPED)||
               (deliveryState == CoralDeliveryState.UNLOADED))&&
              (getElevatorPosition()<=CoralDeliveryCfg.HOME_POS_THRESH)){
-      deliverySetSpd = CoralDeliveryCfg.DELIVERY_LOAD_SPD;
+      deliverySetSpd = CoralDeliveryCfg.DELIVERY_LOAD1_SPD;
       indexer.set(CoralDeliveryCfg.INDEXER_ON_SPEED);
       deliveryState = CoralDeliveryState.LOADING_FROM_INDEX1;
     }

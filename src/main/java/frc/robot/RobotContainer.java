@@ -106,9 +106,9 @@ public class RobotContainer {
     Operator.getButton6().onTrue(new InstantCommand(intakeSubsystem::ejectCoral))
                          .onFalse(new InstantCommand(intakeSubsystem::intakeOff));
 
-    /*Operator.getButton5().onTrue(new InstantCommand(algaeSubsystem::setAlgaePivotFloor));
-    Operator.getButton12().onTrue(new InstantCommand(algaeSubsystem::setAlgaePivotHome));*/
-    //Operator.getButton5().onTrue(new InstantCommand(algaeSubsystem::updateAlgaeState));
+    /*Operator.getButton12().onTrue(new InstantCommand(algaeSubsystem::setAlgaeIntakeOnState))
+                          .onFalse(new InstantCommand(algaeSubsystem::setAlgaeIntakeOffState));
+    Operator.getButton5().onTrue(new InstantCommand(algaeSubsystem::setAlgaePivotState));*/
 
 
     

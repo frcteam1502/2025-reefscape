@@ -24,7 +24,7 @@ public class CoralDeliveryCfg {
 
     public static final double ELEVATOR_GEAR_RATIO = 1/5.0;//TBD with design
     public static final double PIVOT_GEAR_RATIO = 1/60.0;//TBD with design
-    public static final double DELIVERY_GEAR_RATIO = 1/5.0;//TBD with design
+    public static final double DELIVERY_GEAR_RATIO = 1/12.0;//TBD with design
     public static final double INDEXER_GEAR_RATIO = 1/9.0;//TBD with design
 
     public static final double SPROCKET_DIA_CM = 4.47;
@@ -60,10 +60,11 @@ public class CoralDeliveryCfg {
     public static final LaserCan RWD_LASER_CAN = new LaserCan(REARWARD_LASER_CAN_ID);
 
      public static final double DELIVERY_OFF_SPEED = 0;
-     public static final double DELIVERY_FWD_SPEED = 2000;
-     public static final double DELIVERY_RWD_SPEED = -2000;
+     public static final double DELIVERY_FWD_SPEED = 900;
+     public static final double DELIVERY_RWD_SPEED = -900;
      public static final double DELIVERY_L4_UNLOAD_SPD = -700;
-     public static final double DELIVERY_LOAD_SPD = 300;
+     public static final double DELIVERY_LOAD1_SPD = 100;
+     public static final double DELIVERY_LOAD3_SPD = -75;
      public static final double DELIVERY_L1_UNLOAD_SPD = 700;
 
      public static final int CORAL_PRESENT_THRESH_MM = 60;
@@ -79,7 +80,7 @@ public class CoralDeliveryCfg {
      public static final double PIVOT_LTWO_POSITION = 0;
      public static final double PIVOT_LTHREE_POSITION = 0;
      public static final double PIVOT_LFOUR_POSITION = 125;
-     public static final double INDEXER_ON_SPEED = 0.5;
+     public static final double INDEXER_ON_SPEED = 0.60;
      public static final double INDEXER_OFF_SPEED = 0;
     
      public static final double ELEVATOR_CHANGE = 2;
@@ -89,10 +90,10 @@ public class CoralDeliveryCfg {
     
     public static final double HOME_POS_THRESH = 1;
     public static final double NEO550_KV = 917; //Published data from REV
-    public static final double DELIVERY_P_GAIN = 0.0004;
+    public static final double DELIVERY_P_GAIN = 0.0008;
     public static final double DELIVERY_I_GAIN = 0;
     public static final double DELIVERY_D_GAIN = 0;
-    public static final double DELIVERY_F_GAIN = .0005;
+    public static final double DELIVERY_F_GAIN = .0011;
     public static final boolean DELIVERY_USE_ARBFF = false;
 
 }
