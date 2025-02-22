@@ -32,6 +32,14 @@ public final class Operator {
   public static final int CUST_CONTROLLER_BUTTON_10 = 10;
   public static final int CUST_CONTROLLER_BUTTON_11 = 11;
   public static final int CUST_CONTROLLER_BUTTON_12 = 12;
+  public static final int CUST_CONTROLLER_BUTTON_13 = 13;
+  public static final int CUST_CONTROLLER_BUTTON_14 = 14;
+  public static final int CUST_CONTROLLER_BUTTON_15 = 15;
+  public static final int CUST_CONTROLLER_BUTTON_16 = 16;
+  public static final int CUST_CONTROLLER_BUTTON_17 = 17;
+  public static final int CUST_CONTROLLER_BUTTON_18 = 18;
+  public static final int CUST_CONTROLLER_BUTTON_19 = 19;
+  public static final int CUST_CONTROLLER_BUTTON_20 = 20;
   public static final int CUST_CONTROLLER_Y_AXIS    = 1;
   public static final int CUST_CONTROLLER_X_AXIS    = 2;
 
@@ -71,6 +79,31 @@ public final class Operator {
   public static Trigger getButton12() {
     return CustomController.button(CUST_CONTROLLER_BUTTON_12);
   }
+  public static Trigger getButton13() {
+    return CustomController.button(CUST_CONTROLLER_BUTTON_12);
+  }
+  public static Trigger getButton14() {
+    return CustomController.button(CUST_CONTROLLER_BUTTON_12);
+  }
+  public static Trigger getButton15() {
+    return CustomController.button(CUST_CONTROLLER_BUTTON_12);
+  }
+  public static Trigger getButton16() {
+    return CustomController.button(CUST_CONTROLLER_BUTTON_12);
+  }
+  public static Trigger getButton17() {
+    return CustomController.button(CUST_CONTROLLER_BUTTON_12);
+  }
+  public static Trigger getButton18() {
+    return CustomController.button(CUST_CONTROLLER_BUTTON_12);
+  }
+  public static Trigger getButton19() {
+    return CustomController.button(CUST_CONTROLLER_BUTTON_12);
+  }
+  public static Trigger getButton20() {
+    return CustomController.button(CUST_CONTROLLER_BUTTON_12);
+  }
+
 
   public static double getXAxis(){
     return CustomController.getRawAxis(CUST_CONTROLLER_X_AXIS);
