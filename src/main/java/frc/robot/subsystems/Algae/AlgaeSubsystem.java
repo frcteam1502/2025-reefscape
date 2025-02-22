@@ -89,17 +89,21 @@ public class AlgaeSubsystem extends SubsystemBase {
     intakeMotorConfig.apply(algaePivotPIDConfig);
     
     algaeIntake.configure(intakeMotorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
-    algaePivotEncoder.setPosition(AlgaeCfg.ALGAE_HOME_POS);
+
 
     registerLoggerObjects();
+    reset();
   }
   
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     setAlgaePivotPosition(algaePivotSetPosition);
-    setAlgaeIntakeOnState();
     SmartDashboard.putNumber("Algae Pivot Position", getAlgaePivotPosition());
+  }
+
+  private void reset(){
+    algaePivotEncoder.setPosition(AlgaeCfg.ALGAE_HOME_POS);
   }
 
   public void registerLoggerObjects(){
@@ -146,12 +150,12 @@ public class AlgaeSubsystem extends SubsystemBase {
   public void setAlgaeIntakeOffState(){
     switch(algaeIntakeState){
       case LOADING:
-        algaeIntake.set(AlgaeCfg.ALGAE_INTAKE_LOAD);
-        algaeIntakeState = AlgaeIntakeState.LOADED;
+        //algaeIntake.set(AlgaeCfg.ALGAE_INTAKE_LOAD);
+        //algaeIntakeState = AlgaeIntakeState.LOADED;
         break;
       case DISCHARGE:
-        algaeIntake.set(AlgaeCfg.ALGAE_INTAKE_DISCHARGE);
-        algaeIntakeState = AlgaeIntakeState.EMPTY;
+        //algaeIntake.set(AlgaeCfg.ALGAE_INTAKE_DISCHARGE);
+        //algaeIntakeState = AlgaeIntakeState.EMPTY;
         break;
       case LOADED:
       case EMPTY:
