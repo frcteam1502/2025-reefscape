@@ -451,6 +451,11 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION;
     pivotSetPosition = CoralDeliveryCfg.PIVOT_LFOUR_POSITION;
   }
+
+  public void setElevatorBargePosition(){
+    elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION;
+    pivotSetPosition = CoralDeliveryCfg.PIVOT_BARGE_POSITION;
+  }
   
   public void setPivotPosition(double position){
     pivotPIDController.setReference(position, SparkMax.ControlType.kPosition);

@@ -10,6 +10,7 @@ import frc.robot.subsystems.CoralDelivery.CoralDeliverySubsystem;
 import frc.robot.subsystems.IntakeIndexer.IntakeIndexerSubsystem;
 import frc.robot.subsystems.PowerManagement.MockDetector;
 import frc.robot.commands.DriverCommands;
+import frc.robot.commands.MoveAlgaeToBarge;
 import frc.robot.commands.OperatorCommands;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.StopDriveMotors;
@@ -117,7 +118,7 @@ public class RobotContainer {
     Operator.getCustCont2Button6().onTrue(new InstantCommand(algaeSubsystem::algaePivotHome));
     Operator.getCustCont2Button5().onTrue(new InstantCommand(algaeSubsystem::algaePivotReef));
     Operator.getCustCont2Button4().onTrue(new InstantCommand(algaeSubsystem::algaePivotFloor));
-    //Operator.getCustCont2Button3().onTrue(new InstantCommand(algaeSubsystem::algaePivotLFour));
+    Operator.getCustCont2Button3().onTrue(new MoveAlgaeToBarge(coralSubsystem, algaeSubsystem));
 
 
     

@@ -28,11 +28,11 @@ public class AlgaeCfg {
     public static final double ALGAE_HOME_POS = 0;
     public static final double ALGAE_REEF_POS = 15;
     public static final double ALGAE_FLOOR_POS = 35;
-    public static final double ALGAE_L4_POS = -24;
-    public static final double ALGAE_INTAKE_LOAD = 0.25;
-    public static final double ALGAE_INTAKE_DISCHARGE = -0.25;
+    public static final double ALGAE_BARGE_POS = -5;
+    public static final double ALGAE_INTAKE_LOAD = 0.5;
+    public static final double ALGAE_INTAKE_DISCHARGE = -1;
     public static final double ALGAE_INTAKE_LFOUR_DISCHARGE = 1;
-    public static final double ALGAE_INTAKE_OFF = 0;
+    public static final double ALGAE_INTAKE_OFF = 0.1;
     public static final double ALGAE_PIVOT_MIN_OUTPUT = -0.25;
     public static final double ALGAE_PIVOT_MAX_OUTPUT = 0.25;
 }

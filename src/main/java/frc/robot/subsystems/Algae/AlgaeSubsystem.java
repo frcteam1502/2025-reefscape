@@ -90,7 +90,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     
     algaeIntake.configure(intakeMotorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
 
-
+    algaeIntake.set(AlgaeCfg.ALGAE_INTAKE_OFF);
     registerLoggerObjects();
     reset();
   }
@@ -184,7 +184,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     algaePivotSetPosition = AlgaeCfg.ALGAE_FLOOR_POS;
   }
   public void algaePivotLFour(){
-    algaePivotSetPosition = AlgaeCfg.ALGAE_L4_POS;
+    algaePivotSetPosition = AlgaeCfg.ALGAE_BARGE_POS;
   }
 
   public void setAlgaeStateHome(){
@@ -236,7 +236,7 @@ public class AlgaeSubsystem extends SubsystemBase {
   }
 
   public void setAlgaePivotL4(){
-    algaePivotSetPosition = AlgaeCfg.ALGAE_L4_POS;
+    algaePivotSetPosition = AlgaeCfg.ALGAE_BARGE_POS;
   }
 
   public void setAlgaeIntakePower(double power){
