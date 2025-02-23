@@ -102,6 +102,7 @@ public class RobotContainer {
 
     //Intake
     Operator.getCustCont1Button7().onTrue(new InstantCommand(intakeSubsystem::setIntakeState));
+    Operator.getCustCont1Button5().onTrue(new InstantCommand(intakeSubsystem::setLeftIntakeClimb));
     Operator.getCustCont1Button8().onTrue(new InstantCommand(intakeSubsystem::intakeCoral))
                          .onFalse(new InstantCommand(intakeSubsystem::intakeOff));
     Operator.getCustCont1Button6().onTrue(new InstantCommand(intakeSubsystem::ejectCoral))

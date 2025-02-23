@@ -30,7 +30,7 @@ public class IntakeIndexerCfg {
     public static final double LEFTPIVOT_ENCODER_RESET = 0;
 
     public static final double LEFTPIVOT_IN_POS = 0;
-    public static final double LEFTPIVOT_CLIMB_POS = 9;
+    public static final double LEFTPIVOT_CLIMB_POS = 7;
     public static final double LEFTPIVOT_OUT_POS = 18.5;
     public static final double INTAKE_IN_SPEED = 1;
     public static final double INTAKE_OUT_SPEED = -1;
