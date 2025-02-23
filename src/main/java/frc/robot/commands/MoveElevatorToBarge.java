@@ -4,31 +4,30 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Operator;
+import frc.robot.subsystems.CoralDelivery.CoralDeliveryCfg;
 import frc.robot.subsystems.CoralDelivery.CoralDeliverySubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class OperatorCommands extends Command {
-  /** Creates a new OperatorCommands. */
-  private final CoralDeliverySubsystem coralSubsystem;
+public class MoveElevatorToBarge extends Command {
+  /** Creates a new MoveElevatorToBarge. */
+  CoralDeliverySubsystem coralDelivery;
 
-  public OperatorCommands(CoralDeliverySubsystem coralSubsystem) {
+  public MoveElevatorToBarge(CoralDeliverySubsystem coralDelivery) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.coralSubsystem = coralSubsystem;
+    this.coralDelivery = coralDelivery;
+    addRequirements(coralDelivery);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    coralDelivery.setElevatorBargePosition();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    coralSubsystem.moveElevatorManually(Operator.getCustCont1YAxis());
-    coralSubsystem.movePivotManually(Operator.getCustCont1XAxis());
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
@@ -37,6 +36,9 @@ public class OperatorCommands extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if(coralDelivery.getElevatorPosition() >= (CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION-1)){
+      return true;
+    }
     return false;
   }
 }

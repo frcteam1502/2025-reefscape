@@ -1,6 +1,5 @@
 package frc.robot.subsystems.CoralDelivery;
 
-import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
@@ -65,22 +64,23 @@ public class CoralDeliveryCfg {
      public static final double DELIVERY_L4_UNLOAD_SPD = -700;
      public static final double DELIVERY_LOAD1_SPD = 100;
      public static final double DELIVERY_LOAD3_SPD = -75;
-     public static final double DELIVERY_L1_UNLOAD_SPD = 250;
+     public static final double DELIVERY_L1_UNLOAD_SPD = 150;
 
      public static final int CORAL_PRESENT_THRESH_MM = 60;
 
      public static final double ELEVATOR_LOAD_POSITION = 0.0;
-     public static final double ELEVATOR_LONE_POSITION = 40;
+     public static final double ELEVATOR_LONE_POSITION = 20;
      public static final double ELEVATOR_LTWO_POSITION = 50;
      public static final double ELEVATOR_LTHREE_POSITION = 90;
-     public static final double ELEVATOR_LFOUR_POSITION = 120;
+     public static final double ELEVATOR_LFOUR_POSITION = 125;
      public static final double ELEVATOR_ENCODER_RESET = 0;
 
      public static final double PIVOT_LOAD_POSITION = 0.0;
-     public static final double PIVOT_LONE_POSITION = 0;
+     public static final double PIVOT_LONE_POSITION = 45;
      public static final double PIVOT_LTWO_POSITION = 0;
      public static final double PIVOT_LTHREE_POSITION = 0;
      public static final double PIVOT_LFOUR_POSITION = 125;
+     public static final double PIVOT_BARGE_POSITION = 45;
      public static final double PIVOT_ENCODER_RESET = 0;
      public static final double INDEXER_ON_SPEED = 0.60;
      public static final double INDEXER_OFF_SPEED = 0;
