@@ -11,7 +11,6 @@ import frc.robot.subsystems.IntakeIndexer.IntakeIndexerSubsystem;
 import frc.robot.subsystems.PowerManagement.MockDetector;
 import frc.robot.commands.DriverCommands;
 import frc.robot.commands.MoveAlgaeToBarge;
-import frc.robot.commands.OperatorCommands;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.StopDriveMotors;
 import frc.robot.subsystems.SwerveDrive.DriveSubsystem;
@@ -62,7 +61,6 @@ public class RobotContainer {
     NamedCommands.registerCommand("Stop Drive Motors", new StopDriveMotors(driveSubsystem));
     NamedCommands.registerCommand("Align to Left", new InstantCommand(driveSubsystem::moveToReefLeft));
     NamedCommands.registerCommand("Align to Right", new InstantCommand(driveSubsystem::moveToReefRight));
-    NamedCommands.registerCommand("Move to Left Coral Station", new InstantCommand(driveSubsystem::moveToLeftCoralStation));
   
     //Build an Autochooser from SmartDashboard selection.  Default will be Commands.none()
     //e.g new PathPlannerAuto("MiddleAutoAMPFinal");
