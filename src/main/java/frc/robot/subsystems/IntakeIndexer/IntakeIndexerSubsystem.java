@@ -118,16 +118,17 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   }
 
   public void setLeftIntakeClimb(){
+    intakeState = IntakeState.CLIMB;
     intakeSetPosition = IntakeIndexerCfg.LEFTPIVOT_CLIMB_POS;
   }
 
   public void setIntakeState(){
     switch(intakeState){
-      case CLIMB:
       case IN:
         intakeState = IntakeState.OUT;
         setLeftIntakeOut();
         break;
+      case CLIMB:
       case OUT:
         intakeState = IntakeState.IN;
         setLeftIntakeIn();
