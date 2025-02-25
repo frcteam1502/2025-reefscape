@@ -88,7 +88,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    //CameraServer.startAutomaticCapture();
+    CameraServer.startAutomaticCapture();
     
     RobotController.setBrownoutVoltage(3);
     //Register PDP and PH Logger items

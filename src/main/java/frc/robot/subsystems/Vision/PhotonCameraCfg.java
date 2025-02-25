@@ -14,9 +14,9 @@ public class PhotonCameraCfg{
 	public static final String RIGHT_APRILTAG_CAM = "rightAprilTagCam";
 
 	//Left AprilTag Cam Pose Config wrt robot center
-	public static final double LEFT_APRILTAG_CAM_XPOS_METERS = 0.08;//"Forward" from center, in meters
-	public static final double LEFT_APRILTAG_CAM_YPOS_METERS = 0.24;//"Left" from center, in meters
-	public static final double LEFT_APRILTAG_CAM_ZPOS_METERS = 1.015;//"Up" from center, in meters
+	public static final double LEFT_APRILTAG_CAM_XPOS_METERS = 0.07;//"Forward" from center, in meters
+	public static final double LEFT_APRILTAG_CAM_YPOS_METERS = 0.29;//"Left" from center, in meters
+	public static final double LEFT_APRILTAG_CAM_ZPOS_METERS = 1.03;//"Up" from center, in meters
 	
 	public static final double LEFT_APRILTAG_CAM_ROLL_DEG	= 0;
 	public static final double LEFT_APRILTAG_CAM_PITCH_DEG	= 20;
@@ -32,9 +32,9 @@ public class PhotonCameraCfg{
 
 	
 	//Right AprilTag Cam Pose Config wrt robot center
-	public static final double RIGHT_APRILTAG_CAM_XPOS_METERS = 0.08;//"Forward" from center, in meters
-	public static final double RIGHT_APRILTAG_CAM_YPOS_METERS = 0.24;//"Left" from center, in meters
-	public static final double RIGHT_APRILTAG_CAM_ZPOS_METERS = 0;//"Up" from center, in meters
+	public static final double RIGHT_APRILTAG_CAM_XPOS_METERS = 0.07;//"Forward" from center, in meters
+	public static final double RIGHT_APRILTAG_CAM_YPOS_METERS = 0.29;//"Left" from center, in meters
+	public static final double RIGHT_APRILTAG_CAM_ZPOS_METERS = 1.03;//"Up" from center, in meters
 	
 	public static final double RIGHT_APRILTAG_CAM_ROLL_DEG	= 0;
 	public static final double RIGHT_APRILTAG_CAM_PITCH_DEG	= 20;
