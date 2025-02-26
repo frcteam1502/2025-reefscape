@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "StartToBackRight"
+            "pathName": "RightStartToBackRight"
           }
         },
         {
@@ -19,7 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BackRightToStation"
+            "pathName": "BackRightToRightStation"
           }
         }
       ]
