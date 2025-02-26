@@ -5,21 +5,53 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "LeftStartToBackRight"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LeftStartToBackRight"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Elevator to L4"
+                }
+              }
+            ]
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 5.0
+            "waitTime": 0.5
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "BackLeftToLeftStation"
+            "name": "Unload Coral"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "BackLeftToLeftStation"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Elevator to Load"
+                }
+              }
+            ]
           }
         }
       ]

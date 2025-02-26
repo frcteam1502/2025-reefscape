@@ -525,4 +525,18 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     }
   }
 
+  public boolean isCoralLoaded(){
+    if(deliveryState == CoralDeliveryState.LOADED){
+      return true;
+    }
+    return false;
+  }
+
+  public boolean isCoralUnloaded(){
+    if(deliveryState == CoralDeliveryState.UNLOADED){
+      return true;
+    }
+    return false;
+  }
+
 }

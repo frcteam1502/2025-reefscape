@@ -10,9 +10,13 @@ import frc.robot.subsystems.CoralDelivery.CoralDeliverySubsystem;
 import frc.robot.subsystems.IntakeIndexer.IntakeIndexerSubsystem;
 import frc.robot.subsystems.PowerManagement.MockDetector;
 import frc.robot.commands.DriverCommands;
+import frc.robot.commands.LoadCoral;
 import frc.robot.commands.MoveAlgaeToBarge;
+import frc.robot.commands.MoveElevatorToL0;
+import frc.robot.commands.MoveElevatorToL4;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.StopDriveMotors;
+import frc.robot.commands.UnloadCoral;
 import frc.robot.subsystems.SwerveDrive.DriveSubsystem;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -61,6 +65,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("Stop Drive Motors", new StopDriveMotors(driveSubsystem));
     NamedCommands.registerCommand("Align to Left", new InstantCommand(driveSubsystem::moveToReefLeft));
     NamedCommands.registerCommand("Align to Right", new InstantCommand(driveSubsystem::moveToReefRight));
+    NamedCommands.registerCommand("Elevator to L4", new MoveElevatorToL4(coralSubsystem));
+    NamedCommands.registerCommand("Elevator to Load", new MoveElevatorToL0(coralSubsystem));
+    NamedCommands.registerCommand("Load Coral", new LoadCoral(coralSubsystem));
+    NamedCommands.registerCommand("Unload Coral", new UnloadCoral(coralSubsystem));
   
     //Build an Autochooser from SmartDashboard selection.  Default will be Commands.none()
     //e.g new PathPlannerAuto("MiddleAutoAMPFinal");
