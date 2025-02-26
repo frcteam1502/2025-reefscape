@@ -344,7 +344,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     else if ((deliveryState == CoralDeliveryState.LOADING_FROM_INDEX1)||
              (deliveryState == CoralDeliveryState.LOADING_FROM_INDEX2)||
              (deliveryState == CoralDeliveryState.LOADING_FROM_INDEX3)){
-        deliverySetSpd = CoralDeliveryCfg.DELIVERY_ON_SPD;
+        deliverySetSpd = CoralDeliveryCfg.DELIVERY_FWD_SPEED;
         deliveryState = CoralDeliveryState.UNLOADING;
     }
     /*else if (deliveryState == CoralDeliveryState.UNLOADING){
