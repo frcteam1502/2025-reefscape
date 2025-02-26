@@ -75,15 +75,16 @@ public class CoralDeliveryCfg {
      public static final double ELEVATOR_LFOUR_POSITION = 125;
      public static final double ELEVATOR_ENCODER_RESET = 0;
 
-     public static final double PIVOT_LOAD_POSITION = 0;
+     public static final double PIVOT_LOAD_POSITION = 5;
      public static final double PIVOT_LONE_POSITION = 45;
-     public static final double PIVOT_LTWO_POSITION = 0;
-     public static final double PIVOT_LTHREE_POSITION = 0;
-     public static final double PIVOT_LFOUR_POSITION = 135;
+     public static final double PIVOT_LTWO_POSITION = 5;
+     public static final double PIVOT_LTHREE_POSITION = 5;
+     public static final double PIVOT_LFOUR_POSITION = 130;
      public static final double PIVOT_BARGE_POSITION = 45;
      public static final double PIVOT_ENCODER_RESET = 0;
-     public static final double INDEXER_ON_SPEED = 0.60;
+     public static final double INDEXER_ON_SPEED = 0.40;
      public static final double INDEXER_OFF_SPEED = 0;
+     public static final double INDEXER_REVERSE_SPEED = -0.4;
     
      public static final double ELEVATOR_CHANGE = 2;
      public static final double ELEVATOR_MAX_LIMIT = 130;
@@ -99,7 +100,6 @@ public class CoralDeliveryCfg {
     public static final double DELIVERY_F_GAIN = .0011;
     public static final boolean DELIVERY_USE_ARBFF = false;
     public static final double DELIVERY_ON_SPD = 1000;
-    public static final double INDEXER_REVERSE_SPEED = -0.1;
     public static final double DELIVERY_BACKWARD_SPEED = -200;
 
 }
