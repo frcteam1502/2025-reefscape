@@ -79,6 +79,7 @@ public class Climber extends SubsystemBase {
     SmartDashboard.putNumber("Climber Position", getClimberPosition());
     SmartDashboard.putString("Climber State", climberState.name());
     SmartDashboard.putNumber("Climber Set Positino", climberSetPos);
+    SmartDashboard.putNumber("Climber Output", climber.getAppliedOutput());
   }
 
   private void reset(){
