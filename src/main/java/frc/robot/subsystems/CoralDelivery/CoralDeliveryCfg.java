@@ -91,11 +91,15 @@ public class CoralDeliveryCfg {
     public static final double PIVOT_MAX_LIMIT = 130;
     
     public static final double HOME_POS_THRESH = 1;
+    public static final double LFOUR_POS_THRESH = 115;
     public static final double NEO550_KV = 917; //Published data from REV
     public static final double DELIVERY_P_GAIN = 0.0008;
     public static final double DELIVERY_I_GAIN = 0;
     public static final double DELIVERY_D_GAIN = 0;
     public static final double DELIVERY_F_GAIN = .0011;
     public static final boolean DELIVERY_USE_ARBFF = false;
+    public static final double DELIVERY_ON_SPD = 1000;
+    public static final double INDEXER_REVERSE_SPEED = -0.1;
+    public static final double DELIVERY_BACKWARD_SPEED = -200;
 
 }

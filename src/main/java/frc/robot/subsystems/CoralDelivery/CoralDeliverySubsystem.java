@@ -319,6 +319,9 @@ public class CoralDeliverySubsystem extends SubsystemBase {
            (!isRwdCoralPresent())){
               deliverySetSpd = CoralDeliveryCfg.DELIVERY_OFF_SPEED;
               deliveryState = CoralDeliveryState.UNLOADED;
+              if (getElevatorPosition()>=CoralDeliveryCfg.HOME_POS_THRESH){
+                indexer.set(CoralDeliveryCfg.INDEXER_REVERSE_SPEED);
+              }
            }
       case STOPPED:
            //This will be handled by the setDeliveryStateLoading() method.  Always goes to LOADING_FROM_INDEX1 (same as UNLOADED)
@@ -326,36 +329,50 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   }
 
   public void setDeliveryStateUnloading(){
-    if((deliveryState == CoralDeliveryState.LOADING_FROM_INDEX3)||
-       (deliveryState == CoralDeliveryState.LOADED)){
-      if(elevatorSetPosition == CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION){
-        deliverySetSpd = CoralDeliveryCfg.DELIVERY_L4_UNLOAD_SPD;
-      }
-      else if (elevatorSetPosition == CoralDeliveryCfg.ELEVATOR_LONE_POSITION){
+    if(deliveryState == CoralDeliveryState.LOADED){
+        if(elevatorSetPosition == CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION){
+          deliverySetSpd = CoralDeliveryCfg.DELIVERY_L4_UNLOAD_SPD;
+        }
+        else if (elevatorSetPosition == CoralDeliveryCfg.ELEVATOR_LONE_POSITION){
         deliverySetSpd = CoralDeliveryCfg.DELIVERY_L1_UNLOAD_SPD;
-      }
-      else{
+        }
+        else{
         deliverySetSpd = CoralDeliveryCfg.DELIVERY_FWD_SPEED;
-      }
-      deliveryState = CoralDeliveryState.UNLOADING;
+        deliveryState = CoralDeliveryState.UNLOADING;
+        }
     }
-  }
+    else if ((deliveryState == CoralDeliveryState.LOADING_FROM_INDEX1)||
+             (deliveryState == CoralDeliveryState.LOADING_FROM_INDEX2)||
+             (deliveryState == CoralDeliveryState.LOADING_FROM_INDEX3)){
+        deliverySetSpd = CoralDeliveryCfg.DELIVERY_ON_SPD;
+        deliveryState = CoralDeliveryState.UNLOADING;
+    }
+    /*else if (deliveryState == CoralDeliveryState.UNLOADING){
+      deliverySetSpd = CoralDeliveryCfg.DELIVERY_BACKWARD_SPEED;
+      deliveryState = CoralDeliveryState.LOADING_FROM_INDEX1;
+    }*/
+    else {
+      //DO NOTHING
+    }
+   }
+
 
   public void setDeliveryStateLoading(){
-    if((deliveryState == CoralDeliveryState.LOADING_FROM_INDEX1)||
-       (deliveryState == CoralDeliveryState.LOADING_FROM_INDEX2)){
-      //Stop loading!!
-      deliverySetSpd = CoralDeliveryCfg.DELIVERY_OFF_SPEED;
-      indexer.set(CoralDeliveryCfg.INDEXER_OFF_SPEED);
-      deliveryState = CoralDeliveryState.STOPPED;
-    }else if(((deliveryState == CoralDeliveryState.STOPPED)||
-              (deliveryState == CoralDeliveryState.UNLOADED))&&
-             (getElevatorPosition()<=CoralDeliveryCfg.HOME_POS_THRESH)){
-      deliverySetSpd = CoralDeliveryCfg.DELIVERY_LOAD1_SPD;
-      indexer.set(CoralDeliveryCfg.INDEXER_ON_SPEED);
-      deliveryState = CoralDeliveryState.LOADING_FROM_INDEX1;
+   if((deliveryState == CoralDeliveryState.LOADING_FROM_INDEX1)||
+      (deliveryState == CoralDeliveryState.LOADING_FROM_INDEX2)){
+     //Stop loading!!
+     deliverySetSpd = CoralDeliveryCfg.DELIVERY_OFF_SPEED;
+     indexer.set(CoralDeliveryCfg.INDEXER_OFF_SPEED);
+     deliveryState = CoralDeliveryState.STOPPED;
+   }else if(((deliveryState == CoralDeliveryState.STOPPED)||
+             (deliveryState == CoralDeliveryState.UNLOADED))&&
+            (getElevatorPosition()<=CoralDeliveryCfg.HOME_POS_THRESH)){
+     deliverySetSpd = CoralDeliveryCfg.DELIVERY_LOAD1_SPD;
+     indexer.set(CoralDeliveryCfg.INDEXER_ON_SPEED);
+     deliveryState = CoralDeliveryState.LOADING_FROM_INDEX1;
     }
   }
+  
 
   public void setDeliveryPower(double power){
     delivery.set(power);
