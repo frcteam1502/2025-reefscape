@@ -11,15 +11,27 @@
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 5.0
+            "name": "Elevator to L4"
           }
         },
         {
-          "type": "path",
+          "type": "wait",
           "data": {
-            "pathName": "BackRightToRightStation"
+            "waitTime": 0.75
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Unload Coral"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Elevator to Load"
           }
         }
       ]
