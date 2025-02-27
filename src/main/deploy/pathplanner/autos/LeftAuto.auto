@@ -5,22 +5,15 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "LeftStartToBackRight"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Elevator to L4"
-                }
-              }
-            ]
+            "pathName": "LeftStartToBackRight"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Elevator to L4"
           }
         },
         {
@@ -36,28 +29,9 @@
           }
         },
         {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "BackLeftToLeftStation"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Elevator to Load"
-                }
-              }
-            ]
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "Load Coral"
+            "name": "Elevator to Load"
           }
         }
       ]

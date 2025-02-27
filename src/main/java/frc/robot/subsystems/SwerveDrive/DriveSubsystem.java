@@ -236,7 +236,7 @@ public class DriveSubsystem extends SubsystemBase{
     updateOdometry();
     updateEstimatedPose();
     updateLimelightPose();
-    updatePhotonVisionPose();
+    //updatePhotonVisionPose();
 
     updateDashboard();
   }
@@ -525,8 +525,8 @@ public class DriveSubsystem extends SubsystemBase{
         this::getRobotRelativeSpeeds, //ChassisSpeeds provider.  MUST BE ROBOT RELATIVE!!! 
         this::driveRobotRelative, //ChassisSpeeds consumer.  MUST BE ROBOT RELATIVE!!!
         new PPHolonomicDriveController(
-                new PIDConstants(5.0, 0, 0), //Translation PID constants
-                new PIDConstants(5.0, 0, 0)), //Rotation PID constants
+                new PIDConstants(5.5, 0, 0), //Translation PID constants
+                new PIDConstants(5.5, 0, 0)), //Rotation PID constants
         config,
         () -> {
           // Boolean supplier that controls when the path will be mirrored for the red alliance
