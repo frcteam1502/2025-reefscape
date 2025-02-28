@@ -203,24 +203,6 @@ public class CoralDeliverySubsystem extends SubsystemBase {
         .maxVelocity(7500)
         .maxAcceleration(10000)
         .allowedClosedLoopError(1);
-
-    //elevatorEncoderConfig.positionConversionFactor(CoralDeliveryCfg.ELEVATOR_POS_CONVERSION_CM);
-    //elevatorEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.ELEVATOR_POS_CONVERSION_CM);
-
-    
-    
-    //elevatorPID_Config.p(CoralDeliveryCfg.ELEVATOR_P_GAIN);
-    //elevatorPID_Config.i(CoralDeliveryCfg.ELEVATOR_I_GAIN);
-    //elevatorPID_Config.d(CoralDeliveryCfg.ELEVATOR_D_GAIN);
-    //elevatorPID_Config.outputRange(CoralDeliveryCfg.ELEVATOR_MIN_OUTPUT, CoralDeliveryCfg.ELEVATOR_MAX_OUTPUT);
-    
-    //elevatorConfig.idleMode(CoralDeliveryCfg.ELEVATOR_IDLE_MODE);
-    //elevatorConfig.inverted(CoralDeliveryCfg.ELEVATOR_MOTOR_REVERSED);
-    //elevatorConfig.smartCurrentLimit(CoralDeliveryCfg.ELEVATOR_CURRENT_LIMIT);
-    
-    //Apply the encoder and PID configs to the Spark config
-    //elevatorConfig.apply(elevatorEncoderConfig);
-    //elevatorConfig.apply(elevatorPID_Config);
     
     //Finally write the config to the spark
     elevator.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
@@ -229,23 +211,29 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   private void configureCoralPivot(){
     //Setup the Pivot motor config
     pivotEncoder = pivot.getEncoder();
-    
-    pivotEncoderConfig.positionConversionFactor(CoralDeliveryCfg.PIVOT_ANGLE_CONVERSION_DEG);
-    pivotEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.PIVOT_ANGLE_CONVERSION_DEG);
-
     pivotPIDController = pivot.getClosedLoopController();
-    pivotPID_Config.p(CoralDeliveryCfg.PIVOT_P_GAIN);
-    pivotPID_Config.i(CoralDeliveryCfg.PIVOT_I_GAIN);
-    pivotPID_Config.d(CoralDeliveryCfg.PIVOT_D_GAIN);
-    pivotPID_Config.outputRange(CoralDeliveryCfg.PIVOT_MIN_OUTPUT, CoralDeliveryCfg.PIVOT_MAX_OUTPUT);
-    
+
     pivotConfig.idleMode(CoralDeliveryCfg.PIVOT_IDLE_MODE);
     pivotConfig.inverted(CoralDeliveryCfg.PIVOT_MOTOR_REVERSED);
     pivotConfig.smartCurrentLimit(CoralDeliveryCfg.PIVOT_CURRENT_LIMIT);
 
-    //Apply the encoder and PID configs on Spark config
-    pivotConfig.apply(pivotEncoderConfig);
-    pivotConfig.apply(pivotPID_Config);
+    //Configure the encoder
+    pivotConfig.encoder
+        .positionConversionFactor(CoralDeliveryCfg.PIVOT_ANGLE_CONVERSION_DEG)
+        .velocityConversionFactor(CoralDeliveryCfg.PIVOT_ANGLE_CONVERSION_DEG);
+
+    //Configure the PID controller
+    pivotConfig.closedLoop
+        .p(CoralDeliveryCfg.PIVOT_P_GAIN)
+        .i(CoralDeliveryCfg.PIVOT_I_GAIN)
+        .d(CoralDeliveryCfg.PIVOT_D_GAIN)
+        .outputRange(CoralDeliveryCfg.PIVOT_MIN_OUTPUT, CoralDeliveryCfg.PIVOT_MAX_OUTPUT);
+
+    //Configure Max Motion
+    pivotConfig.closedLoop.maxMotion
+        .maxVelocity(1000)
+        .maxAcceleration(1000)
+        .allowedClosedLoopError(1);
 
     //Finally write the config to the spark
     pivot.configure(pivotConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
@@ -276,6 +264,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     fwdCoralDeliveryTracker = CoralDeliveryCfg.FWD_LASER_CAN;
     rwdCoralDeliveryTracker = CoralDeliveryCfg.RWD_LASER_CAN;
   }
+  
   private void configureIndexer(){
     indexerEncoder = indexer.getEncoder();
     indexerEncoderConfig.positionConversionFactor(CoralDeliveryCfg.INDEXER_GEAR_RATIO);
