@@ -168,22 +168,36 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   private void configureElevator(){
     //Setup the Elevator motor config
     elevatorEncoder = elevator.getEncoder();
-    elevatorEncoderConfig.positionConversionFactor(CoralDeliveryCfg.ELEVATOR_POS_CONVERSION_CM);
-    elevatorEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.ELEVATOR_POS_CONVERSION_CM);
-    
     elevatorPIDController = elevator.getClosedLoopController();
-    elevatorPID_Config.p(CoralDeliveryCfg.ELEVATOR_P_GAIN);
-    elevatorPID_Config.i(CoralDeliveryCfg.ELEVATOR_I_GAIN);
-    elevatorPID_Config.d(CoralDeliveryCfg.ELEVATOR_D_GAIN);
-    elevatorPID_Config.outputRange(CoralDeliveryCfg.ELEVATOR_MIN_OUTPUT, CoralDeliveryCfg.ELEVATOR_MAX_OUTPUT);
+
+    elevatorConfig.idleMode(CoralDeliveryCfg.ELEVATOR_IDLE_MODE);
+    elevatorConfig.inverted(CoralDeliveryCfg.ELEVATOR_MOTOR_REVERSED);
+    elevatorConfig.smartCurrentLimit(CoralDeliveryCfg.ELEVATOR_CURRENT_LIMIT);
+
+    elevatorConfig.encoder
+        .positionConversionFactor(CoralDeliveryCfg.ELEVATOR_POS_CONVERSION_CM)
+        .velocityConversionFactor(CoralDeliveryCfg.ELEVATOR_POS_CONVERSION_CM);
+
+    //elevatorEncoderConfig.positionConversionFactor(CoralDeliveryCfg.ELEVATOR_POS_CONVERSION_CM);
+    //elevatorEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.ELEVATOR_POS_CONVERSION_CM);
+
+    elevatorConfig.closedLoop
+      .p(CoralDeliveryCfg.ELEVATOR_P_GAIN)
+      .i(CoralDeliveryCfg.ELEVATOR_I_GAIN)
+      .d(CoralDeliveryCfg.ELEVATOR_D_GAIN);
+    
+    //elevatorPID_Config.p(CoralDeliveryCfg.ELEVATOR_P_GAIN);
+    //elevatorPID_Config.i(CoralDeliveryCfg.ELEVATOR_I_GAIN);
+    //elevatorPID_Config.d(CoralDeliveryCfg.ELEVATOR_D_GAIN);
+    //elevatorPID_Config.outputRange(CoralDeliveryCfg.ELEVATOR_MIN_OUTPUT, CoralDeliveryCfg.ELEVATOR_MAX_OUTPUT);
     
     elevatorConfig.idleMode(CoralDeliveryCfg.ELEVATOR_IDLE_MODE);
     elevatorConfig.inverted(CoralDeliveryCfg.ELEVATOR_MOTOR_REVERSED);
     elevatorConfig.smartCurrentLimit(CoralDeliveryCfg.ELEVATOR_CURRENT_LIMIT);
     
     //Apply the encoder and PID configs to the Spark config
-    elevatorConfig.apply(elevatorEncoderConfig);
-    elevatorConfig.apply(elevatorPID_Config);
+    //elevatorConfig.apply(elevatorEncoderConfig);
+    //elevatorConfig.apply(elevatorPID_Config);
     
     //Finally write the config to the spark
     elevator.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
@@ -443,7 +457,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   }
     
   public void setElevatorPosition(double position){
-    elevatorPIDController.setReference(position, SparkMax.ControlType.kPosition);
+    elevatorPIDController.setReference(position, SparkMax.ControlType.kMAXMotionPositionControl);
   }
 
   public void setDeliverySpd(double speed){
