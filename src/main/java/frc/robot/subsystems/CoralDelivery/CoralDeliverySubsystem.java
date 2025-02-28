@@ -74,6 +74,8 @@ public class CoralDeliverySubsystem extends SubsystemBase {
 
   SimpleMotorFeedforward deliveryFeedforward = new SimpleMotorFeedforward(0.2,.006);
 
+  double maxVelocity = 0;
+
   private enum CoralDeliveryState{
     INIT,
     UNLOADED,
@@ -163,6 +165,13 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     SmartDashboard.putString("Delivery State", deliveryState.name());
     SmartDashboard.putNumber("Delivery Speed", deliveryEncoder.getVelocity());
     SmartDashboard.putNumber("Delivery Set Speed",deliverySetSpd);
+
+    SmartDashboard.putNumber("Elevator Velocity Conversion Factor", elevator.configAccessor.encoder.getVelocityConversionFactor());
+
+    if (Math.abs(elevatorEncoder.getVelocity()) > maxVelocity){
+      maxVelocity = Math.abs(elevatorEncoder.getVelocity());
+    }
+    SmartDashboard.putNumber("Elevator Max Velocity", maxVelocity);
   }
 
   private void configureElevator(){
@@ -177,23 +186,37 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     elevatorConfig.encoder
         .positionConversionFactor(CoralDeliveryCfg.ELEVATOR_POS_CONVERSION_CM)
         .velocityConversionFactor(CoralDeliveryCfg.ELEVATOR_POS_CONVERSION_CM);
+    
+    elevatorConfig.closedLoop
+        .p(CoralDeliveryCfg.ELEVATOR_P_GAIN)
+        .i(CoralDeliveryCfg.ELEVATOR_I_GAIN)
+        .d(CoralDeliveryCfg.ELEVATOR_D_GAIN)
+        .outputRange(CoralDeliveryCfg.ELEVATOR_MIN_OUTPUT, CoralDeliveryCfg.ELEVATOR_MAX_OUTPUT);
+      
+    elevatorConfig.closedLoop
+        .p(CoralDeliveryCfg.ELEVATOR_P_GAIN)
+        .i(CoralDeliveryCfg.ELEVATOR_I_GAIN)
+        .d(CoralDeliveryCfg.ELEVATOR_D_GAIN)
+        .outputRange(CoralDeliveryCfg.ELEVATOR_MIN_OUTPUT, CoralDeliveryCfg.ELEVATOR_MAX_OUTPUT);
+    
+    elevatorConfig.closedLoop.maxMotion
+        .maxVelocity(7500)
+        .maxAcceleration(10000)
+        .allowedClosedLoopError(1);
 
     //elevatorEncoderConfig.positionConversionFactor(CoralDeliveryCfg.ELEVATOR_POS_CONVERSION_CM);
     //elevatorEncoderConfig.velocityConversionFactor(CoralDeliveryCfg.ELEVATOR_POS_CONVERSION_CM);
 
-    elevatorConfig.closedLoop
-      .p(CoralDeliveryCfg.ELEVATOR_P_GAIN)
-      .i(CoralDeliveryCfg.ELEVATOR_I_GAIN)
-      .d(CoralDeliveryCfg.ELEVATOR_D_GAIN);
+    
     
     //elevatorPID_Config.p(CoralDeliveryCfg.ELEVATOR_P_GAIN);
     //elevatorPID_Config.i(CoralDeliveryCfg.ELEVATOR_I_GAIN);
     //elevatorPID_Config.d(CoralDeliveryCfg.ELEVATOR_D_GAIN);
     //elevatorPID_Config.outputRange(CoralDeliveryCfg.ELEVATOR_MIN_OUTPUT, CoralDeliveryCfg.ELEVATOR_MAX_OUTPUT);
     
-    elevatorConfig.idleMode(CoralDeliveryCfg.ELEVATOR_IDLE_MODE);
-    elevatorConfig.inverted(CoralDeliveryCfg.ELEVATOR_MOTOR_REVERSED);
-    elevatorConfig.smartCurrentLimit(CoralDeliveryCfg.ELEVATOR_CURRENT_LIMIT);
+    //elevatorConfig.idleMode(CoralDeliveryCfg.ELEVATOR_IDLE_MODE);
+    //elevatorConfig.inverted(CoralDeliveryCfg.ELEVATOR_MOTOR_REVERSED);
+    //elevatorConfig.smartCurrentLimit(CoralDeliveryCfg.ELEVATOR_CURRENT_LIMIT);
     
     //Apply the encoder and PID configs to the Spark config
     //elevatorConfig.apply(elevatorEncoderConfig);
