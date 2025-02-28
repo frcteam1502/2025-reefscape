@@ -33,6 +33,31 @@
           "data": {
             "name": "Elevator to Load"
           }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "BackLeftToLeftStation"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Load Coral"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake To Climb"
+                }
+              }
+            ]
+          }
         }
       ]
     }

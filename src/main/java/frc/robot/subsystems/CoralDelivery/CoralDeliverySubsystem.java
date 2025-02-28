@@ -355,10 +355,15 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     }
     else if ((deliveryState == CoralDeliveryState.LOADING_FROM_INDEX1)||
              (deliveryState == CoralDeliveryState.LOADING_FROM_INDEX2)||
-             (deliveryState == CoralDeliveryState.LOADING_FROM_INDEX3)){
-        deliverySetSpd = CoralDeliveryCfg.DELIVERY_FWD_SPEED;
-        deliveryState = CoralDeliveryState.CLEAR_DELIVERY;
-    }
+             (deliveryState == CoralDeliveryState.LOADING_FROM_INDEX3)){  
+                if(elevatorSetPosition == CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION){
+                  deliverySetSpd = CoralDeliveryCfg.DELIVERY_L4_UNLOAD_SPD;
+                }
+                else{
+                  deliverySetSpd = CoralDeliveryCfg.DELIVERY_FWD_SPEED;
+                }
+                deliveryState = CoralDeliveryState.CLEAR_DELIVERY;
+            }
     /*else if (deliveryState == CoralDeliveryState.UNLOADING){
       deliverySetSpd = CoralDeliveryCfg.DELIVERY_BACKWARD_SPEED;
       deliveryState = CoralDeliveryState.LOADING_FROM_INDEX1;
