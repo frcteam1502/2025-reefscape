@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Deploy Climber"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "CenterStartToCenterLeft"

@@ -70,6 +70,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Load Coral", new LoadCoral(coralSubsystem));
     NamedCommands.registerCommand("Unload Coral", new UnloadCoral(coralSubsystem));
     NamedCommands.registerCommand("Intake To Climb", new InstantCommand(intakeSubsystem:: setLeftIntakeClimb));
+    NamedCommands.registerCommand("Deploy Climber", new InstantCommand(climberSubsystem::setClimberOut));
   
     //Build an Autochooser from SmartDashboard selection.  Default will be Commands.none()
     //e.g new PathPlannerAuto("MiddleAutoAMPFinal");
@@ -118,10 +119,10 @@ public class RobotContainer {
     //Intake
     Operator.getCustCont1Button7().onTrue(new InstantCommand(intakeSubsystem::setIntakeState));
     Operator.getCustCont1Button5().onTrue(new InstantCommand(intakeSubsystem::setLeftIntakeClimb));
-    Operator.getCustCont1Button8().onTrue(new InstantCommand(intakeSubsystem::intakeCoral))
-                         .onFalse(new InstantCommand(intakeSubsystem::intakeOff));
-    Operator.getCustCont1Button6().onTrue(new InstantCommand(intakeSubsystem::ejectCoral))
-                         .onFalse(new InstantCommand(intakeSubsystem::intakeOff));
+   // Operator.getCustCont1Button8().onTrue(new InstantCommand(intakeSubsystem::intakeCoral))
+    //                     .onFalse(new InstantCommand(intakeSubsystem::intakeOff));
+   // Operator.getCustCont1Button6().onTrue(new InstantCommand(intakeSubsystem::ejectCoral))
+     //                    .onFalse(new InstantCommand(intakeSubsystem::intakeOff));
 
     /*Operator.getButton12().onTrue(new InstantCommand(algaeSubsystem::setAlgaeIntakeOnState))
                           .onFalse(new InstantCommand(algaeSubsystem::setAlgaeIntakeOffState));

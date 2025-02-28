@@ -9,7 +9,7 @@ public class IntakeIndexerCfg {
      public static final int LEFTINTAKE_MOTOR_ID = 2;
 
     public static final SparkMax LEFTPIVOT_MOTOR = new SparkMax(LEFTPIVOT_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
-    public static final SparkMax LEFTINTAKE_MOTOR = new SparkMax(LEFTINTAKE_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
+   // public static final SparkMax LEFTINTAKE_MOTOR = new SparkMax(LEFTINTAKE_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
 
     public static final double LEFTPIVOT_GEAR_RATIO = 1;//TBD with design
     public static final double LEFTINTAKE_GEAR_RATIO = 1;//TBD with design
