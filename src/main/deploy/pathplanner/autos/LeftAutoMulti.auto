@@ -41,15 +41,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Elevator to Load"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "BackLeftToLeftStation"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Elevator to Load"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "BackLeftToLeftStation"
+                }
+              }
+            ]
           }
         },
         {
@@ -96,15 +103,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Elevator to Load"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "FrontLeftToLeftStation"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Elevator to Load"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "FrontLeftToLeftStation"
+                }
+              }
+            ]
           }
         },
         {
