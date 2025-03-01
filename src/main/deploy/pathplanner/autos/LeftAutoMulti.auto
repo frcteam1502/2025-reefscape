@@ -47,13 +47,25 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "BackLeftToLeftStation"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "BackLeftToLeftStation"
+                  "pathName": "LeftStationToFrontLeft1"
                 }
               },
               {
@@ -63,12 +75,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "LeftStationToFrontLeft1"
           }
         },
         {
@@ -102,15 +108,52 @@
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "Load Coral"
+            "waitTime": 1.0
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "LeftStationToFrontLeft2"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Load Coral"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LeftStationToFrontLeft2"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Elevator to L4"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Unload Coral"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Elevator to Load"
           }
         }
       ]
