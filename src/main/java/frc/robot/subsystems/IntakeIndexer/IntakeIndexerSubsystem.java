@@ -23,12 +23,12 @@ import frc.robot.subsystems.CoralDelivery.CoralDeliveryCfg;
 public class IntakeIndexerSubsystem extends SubsystemBase {
   /** Creates a new CoralDSubsystem. */
   private final SparkMax leftPivot;
-  private final SparkMax leftIntake;
+ // private final SparkMax leftIntake;
 
 
 
   private final RelativeEncoder leftPivotEncoder;
-  private final RelativeEncoder leftIntakeEncoder;
+ // private final RelativeEncoder leftIntakeEncoder;
 
   private final SparkClosedLoopController leftPivotPIDController;
   private double intakeSetPosition = IntakeIndexerCfg.LEFTPIVOT_IN_POS;
@@ -42,7 +42,7 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
 
   public IntakeIndexerSubsystem() {
     leftPivot = IntakeIndexerCfg.LEFTPIVOT_MOTOR;
-    leftIntake = IntakeIndexerCfg.LEFTINTAKE_MOTOR;
+  //  leftIntake = IntakeIndexerCfg.LEFTINTAKE_MOTOR;
     
 
     //Setup the Pivot motor config
@@ -73,7 +73,7 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     //Finally write the config to the spark
     leftPivot.configure(leftPivotConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
     
-    leftIntakeEncoder = leftIntake.getEncoder();
+   // leftIntakeEncoder = leftIntake.getEncoder();
     EncoderConfig leftIntakeEncoderConfig = new EncoderConfig();
     leftIntakeEncoderConfig.positionConversionFactor(IntakeIndexerCfg.LEFTINTAKE_GEAR_RATIO);
     leftIntakeEncoderConfig.velocityConversionFactor(IntakeIndexerCfg.LEFTINTAKE_GEAR_RATIO);
@@ -84,7 +84,7 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     leftIntakeConfig.smartCurrentLimit(IntakeIndexerCfg.LEFTINTAKE_CURRENT_LIMIT);
 
     leftIntakeConfig.apply(leftIntakeConfig); 
-    leftIntake.configure(leftIntakeConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+  //  leftIntake.configure(leftIntakeConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
     
 
     reset();
@@ -106,7 +106,7 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
 
   private void registerLoggerObjects(){
     Logger.RegisterSparkMax("Pivot Motor", IntakeIndexerCfg.LEFTPIVOT_MOTOR);
-    Logger.RegisterSparkMax("Intake Motor", IntakeIndexerCfg.LEFTINTAKE_MOTOR);
+   // Logger.RegisterSparkMax("Intake Motor", IntakeIndexerCfg.LEFTINTAKE_MOTOR);
   }
 
   public void setLeftIntakeIn(){
@@ -140,7 +140,7 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     leftPivot.set(power);
   }
   public void setLeftIntakePower(double power){
-    leftIntake.set(power);
+ //   leftIntake.set(power);
   }
   public void intakeCoral(){
     setLeftIntakePower(IntakeIndexerCfg.INTAKE_IN_SPEED);
@@ -159,7 +159,8 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     return leftPivotEncoder.getPosition();
   }
   public double getLeftIntakePosition(){
-    return leftIntakeEncoder.getPosition();
+  //  return leftIntakeEncoder.getPosition();
+    return 0;
   }
   
  

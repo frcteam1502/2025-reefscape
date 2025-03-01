@@ -236,7 +236,7 @@ public class DriveSubsystem extends SubsystemBase{
     updateOdometry();
     updateEstimatedPose();
     updateLimelightPose();
-    //updatePhotonVisionPose();
+    updatePhotonVisionPose();
 
     updateDashboard();
   }

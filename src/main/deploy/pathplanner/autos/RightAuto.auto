@@ -5,6 +5,18 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Intake To Climb"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Deploy Climber"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "RightStartToBackRight"
@@ -32,6 +44,31 @@
           "type": "named",
           "data": {
             "name": "Elevator to Load"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "BackRightToRightStation"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Load Coral"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake To Climb"
+                }
+              }
+            ]
           }
         }
       ]
