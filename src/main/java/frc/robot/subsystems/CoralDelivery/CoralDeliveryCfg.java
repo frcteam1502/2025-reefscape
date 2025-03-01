@@ -62,7 +62,7 @@ public class CoralDeliveryCfg {
      public static final double DELIVERY_FWD_SPEED = 900;
      public static final double DELIVERY_RWD_SPEED = -900;
      public static final double DELIVERY_L4_UNLOAD_SPD = -700;
-     public static final double DELIVERY_LOAD1_SPD = 100;
+     public static final double DELIVERY_LOAD1_SPD = 150;
      public static final double DELIVERY_LOAD3_SPD = -75;
      public static final double DELIVERY_L1_UNLOAD_SPD = 150;
 
