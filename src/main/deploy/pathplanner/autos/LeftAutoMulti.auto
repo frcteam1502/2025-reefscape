@@ -1,0 +1,122 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake To Climb"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Deploy Climber"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftStartToBackRight"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Elevator to L4"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Unload Coral"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Elevator to Load"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "BackLeftToLeftStation"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Load Coral"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftStationToFrontLeft1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Elevator to L4"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Unload Coral"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Elevator to Load"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "FrontLeftToLeftStation"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Load Coral"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftStationToFrontLeft2"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
