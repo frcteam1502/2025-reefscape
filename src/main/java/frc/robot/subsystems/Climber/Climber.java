@@ -29,6 +29,8 @@ public class Climber extends SubsystemBase {
     STOWED,
     DEPLOYING,
     DEPLOYED,
+    STAGING,
+    STAGED,
     CLIMBING,
     CLIMBED,
     HOLDING
@@ -109,6 +111,15 @@ public class Climber extends SubsystemBase {
       case DEPLOYED:
         //Set climber in method will handle state transition
         break;
+      case STAGING:
+        if((getClimberPosition()>=(ClimberCfg.CLIMBER_MIDDLE_POS-5))&&
+           (getClimberPosition()<=(ClimberCfg.CLIMBER_MIDDLE_POS+5))){
+            climberState = ClimberState.STAGED;
+        }
+        break;
+      case STAGED:
+        //Set climber in method will handle state transition
+        break;
       case CLIMBING:
         if((getClimberPosition()>=(ClimberCfg.CLIMBER_CLIMB_POS-5))&&
            (getClimberPosition()<=(ClimberCfg.CLIMBER_CLIMB_POS+5))){
@@ -137,6 +148,11 @@ public class Climber extends SubsystemBase {
   public void setClimberClimbed(){
     climberSetPos = ClimberCfg.CLIMBER_CLIMB_POS;
     climberState = ClimberState.CLIMBING;
+  }
+
+  public void setClimberStaged(){
+    climberSetPos = ClimberCfg.CLIMBER_MIDDLE_POS;
+    climberState = ClimberState.STAGING;
   }
 
   public void setClimberHold(){

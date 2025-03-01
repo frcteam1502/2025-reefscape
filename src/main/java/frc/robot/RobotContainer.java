@@ -105,6 +105,8 @@ public class RobotContainer {
     Driver.Controller.y().onTrue(new InstantCommand(climberSubsystem::setClimberOut));
     Driver.Controller.a().whileTrue(new InstantCommand(climberSubsystem::setClimberClimbed))
                          .onFalse(new InstantCommand(climberSubsystem::setClimberHold));
+    Driver.Controller.b().whileTrue(new InstantCommand(climberSubsystem::setClimberStaged))
+                         .onFalse(new InstantCommand(climberSubsystem::setClimberHold));
     
     //Coral Delivery/Elevator
     //coralSubsystem.setDefaultCommand(new OperatorCommands(coralSubsystem));//Used for manual control of the elevator & Pivot
