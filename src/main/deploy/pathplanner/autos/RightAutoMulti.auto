@@ -1,0 +1,165 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake To Climb"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Deploy Climber"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RightStartToBackRight"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Elevator to L4"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.75
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Unload Coral"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Elevator to Load"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "BackRightToRightStation"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "RightStationToFrontRight1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Load Coral"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Elevator to L4"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Unload Coral"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Elevator to Load"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "FrontRightToRightStation"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "RightStationToFrontRight2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Load Coral"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Elevator to L4"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Unload Coral"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Elevator to Load"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
