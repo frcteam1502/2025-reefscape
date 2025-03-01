@@ -14,7 +14,7 @@ public class ClimberCfg {
 
     public static final SparkBaseConfig.IdleMode CLIMBER_IDLE_MODE = SparkBaseConfig.IdleMode.kBrake;
     public static final boolean CLIMBER_MOTOR_REVERSED = true;
-    public static final int CLIMBER_CURRENT_LIMIT = 80;
+    public static final int CLIMBER_CURRENT_LIMIT = 120;
 
     public static final double CLIMBER_P_GAIN = 1;
     public static final double CLIMBER_I_GAIN = 0;
@@ -25,6 +25,6 @@ public class ClimberCfg {
 
     public static final double CLIMBER_STOWED_POS = 0;
     public static final double CLIMBER_DEPLOYED_POS = 34;
-    public static final double CLIMBER_CLIMB_POS = 4.7;
+    public static final double CLIMBER_CLIMB_POS = 0;
     public static final double CLIMBER_MIDDLE_POS = 20;
 }
