@@ -13,7 +13,7 @@ public class ClimberCfg {
     public static final double CLIMBER_GEAR_RATIO = 1/25.0;//TBD with design
 
     public static final SparkBaseConfig.IdleMode CLIMBER_IDLE_MODE = SparkBaseConfig.IdleMode.kBrake;
-    public static final boolean CLIMBER_MOTOR_REVERSED = false;
+    public static final boolean CLIMBER_MOTOR_REVERSED = true;
     public static final int CLIMBER_CURRENT_LIMIT = 80;
 
     public static final double CLIMBER_P_GAIN = 1;
@@ -24,6 +24,7 @@ public class ClimberCfg {
     public static final double CLIMBER_ENCODER_RESET = 0;
 
     public static final double CLIMBER_STOWED_POS = 0;
-    public static final double CLIMBER_DEPLOYED_POS = 21;
-    public static final double CLIMBER_CLIMB_POS = 10;
+    public static final double CLIMBER_DEPLOYED_POS = 21.75;
+    public static final double CLIMBER_CLIMB_POS = 3;
+    public static final double CLIMBER_MIDDLE_POS = 13;
 }

@@ -7,6 +7,12 @@
         {
           "type": "named",
           "data": {
+            "name": "Intake To Climb"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "Deploy Climber"
           }
         },
@@ -54,12 +60,6 @@
                 "type": "named",
                 "data": {
                   "name": "Load Coral"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake To Climb"
                 }
               }
             ]
