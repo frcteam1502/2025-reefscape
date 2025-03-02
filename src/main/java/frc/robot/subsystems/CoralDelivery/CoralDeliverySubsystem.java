@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems.CoralDelivery;
 
+import java.util.function.BooleanSupplier;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase;
@@ -569,5 +571,4 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     }
     return false;
   }
-
 }

@@ -6,6 +6,9 @@ import frc.robot.subsystems.PowerManagement.AdaptiveSpeedController;
 import frc.robot.subsystems.PowerManagement.IBrownOutDetector;
 import frc.robot.subsystems.SwerveDrive.DriveSubsystem;
 import frc.robot.subsystems.SwerveDrive.DrivebaseCfg;
+
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -14,7 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriverCommands extends Command {
   private final DriveSubsystem drive;
   private final AdaptiveSpeedController speedController;
-
+  private final BooleanSupplier isSpeedLimited;
   private final String kDriver1 = "Driver1";
   private final String kDriver2 = "Driver2";
 
@@ -24,10 +27,11 @@ public class DriverCommands extends Command {
 
   boolean finesse_mode = false;
   
-  public DriverCommands(DriveSubsystem drive, IBrownOutDetector brownOutDetector) {
+  public DriverCommands(DriveSubsystem drive, IBrownOutDetector brownOutDetector, BooleanSupplier isSpeedLimited) {
     this.drive = drive;
     this.speedController = new AdaptiveSpeedController(brownOutDetector, 3.0, DrivebaseCfg.FINESSE_TRANSLATION_GAIN, DrivebaseCfg.TRANSLATION_GAIN_1);
     addRequirements(drive);
+    this.isSpeedLimited = isSpeedLimited;
 
     driverChooser.setDefaultOption("Default Driver", kDriver1);
     driverChooser.addOption("Driver 1", kDriver1);
@@ -58,7 +62,8 @@ public class DriverCommands extends Command {
         driver_gain = DrivebaseCfg.TRANSLATION_GAIN_2;
     }
 
-    if(Driver.Controller.getHID().getRightBumperButton()){
+    if((Driver.Controller.getHID().getRightBumperButton())||
+       (isSpeedLimited.getAsBoolean())){
       teleopSpeedGain = DrivebaseCfg.FINESSE_TRANSLATION_GAIN;
       teleopRotationGain = DrivebaseCfg.FINESSE_ROTATION_GAIN;
     }else{
