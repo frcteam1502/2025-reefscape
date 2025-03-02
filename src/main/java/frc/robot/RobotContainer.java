@@ -41,10 +41,9 @@ public class RobotContainer {
   public final DriveSubsystem driveSubsystem = new DriveSubsystem();
   //private final PdpSubsystem pdpSubsystem = new PdpSubsystem();
   public final CoralDeliverySubsystem coralSubsystem = new CoralDeliverySubsystem();
-  public final IntakeIndexerSubsystem intakeSubsystem = new IntakeIndexerSubsystem();
+  //public final IntakeIndexerSubsystem intakeSubsystem = new IntakeIndexerSubsystem();
   public final AlgaeSubsystem algaeSubsystem = new AlgaeSubsystem();
-  public final Climber climberSubsystem = new Climber();  //Needed to invoke scheduler
-  //public final Vision visionSubsystem = new Vision();
+  public final Climber climberSubsystem = new Climber();
 
   private final SendableChooser<Command> autoChooser; 
 
@@ -69,7 +68,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Elevator to Load", new MoveElevatorToL0(coralSubsystem));
     NamedCommands.registerCommand("Load Coral", new LoadCoral(coralSubsystem));
     NamedCommands.registerCommand("Unload Coral", new UnloadCoral(coralSubsystem));
-    NamedCommands.registerCommand("Intake To Climb", new InstantCommand(intakeSubsystem:: setLeftIntakeClimb));
+    //NamedCommands.registerCommand("Intake To Climb", new InstantCommand(intakeSubsystem:: setLeftIntakeClimb));
     NamedCommands.registerCommand("Deploy Climber", new InstantCommand(climberSubsystem::setClimberOut));
   
     //Build an Autochooser from SmartDashboard selection.  Default will be Commands.none()
@@ -119,16 +118,16 @@ public class RobotContainer {
     Operator.getCustCont1Button1().onTrue(new InstantCommand(coralSubsystem::setElevatorLFOURPosition));
 
     //Intake
-    Operator.getCustCont1Button7().onTrue(new InstantCommand(intakeSubsystem::setIntakeState));
-    Operator.getCustCont1Button5().onTrue(new InstantCommand(intakeSubsystem::setLeftIntakeClimb));
-   // Operator.getCustCont1Button8().onTrue(new InstantCommand(intakeSubsystem::intakeCoral))
+    //Operator.getCustCont1Button7().onTrue(new InstantCommand(intakeSubsystem::setIntakeState));
+    //Operator.getCustCont1Button5().onTrue(new InstantCommand(intakeSubsystem::setLeftIntakeClimb));
+    //Operator.getCustCont1Button8().onTrue(new InstantCommand(intakeSubsystem::intakeCoral))
     //                     .onFalse(new InstantCommand(intakeSubsystem::intakeOff));
-   // Operator.getCustCont1Button6().onTrue(new InstantCommand(intakeSubsystem::ejectCoral))
-     //                    .onFalse(new InstantCommand(intakeSubsystem::intakeOff));
+    //Operator.getCustCont1Button6().onTrue(new InstantCommand(intakeSubsystem::ejectCoral))
+    //                     .onFalse(new InstantCommand(intakeSubsystem::intakeOff));
 
-    /*Operator.getButton12().onTrue(new InstantCommand(algaeSubsystem::setAlgaeIntakeOnState))
-                          .onFalse(new InstantCommand(algaeSubsystem::setAlgaeIntakeOffState));
-    Operator.getButton5().onTrue(new InstantCommand(algaeSubsystem::setAlgaePivotState));*/
+    //Operator.getButton12().onTrue(new InstantCommand(algaeSubsystem::setAlgaeIntakeOnState))
+    //                      .onFalse(new InstantCommand(algaeSubsystem::setAlgaeIntakeOffState));
+    //Operator.getButton5().onTrue(new InstantCommand(algaeSubsystem::setAlgaePivotState));*/
     
     Operator.getCustCont2Button1().onTrue(new InstantCommand(algaeSubsystem::algaeIntakeLoad))
                                   .onFalse(new InstantCommand(algaeSubsystem::algaeIntakeOff));
