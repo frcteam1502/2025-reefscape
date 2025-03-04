@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.subsystems.Algae.AlgaeSubsystem;
 import frc.robot.subsystems.Climber.Climber;
+import frc.robot.subsystems.CoralDelivery.CoralDeliveryCfg;
 import frc.robot.subsystems.CoralDelivery.CoralDeliverySubsystem;
 import frc.robot.subsystems.IntakeIndexer.IntakeIndexerSubsystem;
 import frc.robot.subsystems.PowerManagement.MockDetector;
@@ -92,7 +93,14 @@ public class RobotContainer {
    */
   private void configureBindings() {
     //Drivetrain
-    driveSubsystem.setDefaultCommand(new DriverCommands(driveSubsystem, new MockDetector())); //USES THE Right BUMPER TO SLOW DOWN
+    driveSubsystem.setDefaultCommand(new DriverCommands(driveSubsystem, 
+                                                        new MockDetector(),
+                                                        ()->{
+                                                          if(coralSubsystem.getDeliveryPosition()>=CoralDeliveryCfg.ELEVATOR_LTHREE_POSITION){
+                                                            return true;
+                                                          }
+                                                          return false;
+                                                        })); //USES THE Right BUMPER TO SLOW DOWN
     Driver.Controller.start().onTrue(new ResetGyro(driveSubsystem));
     Driver.Controller.leftTrigger(0.5).onTrue(new InstantCommand(driveSubsystem::moveToReefLeft))
                                       .onFalse(new InstantCommand(driveSubsystem::cancelReefPath));
