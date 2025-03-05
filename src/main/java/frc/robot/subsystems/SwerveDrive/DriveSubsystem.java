@@ -449,8 +449,8 @@ public class DriveSubsystem extends SubsystemBase{
       targetPose = reefMap.getReefPose2d(tagId, Side.LEFT);
       List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(estimatedPose,targetPose);
       PathPlannerPath path = new PathPlannerPath(waypoints,
-                                                 new PathConstraints(3.0,
-                                                                     3.0, 
+                                                 new PathConstraints(DrivebaseCfg.MAX_SPEED_AUTO_ALIGN,
+                                                                     DrivebaseCfg.MAX_ACCEL_AUTO_ALIGN, 
                                                                      Units.degreesToRadians(360), 
                                                                      Units.degreesToRadians(540)),
                                                  null,
@@ -472,8 +472,8 @@ public class DriveSubsystem extends SubsystemBase{
       targetPose = reefMap.getReefPose2d(tagId, Side.RIGHT);
       List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(estimatedPose,targetPose);
       PathPlannerPath path = new PathPlannerPath(waypoints,
-                                                 new PathConstraints(3.0,
-                                                                     3.0, 
+                                                 new PathConstraints(DrivebaseCfg.MAX_SPEED_AUTO_ALIGN,
+                                                                     DrivebaseCfg.MAX_ACCEL_AUTO_ALIGN, 
                                                                      Units.degreesToRadians(360), 
                                                                      Units.degreesToRadians(540)),
                                                  null,
