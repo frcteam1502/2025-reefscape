@@ -96,7 +96,7 @@ public class RobotContainer {
     driveSubsystem.setDefaultCommand(new DriverCommands(driveSubsystem, 
                                                         new MockDetector(),
                                                         ()->{
-                                                          if(coralSubsystem.getDeliveryPosition()>=CoralDeliveryCfg.ELEVATOR_LTHREE_POSITION){
+                                                          if(coralSubsystem.getElevatorPosition()>=CoralDeliveryCfg.ELEVATOR_LTHREE_POSITION){
                                                             return true;
                                                           }
                                                           return false;
