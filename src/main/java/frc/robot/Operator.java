@@ -35,7 +35,7 @@ public final class Operator {
   public static final int CUST_CONTROLLER_BUTTON_12 = 12;
 
   public static final int CUST_CONTROLLER_Y_AXIS    = 1;
-  public static final int CUST_CONTROLLER_X_AXIS    = 2;
+  public static final int CUST_CONTROLLER_X_AXIS    = 0;
 
   //Cust Controller 1
   public static Trigger getCustCont1Button1() {
