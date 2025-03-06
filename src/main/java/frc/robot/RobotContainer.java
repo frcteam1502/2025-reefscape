@@ -15,6 +15,7 @@ import frc.robot.commands.LoadCoral;
 import frc.robot.commands.MoveAlgaeToBarge;
 import frc.robot.commands.MoveElevatorToL0;
 import frc.robot.commands.MoveElevatorToL4;
+import frc.robot.commands.OperatorCommands;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.StopDriveMotors;
 import frc.robot.commands.UnloadCoral;
@@ -119,7 +120,7 @@ public class RobotContainer {
                          .onFalse(new InstantCommand(climberSubsystem::setClimberHold));
     
     //Coral Delivery/Elevator
-    //coralSubsystem.setDefaultCommand(new OperatorCommands(coralSubsystem));//Used for manual control of the elevator & Pivot
+    coralSubsystem.setDefaultCommand(new OperatorCommands(coralSubsystem));//Used for manual control of the elevator & Pivot
     Operator.getCustCont1Button11().onTrue(new InstantCommand(coralSubsystem::setDeliveryStateLoading));
     Operator.getCustCont1Button10().onTrue(new InstantCommand(coralSubsystem::setDeliveryStateUnloading));
     Operator.getCustCont1Button9().onTrue(new InstantCommand(coralSubsystem::setElevatorLoadPosition));
