@@ -322,6 +322,10 @@ public class DriveSubsystem extends SubsystemBase{
     poseEstimator.resetPosition(getGyroRotation2d(), getModulePositions(), pose);
   }
 
+  public void resetOdometryToEstimatedPose(){
+    odometry.resetPosition(getGyroRotation2d(), getModulePositions(), poseEstimator.getEstimatedPosition());
+  }
+
   public void resetPoseEstimation(Pose2d pose) {
     poseEstimator.resetPosition(getGyroRotation2d(), getModulePositions(), pose);
   }
@@ -422,7 +426,7 @@ public class DriveSubsystem extends SubsystemBase{
 
       poseEstimator.addVisionMeasurement(photonLeftPose,
                                          timestampLeft,
-                                         VecBuilder.fill(7,7,9999999));
+                                         VecBuilder.fill(10,10,9999999));
 
     }
 
@@ -434,7 +438,7 @@ public class DriveSubsystem extends SubsystemBase{
       var timestampRight = rightPoseEstimate.get().timestampSeconds;
       poseEstimator.addVisionMeasurement(photonRightPose,
                                          timestampRight,
-                                         VecBuilder.fill(7,7,9999999));
+                                         VecBuilder.fill(10,10,9999999));
     }
   }
 
@@ -525,8 +529,8 @@ public class DriveSubsystem extends SubsystemBase{
         this::getRobotRelativeSpeeds, //ChassisSpeeds provider.  MUST BE ROBOT RELATIVE!!! 
         this::driveRobotRelative, //ChassisSpeeds consumer.  MUST BE ROBOT RELATIVE!!!
         new PPHolonomicDriveController(
-                new PIDConstants(5.5, 0, 0), //Translation PID constants
-                new PIDConstants(5.5, 0, 0)), //Rotation PID constants
+                new PIDConstants(6, 0, 0), //Translation PID constants
+                new PIDConstants(6, 0, 0)), //Rotation PID constants
         config,
         () -> {
           // Boolean supplier that controls when the path will be mirrored for the red alliance

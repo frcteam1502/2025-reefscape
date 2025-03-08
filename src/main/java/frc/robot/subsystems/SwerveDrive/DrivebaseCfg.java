@@ -20,7 +20,7 @@ public class DrivebaseCfg {
     public static final double GO_STRAIGHT_GAIN = 0.1;
 
     public static final double MAX_SPEED_METERS_PER_SECOND = 5.897;//NEO Vortex w/ L3 MK4i
-    public static final double MAX_SPEED_AUTO_ALIGN = MAX_SPEED_METERS_PER_SECOND*FINESSE_TRANSLATION_GAIN;
+    public static final double MAX_SPEED_AUTO_ALIGN = 1; //MAX_SPEED_METERS_PER_SECOND*FINESSE_TRANSLATION_GAIN;
     public static final double MAX_ACCEL_AUTO_ALIGN = 1;
 
     public static final boolean IS_FIELD_MIRRORED = true;
