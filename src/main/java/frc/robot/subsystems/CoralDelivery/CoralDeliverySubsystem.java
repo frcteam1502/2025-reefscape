@@ -225,6 +225,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     indexerConfig.apply(indexerConfig);
     indexer.configure(indexerConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
   }
+
   private void registerLoggerObjects(){
     Logger.RegisterSparkMax("Elevator", CoralDeliveryCfg.ELEVATOR_MOTOR);
     Logger.RegisterSparkMax("Coral Pivot", CoralDeliveryCfg.PIVOT_MOTOR);
@@ -367,11 +368,19 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   
   private void zeroElevator(){
     if(elevatorLimit.get()){
-      isElevatorZeroedBySwitch = true;
-      elevatorEncoder.setPosition(CoralDeliveryCfg.ELEVATOR_ENCODER_RESET);
-      elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_ENCODER_RESET;
-      setElevatorPosition(elevatorSetPosition);//Maybe belt and suspenders but prevent mismatch between PID set position and new encoder position
+      //See if this is the 1st time we have seen the switch pressed
+      if(!isElevatorZeroedBySwitch){
+        isElevatorZeroedBySwitch = true;
+        elevatorEncoder.setPosition(CoralDeliveryCfg.ELEVATOR_ENCODER_RESET);
+        elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_ENCODER_RESET;
+        //Update the PID controller right away in case the last set position was at some non-zero value
+        setElevatorPosition(elevatorSetPosition);
+      }
     }
+  }
+
+  private boolean isElevatorZeroed(){
+    return isElevatorZeroedBySwitch;
   }
 
   public void setDeliveryPower(double power){
@@ -444,33 +453,40 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     }
   }
 
+  private void checkElevatorSetPosition(double position){
+    //Only allow the set position to be updated if the elevator is zeroed
+    if(isElevatorZeroed()){
+      elevatorSetPosition = position;
+    }
+  }
+
   public void setElevatorLoadPosition(){
-    elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LOAD_POSITION;
+    checkElevatorSetPosition(CoralDeliveryCfg.ELEVATOR_LOAD_POSITION);
     pivotSetPosition = CoralDeliveryCfg.PIVOT_LOAD_POSITION;
   }
 
   public void setElevatorLONEPosition(){
-    elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LONE_POSITION;
+    checkElevatorSetPosition(CoralDeliveryCfg.ELEVATOR_LONE_POSITION);
     pivotSetPosition = CoralDeliveryCfg.PIVOT_LONE_POSITION;  
   }
 
   public void setElevatorLTWOPosition(){
-    elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LTWO_POSITION;
+    checkElevatorSetPosition(CoralDeliveryCfg.ELEVATOR_LTWO_POSITION);
     pivotSetPosition = CoralDeliveryCfg.PIVOT_LTWO_POSITION;  
   }
 
   public void setElevatorLTHREEPosition(){
-    elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LTHREE_POSITION;
+    checkElevatorSetPosition(CoralDeliveryCfg.ELEVATOR_LTHREE_POSITION);
     pivotSetPosition = CoralDeliveryCfg.PIVOT_LTHREE_POSITION;
   }
 
   public void setElevatorLFOURPosition(){
-    elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION;
+    checkElevatorSetPosition(CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION);
     pivotSetPosition = CoralDeliveryCfg.PIVOT_LFOUR_POSITION;
   }
 
   public void setElevatorBargePosition(){
-    elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION;
+    checkElevatorSetPosition(CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION);
     pivotSetPosition = CoralDeliveryCfg.PIVOT_BARGE_POSITION;
   }
   
@@ -486,6 +502,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   }
 
   public void moveElevatorManually(double input){
+    //This logic needs work
     double change = Math.signum(input) * CoralDeliveryCfg.ELEVATOR_CHANGE;
     double newPosition = elevatorSetPosition + change;
     if(newPosition > 0){
@@ -494,7 +511,11 @@ public class CoralDeliverySubsystem extends SubsystemBase {
       }else{
         elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_MAX_LIMIT;
       }
-    }else{
+    }else if(!isElevatorZeroed()){
+      //Allow set position to go negative only to limp elevator down to zero
+      elevatorSetPosition = newPosition;
+    }
+    else{
       elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LOAD_POSITION;
     }
   }
