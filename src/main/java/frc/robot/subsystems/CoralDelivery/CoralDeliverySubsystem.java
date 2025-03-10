@@ -504,20 +504,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   public void moveElevatorManually(double input){
     //This logic needs work
     double change = Math.signum(input) * CoralDeliveryCfg.ELEVATOR_CHANGE;
-    double newPosition = elevatorSetPosition + change;
-    if(newPosition > 0){
-      if(newPosition < CoralDeliveryCfg.ELEVATOR_MAX_LIMIT){
-        elevatorSetPosition = newPosition;
-      }else{
-        elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_MAX_LIMIT;
-      }
-    }else if(!isElevatorZeroed()){
-      //Allow set position to go negative only to limp elevator down to zero
-      elevatorSetPosition = newPosition;
-    }
-    else{
-      elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LOAD_POSITION;
-    }
+    elevatorSetPosition += change;
   }
 
   public void movePivotManually(double input){
