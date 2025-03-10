@@ -14,7 +14,8 @@ import frc.robot.commands.DriverCommands;
 import frc.robot.commands.LoadCoral;
 import frc.robot.commands.MoveAlgaeToBarge;
 import frc.robot.commands.MoveElevatorToL0;
-import frc.robot.commands.MoveElevatorToL4;
+import frc.robot.commands.MoveElevatorToL3;
+import frc.robot.commands.MoveToL4Sequence;
 import frc.robot.commands.OperatorCommands;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.StopDriveMotors;
@@ -66,7 +67,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Stop Drive Motors", new StopDriveMotors(driveSubsystem));
     NamedCommands.registerCommand("Align to Left", new InstantCommand(driveSubsystem::moveToReefLeft));
     NamedCommands.registerCommand("Align to Right", new InstantCommand(driveSubsystem::moveToReefRight));
-    NamedCommands.registerCommand("Elevator to L4", new MoveElevatorToL4(coralSubsystem));
+    NamedCommands.registerCommand("Elevator to L4", new MoveElevatorToL3(coralSubsystem));
     NamedCommands.registerCommand("Elevator to Load", new MoveElevatorToL0(coralSubsystem));
     NamedCommands.registerCommand("Load Coral", new LoadCoral(coralSubsystem));
     NamedCommands.registerCommand("Unload Coral", new UnloadCoral(coralSubsystem));
@@ -116,10 +117,11 @@ public class RobotContainer {
     Driver.Controller.y().onTrue(new InstantCommand(climberSubsystem::setClimberOut));
     Driver.Controller.a().whileTrue(new InstantCommand(climberSubsystem::setClimberClimbed))
                          .onFalse(new InstantCommand(climberSubsystem::setClimberHold));
+    
+    //Switch comments to use X button to reset odometry during calibration
+    Driver.Controller.x().onTrue(new InstantCommand(driveSubsystem::resetOdometryToEstimatedPose));
     //Driver.Controller.x().whileTrue(new InstantCommand(climberSubsystem::setClimberStaged))
     //                     .onFalse(new InstantCommand(climberSubsystem::setClimberHold));
-    
-    Driver.Controller.x().onTrue(new InstantCommand(driveSubsystem::resetOdometryToEstimatedPose));
     
     //Coral Delivery/Elevator
     coralSubsystem.setDefaultCommand(new OperatorCommands(coralSubsystem));//Used for manual control of the elevator & Pivot
@@ -129,7 +131,8 @@ public class RobotContainer {
     Operator.getCustCont1Button4().onTrue(new InstantCommand(coralSubsystem::setElevatorLONEPosition));
     Operator.getCustCont1Button3().onTrue(new InstantCommand(coralSubsystem::setElevatorLTWOPosition));
     Operator.getCustCont1Button2().onTrue(new InstantCommand(coralSubsystem::setElevatorLTHREEPosition));
-    Operator.getCustCont1Button1().onTrue(new InstantCommand(coralSubsystem::setElevatorLFOURPosition));
+    //Operator.getCustCont1Button1().onTrue(new InstantCommand(coralSubsystem::setElevatorLFOURPosition));
+    Operator.getCustCont1Button1().onTrue(new MoveToL4Sequence(coralSubsystem));
 
     //Intake
     //Operator.getCustCont1Button7().onTrue(new InstantCommand(intakeSubsystem::setIntakeState));

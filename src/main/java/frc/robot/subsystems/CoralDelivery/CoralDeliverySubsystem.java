@@ -17,17 +17,17 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import au.grapplerobotics.LaserCan;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Logger;
-import frc.robot.subsystems.IntakeIndexer.IntakeIndexerCfg;
 
 public class CoralDeliverySubsystem extends SubsystemBase {
   /** Creates a new CoralDSubsystem. */
   private final SparkMax elevator;
   private final SparkMax pivot;
   private final SparkMax delivery;
-  private final SparkMax indexer; 
+  private final SparkMax indexer;
 
   private RelativeEncoder elevatorEncoder;
   private RelativeEncoder pivotEncoder;
@@ -40,32 +40,15 @@ public class CoralDeliverySubsystem extends SubsystemBase {
 
   private LaserCan fwdCoralDeliveryTracker;//Change this name and duplicate for the 2nd sensor
   private LaserCan rwdCoralDeliveryTracker;
+
+  private DigitalInput elevatorLimit = CoralDeliveryCfg.ELEVATOR_LOWER_LIMIT;
+
   private double elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LOAD_POSITION;
   private double pivotSetPosition = CoralDeliveryCfg.PIVOT_LOAD_POSITION;
   private double deliverySetSpd = CoralDeliveryCfg.DELIVERY_OFF_SPEED;
 
-  private double elevator_p_gain = CoralDeliveryCfg.ELEVATOR_P_GAIN;
-  private double elevator_i_gain = CoralDeliveryCfg.ELEVATOR_I_GAIN;
-  private double elevator_d_gain = CoralDeliveryCfg.ELEVATOR_D_GAIN;
-
-  private double elevator_p_gain_prev = CoralDeliveryCfg.ELEVATOR_P_GAIN;
-  private double elevator_i_gain_prev = CoralDeliveryCfg.ELEVATOR_I_GAIN;
-  private double elevator_d_gain_prev = CoralDeliveryCfg.ELEVATOR_D_GAIN;
-
-  private double pivot_p_gain = CoralDeliveryCfg.PIVOT_P_GAIN;
-  private double pivot_i_gain = CoralDeliveryCfg.PIVOT_I_GAIN;
-  private double pivot_d_gain = CoralDeliveryCfg.PIVOT_D_GAIN;
-
-  private double pivot_p_gain_prev = CoralDeliveryCfg.PIVOT_P_GAIN;
-  private double pivot_i_gain_prev = CoralDeliveryCfg.PIVOT_I_GAIN;
-  private double pivot_d_gain_prev = CoralDeliveryCfg.PIVOT_D_GAIN;
-
-  private EncoderConfig elevatorEncoderConfig = new EncoderConfig();
-  private ClosedLoopConfig elevatorPID_Config = new ClosedLoopConfig();
   private SparkMaxConfig elevatorConfig = new SparkMaxConfig();
 
-  private EncoderConfig pivotEncoderConfig = new EncoderConfig();
-  private ClosedLoopConfig pivotPID_Config = new ClosedLoopConfig();
   private SparkMaxConfig pivotConfig = new SparkMaxConfig();
 
   ClosedLoopConfig deliveryPIDF_Config = new ClosedLoopConfig();
@@ -77,6 +60,8 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   SimpleMotorFeedforward deliveryFeedforward = new SimpleMotorFeedforward(0.2,.006);
 
   double maxVelocity = 0;
+
+  boolean isElevatorZeroedBySwitch = false;
 
   private enum CoralDeliveryState{
     INIT,
@@ -108,51 +93,12 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     configureCoralDelivery();
 
     configureIndexer();
-    
-    SmartDashboard.putNumber("Elevator P Gain", elevator_p_gain);
-    SmartDashboard.putNumber("Elevator I Gain", elevator_i_gain);
-    SmartDashboard.putNumber("Elevator D Gain", elevator_d_gain);
-
-    SmartDashboard.putNumber("Pivot P Gain", pivot_p_gain);
-    SmartDashboard.putNumber("Pivot I Gain", pivot_i_gain);
-    SmartDashboard.putNumber("Pivot D Gain", pivot_d_gain);
 
     reset();
     registerLoggerObjects();
   }
 
   private void updateDashboard(){
-    boolean elevatorCfgChanged = false;
-    boolean pivotCfgChanged = false;
-    
-    elevator_p_gain = SmartDashboard.getNumber("Elevator P Gain",0);
-    elevator_i_gain = SmartDashboard.getNumber("Elevator I Gain",0);
-    elevator_d_gain = SmartDashboard.getNumber("Elevator D Gain",0);
-
-    if(elevator_p_gain != elevator_p_gain_prev){elevatorPID_Config.p(elevator_p_gain); elevatorCfgChanged = true;}
-    if(elevator_i_gain != elevator_i_gain_prev){elevatorPID_Config.i(elevator_i_gain); elevatorCfgChanged = true;}
-    if(elevator_d_gain != elevator_d_gain_prev){elevatorPID_Config.d(elevator_i_gain); elevatorCfgChanged = true;}
-
-    if(elevatorCfgChanged){
-      elevatorConfig.apply(elevatorPID_Config);
-      elevator.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
-      elevatorCfgChanged = false;
-    }
-
-    pivot_p_gain = SmartDashboard.getNumber("Pivot P Gain", 0);
-    pivot_i_gain = SmartDashboard.getNumber("Pivot I Gain", 0);
-    pivot_p_gain = SmartDashboard.getNumber("Pivot D Gain", 0);
-
-    if(pivot_p_gain != pivot_p_gain_prev){pivotPID_Config.p(pivot_p_gain); pivotCfgChanged = true;}
-    if(pivot_i_gain != pivot_i_gain_prev){pivotPID_Config.i(pivot_i_gain); pivotCfgChanged = true;}
-    if(pivot_d_gain != pivot_d_gain_prev){pivotPID_Config.d(pivot_i_gain); pivotCfgChanged = true;}
-
-    if(pivotCfgChanged){
-    //pivotConfig.apply(elevatorPID_Config);
-    //pivot.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
-    //pivotCfgChanged = false;
-    }
-
     SmartDashboard.putNumber("ELEVATOR_CURRENT", elevator.getOutputCurrent());
     SmartDashboard.putNumber("ELEVATOR_POS", getElevatorPosition());
     SmartDashboard.putNumber("PIVOT_POS", getPivotPosition());
@@ -296,6 +242,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     updateCoralDeliveryState();
+    zeroElevator();
     setElevatorPosition(elevatorSetPosition);
     setPivotPosition(pivotSetPosition);
     setDeliverySpd(deliverySetSpd);
@@ -418,6 +365,14 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     }
   }
   
+  private void zeroElevator(){
+    if(elevatorLimit.get()){
+      isElevatorZeroedBySwitch = true;
+      elevatorEncoder.setPosition(CoralDeliveryCfg.ELEVATOR_ENCODER_RESET);
+      elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_ENCODER_RESET;
+      setElevatorPosition(elevatorSetPosition);//Maybe belt and suspenders but prevent mismatch between PID set position and new encoder position
+    }
+  }
 
   public void setDeliveryPower(double power){
     delivery.set(power);
@@ -534,7 +489,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     double change = Math.signum(input) * CoralDeliveryCfg.ELEVATOR_CHANGE;
     double newPosition = elevatorSetPosition + change;
     if(newPosition > 0){
-      if(newPosition <= CoralDeliveryCfg.ELEVATOR_MAX_LIMIT){
+      if(newPosition < CoralDeliveryCfg.ELEVATOR_MAX_LIMIT){
         elevatorSetPosition = newPosition;
       }else{
         elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_MAX_LIMIT;
@@ -548,7 +503,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     double change = Math.signum(input) * CoralDeliveryCfg.PIVOT_CHANGE;
     double newPosition = pivotSetPosition + change;
     if(newPosition > 0){
-      if(newPosition <= CoralDeliveryCfg.PIVOT_MAX_LIMIT){
+      if(newPosition < CoralDeliveryCfg.PIVOT_MAX_LIMIT){
         pivotSetPosition = newPosition;
       }else{
         pivotSetPosition = CoralDeliveryCfg.PIVOT_MAX_LIMIT;

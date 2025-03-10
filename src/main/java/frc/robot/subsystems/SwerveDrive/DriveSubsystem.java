@@ -420,7 +420,8 @@ public class DriveSubsystem extends SubsystemBase{
     //var leftPoseEstimate = leftPhotonCamera.getEstimatedGlobalPose();
     var leftPoseEstimate = leftPhotonCamera.processCamera(getEstimatedPose2d());
     
-    if(leftPoseEstimate.isPresent()){
+    if((leftPoseEstimate.isPresent())&&
+       (!isReefPathScheduled())){
       photonLeftPose = leftPoseEstimate.get().estimatedPose.toPose2d();
       var timestampLeft = leftPoseEstimate.get().timestampSeconds;
 
@@ -433,7 +434,8 @@ public class DriveSubsystem extends SubsystemBase{
     //var rightPoseEstimate = rightPhotonCamera.getEstimatedGlobalPose();
     var rightPoseEstimate = rightPhotonCamera.processCamera(getEstimatedPose2d());
 
-    if(rightPoseEstimate.isPresent()){
+    if((rightPoseEstimate.isPresent())&&
+       (!isReefPathScheduled())){
       photonRightPose = rightPoseEstimate.get().estimatedPose.toPose2d();
       var timestampRight = rightPoseEstimate.get().timestampSeconds;
       poseEstimator.addVisionMeasurement(photonRightPose,
