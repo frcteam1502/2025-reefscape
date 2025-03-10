@@ -7,19 +7,19 @@ public class CANCoderCfg {
   //User Defined Configs
   //Front Left CANCoder
   public static final int FRONT_LEFT_CAN_CODER_ID = 16;
-  public static final double FRONT_LEFT_CAN_CODER_OFFSET = 0.020;
+  public static final double FRONT_LEFT_CAN_CODER_OFFSET = -0.1505;
 
   //Front Right CANCoder
   public static final int FRONT_RIGHT_CAN_CODER_ID = 10;
-  public static final double FRONT_RIGHT_CAN_CODER_OFFSET = -0.214;
+  public static final double FRONT_RIGHT_CAN_CODER_OFFSET = 0.350;
 
   //Back Left CANCoder
   public static final int BACK_LEFT_CAN_CODER_ID = 4;
-  public static final double BACK_LEFT_CAN_CODER_OFFSET = 0.050;
+  public static final double BACK_LEFT_CAN_CODER_OFFSET = 0.169;
 
   //Back Right CANCoder
   public static final int BACK_RIGHT_CAN_CODER_ID = 8;
-  public static final double BACK_RIGHT_CAN_CODER_OFFSET = 0.060;
+  public static final double BACK_RIGHT_CAN_CODER_OFFSET = 0.345;
 
   //Other configs
   public static final CANcoder FRONT_LEFT_CAN_CODER = new CANcoder(FRONT_LEFT_CAN_CODER_ID);
