@@ -5,6 +5,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 
 import au.grapplerobotics.LaserCan;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 public class CoralDeliveryCfg {
 
@@ -16,10 +17,14 @@ public class CoralDeliveryCfg {
      public static final int FORWARD_LASER_CAN_ID = 1;
      public static final int REARWARD_LASER_CAN_ID = 2;
 
+     public static final int ELEVATOR_LOWER_LIMIT_CHAN = 0;
+
     public static final SparkMax ELEVATOR_MOTOR = new SparkMax(ELEVATOR_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
     public static final SparkMax PIVOT_MOTOR = new SparkMax(PIVOT_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
     public static final SparkMax DELIVERY_MOTOR = new SparkMax(DELIVERY_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
     public static final SparkMax INDEXER_MOTOR = new SparkMax(INDEXER_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
+
+    public static final DigitalInput ELEVATOR_LOWER_LIMIT = new DigitalInput(ELEVATOR_LOWER_LIMIT_CHAN);
 
     public static final double ELEVATOR_GEAR_RATIO = 1/5.0;//TBD with design
     public static final double PIVOT_GEAR_RATIO = 1/60.0;//TBD with design
@@ -101,5 +106,6 @@ public class CoralDeliveryCfg {
     public static final boolean DELIVERY_USE_ARBFF = false;
     public static final double DELIVERY_ON_SPD = 1000;
     public static final double DELIVERY_BACKWARD_SPEED = -200;
+    
 
 }

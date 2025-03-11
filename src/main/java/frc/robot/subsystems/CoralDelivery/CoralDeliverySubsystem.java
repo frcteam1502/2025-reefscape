@@ -380,7 +380,8 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   }
 
   private boolean isElevatorZeroed(){
-    return isElevatorZeroedBySwitch;
+    //return isElevatorZeroedBySwitch;
+    return true;
   }
 
   public void setDeliveryPower(double power){

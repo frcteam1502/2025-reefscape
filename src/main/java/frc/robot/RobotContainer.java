@@ -131,8 +131,8 @@ public class RobotContainer {
     Operator.getCustCont1Button4().onTrue(new InstantCommand(coralSubsystem::setElevatorLONEPosition));
     Operator.getCustCont1Button3().onTrue(new InstantCommand(coralSubsystem::setElevatorLTWOPosition));
     Operator.getCustCont1Button2().onTrue(new InstantCommand(coralSubsystem::setElevatorLTHREEPosition));
-    //Operator.getCustCont1Button1().onTrue(new InstantCommand(coralSubsystem::setElevatorLFOURPosition));
-    Operator.getCustCont1Button1().onTrue(new MoveToL4Sequence(coralSubsystem));
+    Operator.getCustCont1Button1().onTrue(new InstantCommand(coralSubsystem::setElevatorLFOURPosition));
+    //Operator.getCustCont1Button1().onTrue(new MoveToL4Sequence(coralSubsystem));
 
     //Intake
     //Operator.getCustCont1Button7().onTrue(new InstantCommand(intakeSubsystem::setIntakeState));
