@@ -15,8 +15,8 @@ public class DrivebaseCfg {
     public static final double ROTATION_GAIN = 0.3;
     public static final double TRANSLATION_GAIN_1 = 1;
     public static final double TRANSLATION_GAIN_2 = 1;
-    public static final double FINESSE_ROTATION_GAIN = 0.1;
-    public static final double FINESSE_TRANSLATION_GAIN = 0.1;
+    public static final double FINESSE_ROTATION_GAIN = 0.3;
+    public static final double FINESSE_TRANSLATION_GAIN = 0.3;
     public static final double GO_STRAIGHT_GAIN = 0.1;
 
     public static final double MAX_SPEED_METERS_PER_SECOND = 5.897;//NEO Vortex w/ L3 MK4i

@@ -73,10 +73,10 @@ public class CoralDeliveryCfg {
 
      public static final int CORAL_PRESENT_THRESH_MM = 60;
 
-     public static final double ELEVATOR_LOAD_POSITION = 0.0;
+     public static final double ELEVATOR_LOAD_POSITION = 1;
      public static final double ELEVATOR_LONE_POSITION = 20;
      public static final double ELEVATOR_LTWO_POSITION = 50;
-     public static final double ELEVATOR_LTHREE_POSITION = 88;
+     public static final double ELEVATOR_LTHREE_POSITION = 90;
      public static final double ELEVATOR_LFOUR_POSITION = 125;
      public static final double ELEVATOR_ENCODER_RESET = 0;
 
