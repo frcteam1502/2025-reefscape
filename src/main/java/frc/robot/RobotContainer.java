@@ -43,10 +43,10 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public final DriveSubsystem driveSubsystem = new DriveSubsystem();
   //private final PdpSubsystem pdpSubsystem = new PdpSubsystem();
-  public final CoralDeliverySubsystem coralSubsystem = new CoralDeliverySubsystem();
+  //public final CoralDeliverySubsystem coralSubsystem = new CoralDeliverySubsystem();
   //public final IntakeIndexerSubsystem intakeSubsystem = new IntakeIndexerSubsystem();
-  public final AlgaeSubsystem algaeSubsystem = new AlgaeSubsystem();
-  public final Climber climberSubsystem = new Climber();
+  //public final AlgaeSubsystem algaeSubsystem = new AlgaeSubsystem();
+  //public final Climber climberSubsystem = new Climber();
 
   private final SendableChooser<Command> autoChooser; 
 
@@ -67,12 +67,12 @@ public class RobotContainer {
     NamedCommands.registerCommand("Stop Drive Motors", new StopDriveMotors(driveSubsystem));
     NamedCommands.registerCommand("Align to Left", new InstantCommand(driveSubsystem::moveToReefLeft));
     NamedCommands.registerCommand("Align to Right", new InstantCommand(driveSubsystem::moveToReefRight));
-    NamedCommands.registerCommand("Elevator to L4", new MoveElevatorToL3(coralSubsystem));
-    NamedCommands.registerCommand("Elevator to Load", new MoveElevatorToL0(coralSubsystem));
-    NamedCommands.registerCommand("Load Coral", new LoadCoral(coralSubsystem));
-    NamedCommands.registerCommand("Unload Coral", new UnloadCoral(coralSubsystem));
+    //NamedCommands.registerCommand("Elevator to L4", new MoveElevatorToL3(coralSubsystem));
+    //NamedCommands.registerCommand("Elevator to Load", new MoveElevatorToL0(coralSubsystem));
+    //NamedCommands.registerCommand("Load Coral", new LoadCoral(coralSubsystem));
+    //NamedCommands.registerCommand("Unload Coral", new UnloadCoral(coralSubsystem));
     //NamedCommands.registerCommand("Intake To Climb", new InstantCommand(intakeSubsystem:: setLeftIntakeClimb));
-    NamedCommands.registerCommand("Deploy Climber", new InstantCommand(climberSubsystem::setClimberOut));
+    //NamedCommands.registerCommand("Deploy Climber", new InstantCommand(climberSubsystem::setClimberOut));
   
     //Build an Autochooser from SmartDashboard selection.  Default will be Commands.none()
     //e.g new PathPlannerAuto("MiddleAutoAMPFinal");
@@ -100,12 +100,13 @@ public class RobotContainer {
     //Drivetrain
     driveSubsystem.setDefaultCommand(new DriverCommands(driveSubsystem, 
                                                         new MockDetector(),
-                                                        ()->{
+                                                        ()->false));
+                                                        /*()->{
                                                           if(coralSubsystem.getElevatorPosition()>=CoralDeliveryCfg.ELEVATOR_LTHREE_POSITION){
                                                             return true;
                                                           }
                                                           return false;
-                                                        })); //USES THE Right BUMPER TO SLOW DOWN
+                                                        }));*/ //USES THE Right BUMPER TO SLOW DOWN
     Driver.Controller.start().onTrue(new ResetGyro(driveSubsystem));
     Driver.Controller.leftTrigger(0.5).onTrue(new InstantCommand(driveSubsystem::moveToReefLeft))
                                       .onFalse(new InstantCommand(driveSubsystem::cancelReefPath));
@@ -113,10 +114,10 @@ public class RobotContainer {
                                       .onFalse(new InstantCommand(driveSubsystem::cancelReefPath));
  
     //Climber
-    Driver.Controller.b().onTrue(new InstantCommand(climberSubsystem::setClimberIn));
-    Driver.Controller.y().onTrue(new InstantCommand(climberSubsystem::setClimberOut));
-    Driver.Controller.a().whileTrue(new InstantCommand(climberSubsystem::setClimberClimbed))
-                         .onFalse(new InstantCommand(climberSubsystem::setClimberHold));
+    //Driver.Controller.b().onTrue(new InstantCommand(climberSubsystem::setClimberIn));
+    //Driver.Controller.y().onTrue(new InstantCommand(climberSubsystem::setClimberOut));
+    //Driver.Controller.a().whileTrue(new InstantCommand(climberSubsystem::setClimberClimbed))
+    //                     .onFalse(new InstantCommand(climberSubsystem::setClimberHold));
     
     //Switch comments to use X button to reset odometry during calibration
     Driver.Controller.x().onTrue(new InstantCommand(driveSubsystem::resetOdometryToEstimatedPose));
@@ -124,15 +125,15 @@ public class RobotContainer {
     //                     .onFalse(new InstantCommand(climberSubsystem::setClimberHold));
     
     //Coral Delivery/Elevator
-    coralSubsystem.setDefaultCommand(new OperatorCommands(coralSubsystem));//Used for manual control of the elevator & Pivot
-    Operator.getCustCont1Button11().onTrue(new InstantCommand(coralSubsystem::setDeliveryStateLoading));
-    Operator.getCustCont1Button10().onTrue(new InstantCommand(coralSubsystem::setDeliveryStateUnloading));
-    Operator.getCustCont1Button9().onTrue(new InstantCommand(coralSubsystem::setElevatorLoadPosition));
-    Operator.getCustCont1Button4().onTrue(new InstantCommand(coralSubsystem::setElevatorLONEPosition));
-    Operator.getCustCont1Button3().onTrue(new InstantCommand(coralSubsystem::setElevatorLTWOPosition));
-    Operator.getCustCont1Button2().onTrue(new InstantCommand(coralSubsystem::setElevatorLTHREEPosition));
+    //coralSubsystem.setDefaultCommand(new OperatorCommands(coralSubsystem));//Used for manual control of the elevator & Pivot
+    //Operator.getCustCont1Button11().onTrue(new InstantCommand(coralSubsystem::setDeliveryStateLoading));
+    //Operator.getCustCont1Button10().onTrue(new InstantCommand(coralSubsystem::setDeliveryStateUnloading));
+    //Operator.getCustCont1Button9().onTrue(new InstantCommand(coralSubsystem::setElevatorLoadPosition));
+    //Operator.getCustCont1Button4().onTrue(new InstantCommand(coralSubsystem::setElevatorLONEPosition));
+    //Operator.getCustCont1Button3().onTrue(new InstantCommand(coralSubsystem::setElevatorLTWOPosition));
+    //Operator.getCustCont1Button2().onTrue(new InstantCommand(coralSubsystem::setElevatorLTHREEPosition));
     //Operator.getCustCont1Button1().onTrue(new InstantCommand(coralSubsystem::setElevatorLFOURPosition));
-    Operator.getCustCont1Button1().onTrue(new MoveToL4Sequence(coralSubsystem));
+    //Operator.getCustCont1Button1().onTrue(new MoveToL4Sequence(coralSubsystem));
 
     //Intake
     //Operator.getCustCont1Button7().onTrue(new InstantCommand(intakeSubsystem::setIntakeState));
@@ -146,14 +147,14 @@ public class RobotContainer {
     //                      .onFalse(new InstantCommand(algaeSubsystem::setAlgaeIntakeOffState));
     //Operator.getButton5().onTrue(new InstantCommand(algaeSubsystem::setAlgaePivotState));*/
     
-    Operator.getCustCont2Button1().onTrue(new InstantCommand(algaeSubsystem::algaeIntakeLoad))
-                                  .onFalse(new InstantCommand(algaeSubsystem::algaeIntakeOff));
-    Operator.getCustCont2Button2().onTrue(new InstantCommand(algaeSubsystem::algaeIntakeDischarge))
-                                  .onFalse(new InstantCommand(algaeSubsystem::algaeIntakeOff));
-    Operator.getCustCont2Button6().onTrue(new InstantCommand(algaeSubsystem::algaePivotHome));
-    Operator.getCustCont2Button5().onTrue(new InstantCommand(algaeSubsystem::algaePivotReef));
-    Operator.getCustCont2Button4().onTrue(new InstantCommand(algaeSubsystem::algaePivotFloor));
-    Operator.getCustCont2Button3().onTrue(new MoveAlgaeToBarge(coralSubsystem, algaeSubsystem));
+    //Operator.getCustCont2Button1().onTrue(new InstantCommand(algaeSubsystem::algaeIntakeLoad))
+    //                              .onFalse(new InstantCommand(algaeSubsystem::algaeIntakeOff));
+    //Operator.getCustCont2Button2().onTrue(new InstantCommand(algaeSubsystem::algaeIntakeDischarge))
+    //                              .onFalse(new InstantCommand(algaeSubsystem::algaeIntakeOff));
+    //Operator.getCustCont2Button6().onTrue(new InstantCommand(algaeSubsystem::algaePivotHome));
+    //Operator.getCustCont2Button5().onTrue(new InstantCommand(algaeSubsystem::algaePivotReef));
+    //Operator.getCustCont2Button4().onTrue(new InstantCommand(algaeSubsystem::algaePivotFloor));
+    //Operator.getCustCont2Button3().onTrue(new MoveAlgaeToBarge(coralSubsystem, algaeSubsystem));
 
 
     

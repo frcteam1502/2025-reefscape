@@ -21,8 +21,8 @@ public class DriverCommands extends Command {
   private final String kDriver1 = "Driver1";
   private final String kDriver2 = "Driver2";
 
-  private SlewRateLimiter forwardLimiter = new SlewRateLimiter(10);
-  private SlewRateLimiter strafeLimiter = new SlewRateLimiter(10);
+  private SlewRateLimiter forwardLimiter = new SlewRateLimiter(20);
+  private SlewRateLimiter strafeLimiter = new SlewRateLimiter(20);
   private final SendableChooser<String> driverChooser = new SendableChooser<>();
 
   boolean finesse_mode = false;

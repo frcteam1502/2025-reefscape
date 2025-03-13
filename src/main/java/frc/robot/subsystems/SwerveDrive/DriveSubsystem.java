@@ -6,6 +6,8 @@ import frc.robot.subsystems.Vision.PhotonCameraCfg;
 import frc.robot.subsystems.Vision.PhotonVisionCamera;
 import frc.robot.subsystems.Vision.ReefMap;
 import frc.robot.subsystems.Vision.ReefMap.Side;
+import frc.robot.subsystems.Vision.LimelightHelpers.LimelightResults;
+import frc.robot.subsystems.Vision.LimelightHelpers.LimelightTarget_Fiducial;
 import frc.robot.subsystems.Vision.LimelightHelpers.RawFiducial;
 
 import java.util.List;
@@ -90,6 +92,7 @@ public class DriveSubsystem extends SubsystemBase{
 
   private Pose2d pose = new Pose2d();
   private Pose2d limelightPose = new Pose2d();
+  private Pose2d limelightTagPose = new Pose2d();
   private Pose2d photonLeftPose = new Pose2d();
   private Pose2d photonRightPose = new Pose2d();
   private Pose2d estimatedPose = new Pose2d();
@@ -385,11 +388,18 @@ public class DriveSubsystem extends SubsystemBase{
     if(LimelightHelpers.getTV("")){
       //Get the Tag ID
       RawFiducial[] fiducials = LimelightHelpers.getRawFiducials("");
+      
       if(fiducials.length > 0){
         limelightFiducialID = fiducials[0].id;
 
+        //Record distance to target as computed by this fiducial (x,y,z,pitch,yaw,roll) (meters, degrees)
+        double[] targetPoseEstimate = LimelightHelpers.getTargetPose_RobotSpace("");
+
+        limelightTagPose = new Pose2d(targetPoseEstimate[0], targetPoseEstimate[1], Rotation2d.fromDegrees(targetPoseEstimate[4]));
+        
         if(!DrivebaseCfg.USE_MEGATAG2){
           LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("");
+
           limelightPose = limelightMeasurement.pose;
           if((fiducials[0].ambiguity <= DrivebaseCfg.AMBIGUITY_LIMIT)&&
              (fiducials[0].distToCamera <= DrivebaseCfg.DIST_LIMIT_M)){
@@ -416,6 +426,10 @@ public class DriveSubsystem extends SubsystemBase{
     return limelightFiducialID;
   }
 
+  public Pose2d getLimelightTagPose(){
+    return limelightTagPose;
+  }
+  
   private void updatePhotonVisionPose(){
     //var leftPoseEstimate = leftPhotonCamera.getEstimatedGlobalPose();
     var leftPoseEstimate = leftPhotonCamera.processCamera(getEstimatedPose2d());

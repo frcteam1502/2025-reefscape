@@ -50,7 +50,7 @@ public class DrivebaseCfg {
     public static final boolean ADAPTIVE_LIMITING_ENABLED = false;
 
     //Limelight stuff
-    public static final boolean USE_MEGATAG2 = false;
+    public static final boolean USE_MEGATAG2 = true;
     public static final double AMBIGUITY_LIMIT = 0.3;
     public static final double DIST_LIMIT_M = 3;
     public static final double YAW_LIMIT_DPS = 720;
