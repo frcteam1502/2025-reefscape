@@ -6,6 +6,8 @@ package frc.robot.subsystems.CoralDelivery;
 
 import java.util.function.BooleanSupplier;
 
+import com.reduxrobotics.sensors.canandmag.Canandmag;
+import com.reduxrobotics.sensors.canandmag.CanandmagSettings;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase;
@@ -42,6 +44,8 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   private LaserCan rwdCoralDeliveryTracker;
 
   private DigitalInput elevatorLimit = CoralDeliveryCfg.ELEVATOR_LOWER_LIMIT;
+
+  private Canandmag pivotAbsEncoder;
 
   private double elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_LOAD_POSITION;
   private double pivotSetPosition = CoralDeliveryCfg.PIVOT_LOAD_POSITION;
@@ -99,15 +103,16 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   }
 
   private void updateDashboard(){
-    SmartDashboard.putNumber("ELEVATOR_CURRENT", elevator.getOutputCurrent());
     SmartDashboard.putNumber("ELEVATOR_POS", getElevatorPosition());
+    SmartDashboard.putNumber("Pivot Abs Position", getPivotAbsPositionDegrees());
     SmartDashboard.putNumber("PIVOT_POS", getPivotPosition());
     SmartDashboard.putNumber("ElevatorSetPosition", elevatorSetPosition);
     SmartDashboard.putNumber("PivotSetPosition", pivotSetPosition);
 
-    SmartDashboard.putNumber("PIVOT_CURRENT", pivot.getOutputCurrent());
     SmartDashboard.putNumber("Forward Sensor Distance", getFwdLaserCanDistance());
     SmartDashboard.putNumber("Rearward Sensor Distance", getRwdLaserCanDistance());
+    SmartDashboard.putBoolean("Elevator Limit Switch", isElevatorLimitPressed());
+    SmartDashboard.putBoolean("Elevator Zeroed By Switch", isElevatorZeroed());
     SmartDashboard.putBoolean("Is Forward Present", isFwdCoralPresent());
     SmartDashboard.putBoolean("Is Rearward Present", isRwdCoralPresent());
     SmartDashboard.putString("Delivery State", deliveryState.name());
@@ -185,6 +190,15 @@ public class CoralDeliverySubsystem extends SubsystemBase {
 
     //Finally write the config to the spark
     pivot.configure(pivotConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+
+    //Configure the coral pivot absolute encoder
+    pivotAbsEncoder = CoralDeliveryCfg.PIVOT_ABS_ENCODER;
+    CanandmagSettings pivotAbsEncoderSettings = new CanandmagSettings();
+    pivotAbsEncoderSettings.setInvertDirection(CoralDeliveryCfg.PIVOT_ABS_ENCODER_INVERTED);
+    pivotAbsEncoderSettings.setDisableZeroButton(CoralDeliveryCfg.PIVOT_ABS_ENCODER_ZERO_BUTTON_DISABLE);
+    pivotAbsEncoder.setSettings(pivotAbsEncoderSettings);//Writes the settings to the encoder
+
+    pivotAbsEncoder.clearStickyFaults();//Clears all sticky faults including the power cycle flag
   }
 
   private void configureCoralDelivery(){
@@ -235,8 +249,9 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   }
 
   private void reset(){
-    elevatorEncoder.setPosition(CoralDeliveryCfg.ELEVATOR_ENCODER_RESET);
-    pivotEncoder.setPosition(CoralDeliveryCfg.PIVOT_ENCODER_RESET);
+    //elevatorEncoder.setPosition(CoralDeliveryCfg.ELEVATOR_ENCODER_RESET);
+    //pivotEncoder.setPosition(CoralDeliveryCfg.PIVOT_ENCODER_RESET);
+    pivotEncoder.setPosition(getPivotAbsPositionDegrees());
   }
 
   @Override
@@ -367,9 +382,9 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   }
   
   private void zeroElevator(){
-    if(elevatorLimit.get()){
+    if(isElevatorLimitPressed()){
       //See if this is the 1st time we have seen the switch pressed
-      if(!isElevatorZeroedBySwitch){
+      if(!isElevatorZeroed()){
         isElevatorZeroedBySwitch = true;
         elevatorEncoder.setPosition(CoralDeliveryCfg.ELEVATOR_ENCODER_RESET);
         elevatorSetPosition = CoralDeliveryCfg.ELEVATOR_ENCODER_RESET;
@@ -380,8 +395,11 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   }
 
   private boolean isElevatorZeroed(){
-    //return isElevatorZeroedBySwitch;
-    return true;
+    return isElevatorZeroedBySwitch;
+  }
+
+  private boolean isElevatorLimitPressed(){
+    return (!elevatorLimit.get());
   }
 
   public void setDeliveryPower(double power){
@@ -394,6 +412,10 @@ public class CoralDeliverySubsystem extends SubsystemBase {
 
   public double getPivotPosition(){
     return pivotEncoder.getPosition();
+  }
+
+  public double getPivotAbsPositionDegrees(){
+    return pivotAbsEncoder.getAbsPosition()*360;
   }
 
   public double getDeliveryPosition(){
@@ -505,21 +527,43 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   public void moveElevatorManually(double input){
     //This logic needs work
     double change = Math.signum(input) * CoralDeliveryCfg.ELEVATOR_CHANGE;
-    elevatorSetPosition += change;
+    double newPosition = elevatorSetPosition + change;
+    
+    if(isElevatorZeroed()){
+      //Elevator is zeroed so our positions should be good to do range checks
+      if(newPosition > CoralDeliveryCfg.ELEVATOR_MAX_LIMIT){
+        newPosition = CoralDeliveryCfg.ELEVATOR_MAX_LIMIT;
+      }else if (newPosition < CoralDeliveryCfg.ELEVATOR_MIN_LIMIT){
+        newPosition = CoralDeliveryCfg.ELEVATOR_MIN_LIMIT;
+      }else{
+        //Do nothing, newPosition is in-bounds, allow the set position to get updated
+      }
+    }else{
+      //Elevator has not been zeroed!
+      if((change > 0)||
+         (isElevatorLimitPressed())){
+        //Do not allow the elevator to go any higher since we may hit the upper hard stop, or lower if we're on the switch
+        newPosition = elevatorSetPosition;
+      }else{
+        //We are somewhere between the upper limit and the hard stop, but elevator can only go down
+      }
+    }
+    elevatorSetPosition = newPosition;
   }
 
   public void movePivotManually(double input){
     double change = Math.signum(input) * CoralDeliveryCfg.PIVOT_CHANGE;
     double newPosition = pivotSetPosition + change;
-    if(newPosition > 0){
-      if(newPosition < CoralDeliveryCfg.PIVOT_MAX_LIMIT){
-        pivotSetPosition = newPosition;
-      }else{
-        pivotSetPosition = CoralDeliveryCfg.PIVOT_MAX_LIMIT;
-      }
+
+    if(newPosition > CoralDeliveryCfg.PIVOT_MAX_LIMIT){
+      newPosition = CoralDeliveryCfg.PIVOT_MAX_LIMIT;
+    }else if (newPosition < CoralDeliveryCfg.PIVOT_MIN_LIMIT){
+      newPosition = CoralDeliveryCfg.PIVOT_MIN_LIMIT;
     }else{
-      pivotSetPosition = CoralDeliveryCfg.PIVOT_LOAD_POSITION;
+      //Do nothing, newPosition is in-bounds, allow the set position to get updated
     }
+
+    pivotSetPosition = newPosition;
   }
 
   public boolean isCoralLoaded(){
