@@ -35,7 +35,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Elevator to Load"
+                  "name": "Elevator to Load Sequence"
                 }
               },
               {
@@ -91,7 +91,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Elevator to Load"
+                  "name": "Elevator to Load Sequence"
                 }
               },
               {
@@ -143,7 +143,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Elevator to Load"
+            "name": "Elevator to Load Sequence"
           }
         }
       ]

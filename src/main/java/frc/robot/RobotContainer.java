@@ -14,8 +14,9 @@ import frc.robot.commands.DriverCommands;
 import frc.robot.commands.LoadCoral;
 import frc.robot.commands.MoveAlgaeToBarge;
 import frc.robot.commands.MoveElevatorToL0;
-import frc.robot.commands.MoveElevatorToL3;
+import frc.robot.commands.MoveElevatorToL1FromL4;
 import frc.robot.commands.MoveElevatorToL4;
+import frc.robot.commands.MoveToL0Sequence;
 import frc.robot.commands.MoveToL4Sequence;
 import frc.robot.commands.OperatorCommands;
 import frc.robot.commands.ResetGyro;
@@ -70,6 +71,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Align to Right", new InstantCommand(driveSubsystem::moveToReefRight));
     NamedCommands.registerCommand("Elevator to L4", new MoveElevatorToL4(coralSubsystem));
     NamedCommands.registerCommand("Elevator to L2", new InstantCommand(coralSubsystem::setElevatorLTWOPosition));
+    NamedCommands.registerCommand("Elevator to Load Sequence", new MoveToL0Sequence(coralSubsystem));
     NamedCommands.registerCommand("Elevator to Load", new MoveElevatorToL0(coralSubsystem));
     NamedCommands.registerCommand("Load Coral", new LoadCoral(coralSubsystem));
     NamedCommands.registerCommand("Unload Coral", new UnloadCoral(coralSubsystem));
