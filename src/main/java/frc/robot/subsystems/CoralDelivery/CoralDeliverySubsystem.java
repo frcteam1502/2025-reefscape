@@ -119,8 +119,6 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Delivery Speed", deliveryEncoder.getVelocity());
     SmartDashboard.putNumber("Delivery Set Speed",deliverySetSpd);
 
-    SmartDashboard.putNumber("Elevator Velocity Conversion Factor", elevator.configAccessor.encoder.getVelocityConversionFactor());
-
     if (Math.abs(elevatorEncoder.getVelocity()) > maxVelocity){
       maxVelocity = Math.abs(elevatorEncoder.getVelocity());
     }
@@ -153,9 +151,9 @@ public class CoralDeliverySubsystem extends SubsystemBase {
         .outputRange(CoralDeliveryCfg.ELEVATOR_MIN_OUTPUT, CoralDeliveryCfg.ELEVATOR_MAX_OUTPUT);
     
     elevatorConfig.closedLoop.maxMotion
-        .maxVelocity(7500)
-        .maxAcceleration(10000)
-        .allowedClosedLoopError(1);
+        .maxVelocity(CoralDeliveryCfg.ELEVATOR_MAX_VELOCITY)
+        .maxAcceleration(CoralDeliveryCfg.ELEVATOR_MAX_ACCEL)
+        .allowedClosedLoopError(CoralDeliveryCfg.ELEVATOR_MAX_ALLOWED_ERROR);
     
     //Finally write the config to the spark
     elevator.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
@@ -184,9 +182,9 @@ public class CoralDeliverySubsystem extends SubsystemBase {
 
     //Configure Max Motion
     pivotConfig.closedLoop.maxMotion
-        .maxVelocity(1000)
-        .maxAcceleration(1000)
-        .allowedClosedLoopError(1);
+        .maxVelocity(CoralDeliveryCfg.PIVOT_MAX_VELOCITY)
+        .maxAcceleration(CoralDeliveryCfg.PIVOT_MAX_ACCEL)
+        .allowedClosedLoopError(CoralDeliveryCfg.PIVOT_MAX_ALLOWED_ERROR);
 
     //Finally write the config to the spark
     pivot.configure(pivotConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);

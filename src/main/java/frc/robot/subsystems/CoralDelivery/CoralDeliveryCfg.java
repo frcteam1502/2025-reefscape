@@ -60,12 +60,18 @@ public class CoralDeliveryCfg {
     public static final double PIVOT_D_GAIN = 0;
     public static final double PIVOT_MAX_OUTPUT = 0.4;
     public static final double PIVOT_MIN_OUTPUT = -0.25;
+    public static final double PIVOT_MAX_VELOCITY = 1000;
+    public static final double PIVOT_MAX_ACCEL = 1000;
+    public static final double PIVOT_MAX_ALLOWED_ERROR = 0;
 
-    public static final double ELEVATOR_P_GAIN = 0.1;
+    public static final double ELEVATOR_P_GAIN = 0.2;
     public static final double ELEVATOR_I_GAIN = 0;
-    public static final double ELEVATOR_D_GAIN = 0;
-    public static final double ELEVATOR_MAX_OUTPUT = 0.75;
-    public static final double ELEVATOR_MIN_OUTPUT = -0.25;
+    public static final double ELEVATOR_D_GAIN = 0.0155;
+    public static final double ELEVATOR_MAX_OUTPUT = 1;
+    public static final double ELEVATOR_MIN_OUTPUT = -1;
+    public static final double ELEVATOR_MAX_VELOCITY = 7500;
+    public static final double ELEVATOR_MAX_ACCEL = 7500;
+    public static final double ELEVATOR_MAX_ALLOWED_ERROR = 0;
 
     public static final LaserCan FWD_LASER_CAN = new LaserCan(FORWARD_LASER_CAN_ID);
     public static final LaserCan RWD_LASER_CAN = new LaserCan(REARWARD_LASER_CAN_ID);
@@ -80,7 +86,7 @@ public class CoralDeliveryCfg {
 
     public static final int CORAL_PRESENT_THRESH_MM = 60;
 
-    public static final double ELEVATOR_LOAD_POSITION = 0;
+    public static final double ELEVATOR_LOAD_POSITION = 0.5;
     public static final double ELEVATOR_LONE_POSITION = 20;
     public static final double ELEVATOR_LTWO_POSITION = 50;
     public static final double ELEVATOR_LTHREE_POSITION = 90;
@@ -89,20 +95,20 @@ public class CoralDeliveryCfg {
 
     public static final double PIVOT_LOAD_POSITION = 5;
     public static final double PIVOT_LONE_POSITION = 45;
-    public static final double PIVOT_LTWO_POSITION = 5;
-    public static final double PIVOT_LTHREE_POSITION = 5;
-    public static final double PIVOT_LFOUR_POSITION = 135;
+    public static final double PIVOT_LTWO_POSITION = 15;
+    public static final double PIVOT_LTHREE_POSITION = 15;
+    public static final double PIVOT_LFOUR_POSITION = 125;
     public static final double PIVOT_BARGE_POSITION = 45;
     public static final double PIVOT_ENCODER_RESET = 0;
     public static final double INDEXER_ON_SPEED = 0.40;
     public static final double INDEXER_OFF_SPEED = 0;
     public static final double INDEXER_REVERSE_SPEED = -0.4;
     
-    public static final double ELEVATOR_CHANGE = 2;
-    public static final double ELEVATOR_MAX_LIMIT = 130;
+    public static final double ELEVATOR_CHANGE = 1;
+    public static final double ELEVATOR_MAX_LIMIT = 125;
     public static final double ELEVATOR_MIN_LIMIT = 0;
     public static final double PIVOT_CHANGE = 5;
-    public static final double PIVOT_MAX_LIMIT = 130;
+    public static final double PIVOT_MAX_LIMIT = 125;
     public static final double PIVOT_MIN_LIMIT = 0;  
     
     public static final double HOME_POS_THRESH = 1;
