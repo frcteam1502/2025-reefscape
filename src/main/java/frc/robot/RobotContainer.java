@@ -69,6 +69,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Align to Left", new InstantCommand(driveSubsystem::moveToReefLeft));
     NamedCommands.registerCommand("Align to Right", new InstantCommand(driveSubsystem::moveToReefRight));
     NamedCommands.registerCommand("Elevator to L4", new MoveElevatorToL4(coralSubsystem));
+    NamedCommands.registerCommand("Elevator to L2", new InstantCommand(coralSubsystem::setElevatorLTWOPosition));
     NamedCommands.registerCommand("Elevator to Load", new MoveElevatorToL0(coralSubsystem));
     NamedCommands.registerCommand("Load Coral", new LoadCoral(coralSubsystem));
     NamedCommands.registerCommand("Unload Coral", new UnloadCoral(coralSubsystem));
