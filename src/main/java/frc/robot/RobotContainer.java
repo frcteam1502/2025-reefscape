@@ -10,6 +10,8 @@ import frc.robot.subsystems.CoralDelivery.CoralDeliveryCfg;
 import frc.robot.subsystems.CoralDelivery.CoralDeliverySubsystem;
 import frc.robot.subsystems.IntakeIndexer.IntakeIndexerSubsystem;
 import frc.robot.subsystems.PowerManagement.MockDetector;
+import frc.robot.commands.AlignToReefLeft;
+import frc.robot.commands.AlignToReefRight;
 import frc.robot.commands.DriverCommands;
 import frc.robot.commands.LoadCoral;
 import frc.robot.commands.MoveAlgaeToBarge;
@@ -108,10 +110,9 @@ public class RobotContainer {
                                                           return false;
                                                         })); //USES THE Right BUMPER TO SLOW DOWN
     Driver.Controller.start().onTrue(new ResetGyro(driveSubsystem));
-    Driver.Controller.leftTrigger(0.5).onTrue(new InstantCommand(driveSubsystem::moveToReefLeft))
-                                      .onFalse(new InstantCommand(driveSubsystem::cancelReefPath));
-    Driver.Controller.rightTrigger(0.5).onTrue(new InstantCommand(driveSubsystem::moveToReefRight))
-                                      .onFalse(new InstantCommand(driveSubsystem::cancelReefPath));
+    
+    Driver.Controller.leftTrigger(0.5).whileTrue(new AlignToReefLeft(driveSubsystem));
+    Driver.Controller.rightTrigger(0.5).whileTrue(new AlignToReefRight(driveSubsystem));
  
     //Climber
     Driver.Controller.b().onTrue(new InstantCommand(climberSubsystem::setClimberIn));
