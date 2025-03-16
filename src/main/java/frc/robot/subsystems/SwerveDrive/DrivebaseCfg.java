@@ -25,6 +25,21 @@ public class DrivebaseCfg {
 
     public static final boolean IS_FIELD_MIRRORED = true;
 
+    public static final double AUTO_ALIGN_X_KP = 3;
+    public static final double AUTO_ALIGN_X_KI = 0;
+    public static final double AUTO_ALIGN_X_KD = 0;
+    public static final double AUTO_ALIGN_X_ALLOWED_ERROR = .01;
+
+    public static final double AUTO_ALIGN_Y_KP = 3;
+    public static final double AUTO_ALIGN_Y_KI = 0;
+    public static final double AUTO_ALIGN_Y_KD = 0;
+    public static final double AUTO_ALIGN_Y_ALLOWED_ERROR = .01;
+
+    public static final double AUTO_ALIGN_ROT_KP = .2;
+    public static final double AUTO_ALIGN_ROT_KI = 0;
+    public static final double AUTO_ALIGN_ROT_KD = 0;
+    public static final double AUTO_ALIGN_ROT_ALLOWED_ERROR = .5;
+
     //Other Configs
     //Swerve Module IDs
     public static final int FRONT_LEFT_MOD_ID   = 0;

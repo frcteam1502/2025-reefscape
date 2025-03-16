@@ -7,8 +7,10 @@ package frc.robot.commands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SwerveDrive.DriveSubsystem;
+import frc.robot.subsystems.SwerveDrive.DrivebaseCfg;
 import frc.robot.subsystems.Vision.ReefMap;
 import frc.robot.subsystems.Vision.ReefMap.Side;
 
@@ -27,9 +29,17 @@ public class AlignToReefLeft extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     this.drive = drive;
 
-    xController = new PIDController(3, 0, 0);
-    yController = new PIDController(3, 0, 0);
-    rotController = new PIDController(.05, 0, 0);
+    xController = new PIDController(DrivebaseCfg.AUTO_ALIGN_X_KP, 
+                                    DrivebaseCfg.AUTO_ALIGN_X_KI, 
+                                    DrivebaseCfg.AUTO_ALIGN_X_KD);
+    
+    yController = new PIDController(DrivebaseCfg.AUTO_ALIGN_Y_KP, 
+                                    DrivebaseCfg.AUTO_ALIGN_Y_KI, 
+                                    DrivebaseCfg.AUTO_ALIGN_Y_KD);
+    
+    rotController = new PIDController(DrivebaseCfg.AUTO_ALIGN_ROT_KP,
+                                      DrivebaseCfg.AUTO_ALIGN_ROT_KI, 
+                                      DrivebaseCfg.AUTO_ALIGN_ROT_KD);
 
     addRequirements(drive);
   }
@@ -43,17 +53,18 @@ public class AlignToReefLeft extends Command {
     if(reefMap.isPosePresent(tagId, Side.LEFT)){
       System.out.println("Align to Left!");
       targetPose = reefMap.getReefPose2d(tagId, Side.LEFT);
+      System.out.println("X:" + targetPose.getX() + " Y:" + targetPose.getY() + " Rot:" + targetPose.getRotation().getDegrees() );
       
       rotController.setSetpoint(targetPose.getRotation().getDegrees());
-      rotController.setTolerance(1);
+      rotController.setTolerance(DrivebaseCfg.AUTO_ALIGN_ROT_ALLOWED_ERROR);
       
       lastHeading = targetPose.getRotation().getDegrees();
 
       xController.setSetpoint(targetPose.getX());
-      xController.setTolerance(0.01);
+      xController.setTolerance(DrivebaseCfg.AUTO_ALIGN_X_ALLOWED_ERROR);
 
       yController.setSetpoint(targetPose.getY());
-      yController.setTolerance(0.01);
+      yController.setTolerance(DrivebaseCfg.AUTO_ALIGN_Y_ALLOWED_ERROR);
       
       atSetPoint = false;
     }else{
@@ -80,7 +91,12 @@ public class AlignToReefLeft extends Command {
     }
 
     if(!atSetPoint){
-      drive.drive(xSpeed,ySpeed,rotValue,true);
+      var alliance = DriverStation.getAlliance();
+      if((alliance.isPresent()) && (alliance.get() == DriverStation.Alliance.Red)){
+        drive.drive(-xSpeed,-ySpeed,rotValue,true);
+      }else{
+        drive.drive(xSpeed,ySpeed,rotValue,true);   
+      }
     }else{
       drive.drive(0,0,0,true);
     }

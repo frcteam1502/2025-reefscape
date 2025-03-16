@@ -26,21 +26,21 @@ public class ReefMap {
         private static final Pose2d RIGHT_9     = new Pose2d(12.180, 5.210, new Rotation2d(Math.toRadians(-60)));
         private static final Pose2d LEFT_10     = new Pose2d(11.600, 4.190, new Rotation2d(Math.toRadians(0)));
         private static final Pose2d RIGHT_10    = new Pose2d(11.600, 3.870, new Rotation2d(Math.toRadians(0)));
-        private static final Pose2d LEFT_11     = new Pose2d(12.350, 2.860, new Rotation2d(Math.toRadians(60)));
+        private static final Pose2d LEFT_11     = new Pose2d(12.180, 2.860, new Rotation2d(Math.toRadians(60)));
         private static final Pose2d RIGHT_11    = new Pose2d(12.470, 2.680, new Rotation2d(Math.toRadians(60)));
         //Blue
-        private static final Pose2d LEFT_17     = new Pose2d(3.500, 2.870, new Rotation2d(Math.toRadians(60)));
-        private static final Pose2d RIGHT_17    = new Pose2d(3.840, 2.700, new Rotation2d(Math.toRadians(60)));
-        private static final Pose2d LEFT_18     = new Pose2d(3.050, 4.200, new Rotation2d(Math.toRadians(0)));	
-        private static final Pose2d RIGHT_18    = new Pose2d(3.050, 3.894, new Rotation2d(Math.toRadians(0)));
+        private static final Pose2d LEFT_17     = new Pose2d(3.650, 2.900, new Rotation2d(Math.toRadians(60)));
+        private static final Pose2d RIGHT_17    = new Pose2d(3.850, 2.780, new Rotation2d(Math.toRadians(60)));
+        private static final Pose2d LEFT_18     = new Pose2d(3.100, 4.200, new Rotation2d(Math.toRadians(0)));	
+        private static final Pose2d RIGHT_18    = new Pose2d(3.100, 3.850, new Rotation2d(Math.toRadians(0)));
         private static final Pose2d LEFT_19     = new Pose2d(3.910, 5.370, new Rotation2d(Math.toRadians(-60)));	
         private static final Pose2d RIGHT_19    = new Pose2d(3.630, 5.210, new Rotation2d(Math.toRadians(-60)));
         private static final Pose2d LEFT_20     = new Pose2d(5.340, 5.210, new Rotation2d(Math.toRadians(-120)));
         private static final Pose2d RIGHT_20    = new Pose2d(5.050, 5.370, new Rotation2d(Math.toRadians(-120)));
-        private static final Pose2d LEFT_21     = new Pose2d(5.95, 3.894, new Rotation2d(Math.toRadians(180)));
-        private static final Pose2d RIGHT_21    = new Pose2d(5.95, 4.200, new Rotation2d(Math.toRadians(180)));
-        private static final Pose2d LEFT_22     = new Pose2d(5.010, 2.65, new Rotation2d(Math.toRadians(120)));
-        private static final Pose2d RIGHT_22    = new Pose2d(5.420, 2.900, new Rotation2d(Math.toRadians(120)));
+        private static final Pose2d LEFT_21     = new Pose2d(5.950, 3.894, new Rotation2d(Math.toRadians(180)));
+        private static final Pose2d RIGHT_21    = new Pose2d(5.950, 4.200, new Rotation2d(Math.toRadians(180)));
+        private static final Pose2d LEFT_22     = new Pose2d(4.950, 2.650, new Rotation2d(Math.toRadians(120)));
+        private static final Pose2d RIGHT_22    = new Pose2d(5.250, 2.750, new Rotation2d(Math.toRadians(120)));
     }
 
     public ReefMap(){
