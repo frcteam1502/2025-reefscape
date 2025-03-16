@@ -5,18 +5,6 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "Intake To Climb"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Deploy Climber"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "LeftStartToBackRight"
@@ -47,7 +35,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Elevator to Load"
+                  "name": "Elevator to Load Sequence"
                 }
               },
               {
@@ -103,7 +91,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Elevator to Load"
+                  "name": "Elevator to Load Sequence"
                 }
               },
               {
@@ -155,7 +143,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Elevator to Load"
+            "name": "Elevator to Load Sequence"
           }
         }
       ]

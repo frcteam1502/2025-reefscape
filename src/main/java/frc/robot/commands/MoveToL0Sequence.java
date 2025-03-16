@@ -10,14 +10,14 @@ import frc.robot.subsystems.CoralDelivery.CoralDeliverySubsystem;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class MoveToL4Sequence extends SequentialCommandGroup {
+public class MoveToL0Sequence extends SequentialCommandGroup {
   /** Creates a new MoveToL4Sequence. */
-  public MoveToL4Sequence(CoralDeliverySubsystem coralDelivery) {
+  public MoveToL0Sequence(CoralDeliverySubsystem coralDelivery) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new MoveElevatorToL1FromL4(coralDelivery),
-      new MoveElevatorToL4(coralDelivery)
+      new MoveElevatorToL0(coralDelivery)
     );
   }
 }

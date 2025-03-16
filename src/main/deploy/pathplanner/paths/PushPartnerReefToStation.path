@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.090576923076923,
-        "y": 5.4079487179487185
+        "x": 5.99771561775911,
+        "y": 4.194621496860848
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.219087197049525,
-        "y": 5.903796320688444
+        "x": 5.957889344262295,
+        "y": 6.020952868852459
       },
       "isLocked": false,
-      "linkedName": "EndLeftStart"
+      "linkedName": "PushReefStop"
     },
     {
       "anchor": {
@@ -20,8 +20,8 @@
         "y": 7.09625
       },
       "prevControl": {
-        "x": 2.1484058219178093,
-        "y": 6.795736301369862
+        "x": 1.906045081967213,
+        "y": 6.4764856557377035
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,7 +48,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": -179.61417692349085
   },
   "useDefaultConstraints": true
 }

@@ -462,6 +462,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     
   public void setElevatorPosition(double position){
     elevatorPIDController.setReference(position, SparkMax.ControlType.kMAXMotionPositionControl);
+    //elevatorPIDController.setReference(position, SparkMax.ControlType.kPosition);
   }
 
   public void setDeliverySpd(double speed){
