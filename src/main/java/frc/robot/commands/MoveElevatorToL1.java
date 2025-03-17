@@ -9,11 +9,11 @@ import frc.robot.subsystems.CoralDelivery.CoralDeliveryCfg;
 import frc.robot.subsystems.CoralDelivery.CoralDeliverySubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class MoveElevatorToL1FromL4 extends Command {
+public class MoveElevatorToL1 extends Command {
   /** Creates a new MoveElevatorToL4. */
   CoralDeliverySubsystem coralSubsystem;
 
-  public MoveElevatorToL1FromL4(CoralDeliverySubsystem coralSubsystem) {
+  public MoveElevatorToL1(CoralDeliverySubsystem coralSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.coralSubsystem = coralSubsystem;
     addRequirements(coralSubsystem);
@@ -36,8 +36,10 @@ public class MoveElevatorToL1FromL4 extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if((coralSubsystem.getElevatorPosition() >= (CoralDeliveryCfg.ELEVATOR_LONE_POSITION+5))&&
-       ((coralSubsystem.getPivotPosition() >= (CoralDeliveryCfg.PIVOT_LONE_POSITION+5)))){
+    if((coralSubsystem.getElevatorPosition() >= (CoralDeliveryCfg.ELEVATOR_LONE_POSITION-5))&&
+       (coralSubsystem.getElevatorPosition() <= (CoralDeliveryCfg.ELEVATOR_LONE_POSITION+5))&&
+       (coralSubsystem.getPivotPosition() >= (CoralDeliveryCfg.PIVOT_LONE_POSITION-5))&&
+       (coralSubsystem.getPivotPosition() <= (CoralDeliveryCfg.PIVOT_LONE_POSITION+5))){
       return true;
     }
     return false;

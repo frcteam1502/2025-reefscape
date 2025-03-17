@@ -17,7 +17,7 @@ import frc.robot.commands.DriverCommands;
 import frc.robot.commands.LoadCoral;
 import frc.robot.commands.MoveAlgaeToBarge;
 import frc.robot.commands.MoveElevatorToL0;
-import frc.robot.commands.MoveElevatorToL1FromL4;
+import frc.robot.commands.MoveElevatorToL1;
 import frc.robot.commands.MoveElevatorToL4;
 import frc.robot.commands.MoveToL0Sequence;
 import frc.robot.commands.MoveToL4Sequence;
@@ -70,15 +70,12 @@ public class RobotContainer {
 
     //Register named commands. Must register all commands we want Pathplanner to execute.
     NamedCommands.registerCommand("Stop Drive Motors", new StopDriveMotors(driveSubsystem));
-    NamedCommands.registerCommand("Align to Left", new InstantCommand(driveSubsystem::moveToReefLeft));
-    NamedCommands.registerCommand("Align to Right", new InstantCommand(driveSubsystem::moveToReefRight));
     NamedCommands.registerCommand("Elevator to L4", new MoveElevatorToL4(coralSubsystem));
     NamedCommands.registerCommand("Elevator to L2", new InstantCommand(coralSubsystem::setElevatorLTWOPosition));
     NamedCommands.registerCommand("Elevator to Load Sequence", new MoveToL0Sequence(coralSubsystem));
     NamedCommands.registerCommand("Elevator to Load", new MoveElevatorToL0(coralSubsystem));
     NamedCommands.registerCommand("Load Coral", new LoadCoral(coralSubsystem));
     NamedCommands.registerCommand("Unload Coral", new UnloadCoral(coralSubsystem));
-    //NamedCommands.registerCommand("Intake To Climb", new InstantCommand(intakeSubsystem:: setLeftIntakeClimb));
     NamedCommands.registerCommand("Deploy Climber", new InstantCommand(climberSubsystem::setClimberOut));
   
     //Build an Autochooser from SmartDashboard selection.  Default will be Commands.none()

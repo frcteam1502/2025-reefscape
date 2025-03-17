@@ -37,7 +37,9 @@ public class MoveElevatorToL4 extends Command {
   @Override
   public boolean isFinished() {
     if((coralSubsystem.getElevatorPosition() >= (CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION-5))&&
-       ((coralSubsystem.getPivotPosition() >= (CoralDeliveryCfg.PIVOT_LFOUR_POSITION-5)))){
+       (coralSubsystem.getElevatorPosition() <= (CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION+5))&&
+       (coralSubsystem.getPivotPosition() >= (CoralDeliveryCfg.PIVOT_LFOUR_POSITION-5))&&
+       (coralSubsystem.getPivotPosition() <= (CoralDeliveryCfg.PIVOT_LFOUR_POSITION+5))){
       return true;
     }
     return false;
