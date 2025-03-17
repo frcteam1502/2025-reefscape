@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 public class CoralDeliveryCfg {
 
     public static final int ELEVATOR_MOTOR_ID = 15;
+    public static final int ELEVATOR_FOLLOWER_MOTOR_ID = 2;
     public static final int PIVOT_MOTOR_ID = 18;
     public static final int DELIVERY_MOTOR_ID = 19;
     public static final int INDEXER_MOTOR_ID = 3;
@@ -23,6 +24,7 @@ public class CoralDeliveryCfg {
     public static final int PIVOT_ABS_ENCODER_ID = 1;
 
     public static final SparkMax ELEVATOR_MOTOR = new SparkMax(ELEVATOR_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
+    public static final SparkMax ELEVATOR_FOLLOWER_MOTOR = new SparkMax(ELEVATOR_FOLLOWER_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
     public static final SparkMax PIVOT_MOTOR = new SparkMax(PIVOT_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
     public static final SparkMax DELIVERY_MOTOR = new SparkMax(DELIVERY_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
     public static final SparkMax INDEXER_MOTOR = new SparkMax(INDEXER_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);

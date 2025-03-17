@@ -27,6 +27,7 @@ import frc.robot.Logger;
 public class CoralDeliverySubsystem extends SubsystemBase {
   /** Creates a new CoralDSubsystem. */
   private final SparkMax elevator;
+  private final SparkMax elevatorFollower;
   private final SparkMax pivot;
   private final SparkMax delivery;
   private final SparkMax indexer;
@@ -52,6 +53,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   private double deliverySetSpd = CoralDeliveryCfg.DELIVERY_OFF_SPEED;
 
   private SparkMaxConfig elevatorConfig = new SparkMaxConfig();
+  private SparkMaxConfig elevatorFollowerConfig = new SparkMaxConfig();
 
   private SparkMaxConfig pivotConfig = new SparkMaxConfig();
 
@@ -83,6 +85,8 @@ public class CoralDeliverySubsystem extends SubsystemBase {
 
   public CoralDeliverySubsystem() {
     elevator = CoralDeliveryCfg.ELEVATOR_MOTOR;
+    elevatorFollower = CoralDeliveryCfg.ELEVATOR_FOLLOWER_MOTOR;
+
     pivot = CoralDeliveryCfg.PIVOT_MOTOR;
     delivery = CoralDeliveryCfg.DELIVERY_MOTOR;
     indexer = CoralDeliveryCfg.INDEXER_MOTOR;
@@ -134,6 +138,11 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     elevatorConfig.inverted(CoralDeliveryCfg.ELEVATOR_MOTOR_REVERSED);
     elevatorConfig.smartCurrentLimit(CoralDeliveryCfg.ELEVATOR_CURRENT_LIMIT);
 
+    elevatorFollowerConfig.idleMode(CoralDeliveryCfg.ELEVATOR_IDLE_MODE);
+    elevatorFollowerConfig.follow(elevator);
+    elevatorFollowerConfig.inverted(!CoralDeliveryCfg.ELEVATOR_MOTOR_REVERSED);
+    elevatorFollowerConfig.smartCurrentLimit(CoralDeliveryCfg.ELEVATOR_CURRENT_LIMIT);
+
     elevatorConfig.encoder
         .positionConversionFactor(CoralDeliveryCfg.ELEVATOR_POS_CONVERSION_CM)
         .velocityConversionFactor(CoralDeliveryCfg.ELEVATOR_POS_CONVERSION_CM);
@@ -155,8 +164,14 @@ public class CoralDeliverySubsystem extends SubsystemBase {
         .maxAcceleration(CoralDeliveryCfg.ELEVATOR_MAX_ACCEL)
         .allowedClosedLoopError(CoralDeliveryCfg.ELEVATOR_MAX_ALLOWED_ERROR);
     
-    //Finally write the config to the spark
-    elevator.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+    //Finally write the config to the sparks
+    elevator.configure(elevatorConfig, 
+                       SparkBase.ResetMode.kResetSafeParameters, 
+                       SparkBase.PersistMode.kPersistParameters);
+
+    elevatorFollower.configure(elevatorFollowerConfig, 
+                               SparkBase.ResetMode.kResetSafeParameters, 
+                               SparkBase.PersistMode.kPersistParameters);
   }
 
   private void configureCoralPivot(){
