@@ -139,8 +139,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     elevatorConfig.smartCurrentLimit(CoralDeliveryCfg.ELEVATOR_CURRENT_LIMIT);
 
     elevatorFollowerConfig.idleMode(CoralDeliveryCfg.ELEVATOR_IDLE_MODE);
-    elevatorFollowerConfig.follow(elevator);
-    elevatorFollowerConfig.inverted(!CoralDeliveryCfg.ELEVATOR_MOTOR_REVERSED);
+    elevatorFollowerConfig.follow(elevator, CoralDeliveryCfg.ELEVATOR_FOLLOWER_MOTOR_REVERSED);
     elevatorFollowerConfig.smartCurrentLimit(CoralDeliveryCfg.ELEVATOR_CURRENT_LIMIT);
 
     elevatorConfig.encoder

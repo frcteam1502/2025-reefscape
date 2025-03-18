@@ -49,10 +49,11 @@ public class CoralDeliveryCfg {
     public static final SparkBaseConfig.IdleMode DELIVERY_IDLE_MODE = SparkBaseConfig.IdleMode.kBrake;
     public static final SparkBaseConfig.IdleMode INDEXER_IDLE_MODE = SparkBaseConfig.IdleMode.kBrake;
     public static final boolean ELEVATOR_MOTOR_REVERSED = false;
+    public static final boolean ELEVATOR_FOLLOWER_MOTOR_REVERSED = true;
     public static final boolean PIVOT_MOTOR_REVERSED = false;
     public static final boolean DELIVERY_MOTOR_REVERSED = false;
     public static final boolean INDEXER_MOTOR_REVERSED = false;
-    public static final int ELEVATOR_CURRENT_LIMIT = 60;
+    public static final int ELEVATOR_CURRENT_LIMIT = 50;
     public static final int PIVOT_CURRENT_LIMIT = 40;
     public static final int DELIVERY_CURRENT_LIMIT = 30;
     public static final int INDEXER_CURRENT_LIMIT = 20;
