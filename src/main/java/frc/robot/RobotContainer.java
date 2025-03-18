@@ -116,8 +116,8 @@ public class RobotContainer {
                                                         })); //USES THE Right BUMPER TO SLOW DOWN
     Driver.Controller.start().onTrue(new ResetGyro(driveSubsystem));
     
-    Driver.Controller.leftTrigger(0.5).whileTrue(new AlignToReefLeft(driveSubsystem));
-    Driver.Controller.rightTrigger(0.5).whileTrue(new AlignToReefRight(driveSubsystem));
+    //Driver.Controller.leftTrigger(0.5).whileTrue(new AlignToReefLeft(driveSubsystem));
+    //Driver.Controller.rightTrigger(0.5).whileTrue(new AlignToReefRight(driveSubsystem));
  
     //Climber
     Driver.Controller.b().onTrue(new InstantCommand(climberSubsystem::setClimberIn));
