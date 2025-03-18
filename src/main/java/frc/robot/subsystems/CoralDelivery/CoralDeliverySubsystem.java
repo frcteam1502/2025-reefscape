@@ -325,11 +325,9 @@ public class CoralDeliverySubsystem extends SubsystemBase {
         if((!isFwdCoralPresent())&&
            (!isRwdCoralPresent())){
               deliverySetSpd = CoralDeliveryCfg.DELIVERY_OFF_SPEED;
-              if(getElevatorPosition() >= CoralDeliveryCfg.HOME_POS_THRESH){
-                indexer.set(CoralDeliveryCfg.INDEXER_REVERSE_SPEED);
-              }
+              indexer.set(CoralDeliveryCfg.INDEXER_REVERSE_SPEED);
               deliveryState = CoralDeliveryState.UNLOADED;
-           }
+              }
            break;
       case CLEAR_DELIVERY:
         if((!isFwdCoralPresent())&&
@@ -347,9 +345,12 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     if(deliveryState == CoralDeliveryState.LOADED){
         if(elevatorSetPosition == CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION){
           deliverySetSpd = CoralDeliveryCfg.DELIVERY_L4_UNLOAD_SPD;
+          deliveryState = CoralDeliveryState.UNLOADING;
+
         }
         else if (elevatorSetPosition == CoralDeliveryCfg.ELEVATOR_LONE_POSITION){
         deliverySetSpd = CoralDeliveryCfg.DELIVERY_L1_UNLOAD_SPD;
+        deliveryState = CoralDeliveryState.UNLOADING;
         }
         else{
         deliverySetSpd = CoralDeliveryCfg.DELIVERY_FWD_SPEED;
@@ -380,10 +381,15 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   public void setDeliveryStateLoading(){
    if((deliveryState == CoralDeliveryState.LOADING_FROM_INDEX1)||
       (deliveryState == CoralDeliveryState.LOADING_FROM_INDEX2)){
-     //Stop loading!!
-     deliverySetSpd = CoralDeliveryCfg.DELIVERY_OFF_SPEED;
-     indexer.set(CoralDeliveryCfg.INDEXER_OFF_SPEED);
-     deliveryState = CoralDeliveryState.STOPPED;
+        if(getElevatorPosition()>=CoralDeliveryCfg.HOME_POS_THRESH){
+          indexer.set(CoralDeliveryCfg.INDEXER_REVERSE_SPEED);
+        }
+        else{
+              //Stop loading!!
+              deliverySetSpd = CoralDeliveryCfg.DELIVERY_OFF_SPEED;
+              indexer.set(CoralDeliveryCfg.INDEXER_OFF_SPEED);
+              deliveryState = CoralDeliveryState.STOPPED;
+        } 
    }else if(((deliveryState == CoralDeliveryState.STOPPED)||
              (deliveryState == CoralDeliveryState.UNLOADED))&&
             (getElevatorPosition()<=CoralDeliveryCfg.HOME_POS_THRESH)){

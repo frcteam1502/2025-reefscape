@@ -116,8 +116,8 @@ public class RobotContainer {
                                                         })); //USES THE Right BUMPER TO SLOW DOWN
     Driver.Controller.start().onTrue(new ResetGyro(driveSubsystem));
     
-    //Driver.Controller.leftTrigger(0.5).whileTrue(new AlignToReefLeft(driveSubsystem));
-    //Driver.Controller.rightTrigger(0.5).whileTrue(new AlignToReefRight(driveSubsystem));
+    Driver.Controller.leftTrigger(0.5).whileTrue(new AlignToReefLeft(driveSubsystem));
+    Driver.Controller.rightTrigger(0.5).whileTrue(new AlignToReefRight(driveSubsystem));
  
     //Climber
     Driver.Controller.b().onTrue(new InstantCommand(climberSubsystem::setClimberIn));
@@ -126,9 +126,9 @@ public class RobotContainer {
                          .onFalse(new InstantCommand(climberSubsystem::setClimberHold));
     
     //Switch comments to use X button to reset odometry during calibration
-    Driver.Controller.x().onTrue(new InstantCommand(driveSubsystem::resetOdometryToEstimatedPose));
-    //Driver.Controller.x().whileTrue(new InstantCommand(climberSubsystem::setClimberStaged))
-    //                     .onFalse(new InstantCommand(climberSubsystem::setClimberHold));
+    //Driver.Controller.x().onTrue(new InstantCommand(driveSubsystem::resetOdometryToEstimatedPose));
+    Driver.Controller.x().whileTrue(new InstantCommand(climberSubsystem::setClimberStaged))
+                         .onFalse(new InstantCommand(climberSubsystem::setClimberHold));
     
     //Coral Delivery/Elevator
     coralSubsystem.setDefaultCommand(new OperatorCommands(coralSubsystem));//Used for manual control of the elevator & Pivot

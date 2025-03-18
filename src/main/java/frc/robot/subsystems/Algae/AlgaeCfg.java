@@ -27,7 +27,7 @@ public class AlgaeCfg {
     
     public static final double ALGAE_HOME_POS = 0;
     public static final double ALGAE_REEF_POS = 4.9;
-    public static final double ALGAE_FLOOR_POS = 13;
+    public static final double ALGAE_FLOOR_POS = 13.1;
     public static final double ALGAE_BARGE_POS = -5;
     public static final double ALGAE_INTAKE_LOAD = 0.60;
     public static final double ALGAE_INTAKE_DISCHARGE = -1;
