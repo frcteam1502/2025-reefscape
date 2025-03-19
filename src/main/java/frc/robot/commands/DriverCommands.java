@@ -62,10 +62,12 @@ public class DriverCommands extends Command {
         driver_gain = DrivebaseCfg.TRANSLATION_GAIN_2;
     }
 
-    if((Driver.Controller.getHID().getRightBumperButton())||
-       (isSpeedLimited.getAsBoolean())){
+    if(Driver.Controller.getHID().getRightBumperButton()){
       teleopSpeedGain = DrivebaseCfg.FINESSE_TRANSLATION_GAIN;
       teleopRotationGain = DrivebaseCfg.FINESSE_ROTATION_GAIN;
+    }else if((isSpeedLimited.getAsBoolean())){
+      teleopSpeedGain = DrivebaseCfg.SPEED_LIMITED_TRANSLATION_GAIN;
+      teleopRotationGain = DrivebaseCfg.SPEED_LIMITED_ROTATION_GAIN;
     }else{
       teleopSpeedGain = driver_gain;
       teleopRotationGain = DrivebaseCfg.ROTATION_GAIN;

@@ -27,6 +27,7 @@ import frc.robot.Logger;
 public class CoralDeliverySubsystem extends SubsystemBase {
   /** Creates a new CoralDSubsystem. */
   private final SparkMax elevator;
+  private final SparkMax elevatorFollower;
   private final SparkMax pivot;
   private final SparkMax delivery;
   private final SparkMax indexer;
@@ -52,6 +53,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   private double deliverySetSpd = CoralDeliveryCfg.DELIVERY_OFF_SPEED;
 
   private SparkMaxConfig elevatorConfig = new SparkMaxConfig();
+  private SparkMaxConfig elevatorFollowerConfig = new SparkMaxConfig();
 
   private SparkMaxConfig pivotConfig = new SparkMaxConfig();
 
@@ -83,6 +85,8 @@ public class CoralDeliverySubsystem extends SubsystemBase {
 
   public CoralDeliverySubsystem() {
     elevator = CoralDeliveryCfg.ELEVATOR_MOTOR;
+    elevatorFollower = CoralDeliveryCfg.ELEVATOR_FOLLOWER_MOTOR;
+
     pivot = CoralDeliveryCfg.PIVOT_MOTOR;
     delivery = CoralDeliveryCfg.DELIVERY_MOTOR;
     indexer = CoralDeliveryCfg.INDEXER_MOTOR;
@@ -134,6 +138,10 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     elevatorConfig.inverted(CoralDeliveryCfg.ELEVATOR_MOTOR_REVERSED);
     elevatorConfig.smartCurrentLimit(CoralDeliveryCfg.ELEVATOR_CURRENT_LIMIT);
 
+    elevatorFollowerConfig.idleMode(CoralDeliveryCfg.ELEVATOR_IDLE_MODE);
+    elevatorFollowerConfig.follow(elevator, CoralDeliveryCfg.ELEVATOR_FOLLOWER_MOTOR_REVERSED);
+    elevatorFollowerConfig.smartCurrentLimit(CoralDeliveryCfg.ELEVATOR_CURRENT_LIMIT);
+
     elevatorConfig.encoder
         .positionConversionFactor(CoralDeliveryCfg.ELEVATOR_POS_CONVERSION_CM)
         .velocityConversionFactor(CoralDeliveryCfg.ELEVATOR_POS_CONVERSION_CM);
@@ -155,8 +163,14 @@ public class CoralDeliverySubsystem extends SubsystemBase {
         .maxAcceleration(CoralDeliveryCfg.ELEVATOR_MAX_ACCEL)
         .allowedClosedLoopError(CoralDeliveryCfg.ELEVATOR_MAX_ALLOWED_ERROR);
     
-    //Finally write the config to the spark
-    elevator.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+    //Finally write the config to the sparks
+    elevator.configure(elevatorConfig, 
+                       SparkBase.ResetMode.kResetSafeParameters, 
+                       SparkBase.PersistMode.kPersistParameters);
+
+    elevatorFollower.configure(elevatorFollowerConfig, 
+                               SparkBase.ResetMode.kResetSafeParameters, 
+                               SparkBase.PersistMode.kPersistParameters);
   }
 
   private void configureCoralPivot(){
@@ -311,11 +325,9 @@ public class CoralDeliverySubsystem extends SubsystemBase {
         if((!isFwdCoralPresent())&&
            (!isRwdCoralPresent())){
               deliverySetSpd = CoralDeliveryCfg.DELIVERY_OFF_SPEED;
-              if(getElevatorPosition() >= CoralDeliveryCfg.HOME_POS_THRESH){
-                indexer.set(CoralDeliveryCfg.INDEXER_REVERSE_SPEED);
-              }
+              indexer.set(CoralDeliveryCfg.INDEXER_REVERSE_SPEED);
               deliveryState = CoralDeliveryState.UNLOADED;
-           }
+              }
            break;
       case CLEAR_DELIVERY:
         if((!isFwdCoralPresent())&&
@@ -333,9 +345,12 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     if(deliveryState == CoralDeliveryState.LOADED){
         if(elevatorSetPosition == CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION){
           deliverySetSpd = CoralDeliveryCfg.DELIVERY_L4_UNLOAD_SPD;
+          deliveryState = CoralDeliveryState.UNLOADING;
+
         }
         else if (elevatorSetPosition == CoralDeliveryCfg.ELEVATOR_LONE_POSITION){
         deliverySetSpd = CoralDeliveryCfg.DELIVERY_L1_UNLOAD_SPD;
+        deliveryState = CoralDeliveryState.UNLOADING;
         }
         else{
         deliverySetSpd = CoralDeliveryCfg.DELIVERY_FWD_SPEED;
@@ -366,10 +381,15 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   public void setDeliveryStateLoading(){
    if((deliveryState == CoralDeliveryState.LOADING_FROM_INDEX1)||
       (deliveryState == CoralDeliveryState.LOADING_FROM_INDEX2)){
-     //Stop loading!!
-     deliverySetSpd = CoralDeliveryCfg.DELIVERY_OFF_SPEED;
-     indexer.set(CoralDeliveryCfg.INDEXER_OFF_SPEED);
-     deliveryState = CoralDeliveryState.STOPPED;
+        if(getElevatorPosition()>=CoralDeliveryCfg.HOME_POS_THRESH){
+          indexer.set(CoralDeliveryCfg.INDEXER_REVERSE_SPEED);
+        }
+        else{
+              //Stop loading!!
+              deliverySetSpd = CoralDeliveryCfg.DELIVERY_OFF_SPEED;
+              indexer.set(CoralDeliveryCfg.INDEXER_OFF_SPEED);
+              deliveryState = CoralDeliveryState.STOPPED;
+        } 
    }else if(((deliveryState == CoralDeliveryState.STOPPED)||
              (deliveryState == CoralDeliveryState.UNLOADED))&&
             (getElevatorPosition()<=CoralDeliveryCfg.HOME_POS_THRESH)){
