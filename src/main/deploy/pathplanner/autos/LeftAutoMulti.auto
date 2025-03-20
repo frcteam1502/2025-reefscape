@@ -5,15 +5,35 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "LeftStartToBackRight"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Elevator to L4"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LeftStartToBackRight"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.5
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Elevator to L4"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         },
         {
@@ -108,15 +128,15 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "Load Coral"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
                   "pathName": "LeftStationToFrontLeft2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Load Coral"
                 }
               }
             ]
