@@ -10,12 +10,16 @@ import frc.robot.subsystems.CoralDelivery.CoralDeliveryCfg;
 import frc.robot.subsystems.CoralDelivery.CoralDeliverySubsystem;
 import frc.robot.subsystems.IntakeIndexer.IntakeIndexerSubsystem;
 import frc.robot.subsystems.PowerManagement.MockDetector;
+import frc.robot.commands.AlignToAlgae;
 import frc.robot.commands.AlignToReefLeft;
 import frc.robot.commands.AlignToReefRight;
 import frc.robot.commands.AlignToReefRight;
 import frc.robot.commands.DriverCommands;
 import frc.robot.commands.LoadCoral;
 import frc.robot.commands.MoveAlgaeToBarge;
+import frc.robot.commands.MoveAlgaeToFloor;
+import frc.robot.commands.MoveAlgaeToReef;
+import frc.robot.commands.MoveAlgaeToStow;
 import frc.robot.commands.MoveElevatorToL0;
 import frc.robot.commands.MoveElevatorToL1;
 import frc.robot.commands.MoveElevatorToL4;
@@ -70,7 +74,9 @@ public class RobotContainer {
 
     //Register named commands. Must register all commands we want Pathplanner to execute.
     NamedCommands.registerCommand("Stop Drive Motors", new StopDriveMotors(driveSubsystem));
+    NamedCommands.registerCommand("Align To Algae", new AlignToAlgae(driveSubsystem));
 
+    NamedCommands.registerCommand("Elevator to L1", new MoveElevatorToL1(coralSubsystem));
     NamedCommands.registerCommand("Elevator to L4 Sequence", new MoveToL4Sequence(coralSubsystem));
     NamedCommands.registerCommand("Elevator to L4", new MoveElevatorToL4(coralSubsystem));
     NamedCommands.registerCommand("Elevator to L2", new InstantCommand(coralSubsystem::setElevatorLTWOPosition));
@@ -79,6 +85,13 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("Load Coral", new LoadCoral(coralSubsystem));
     NamedCommands.registerCommand("Unload Coral", new UnloadCoral(coralSubsystem));
+
+    NamedCommands.registerCommand("Algae To Stow", new MoveAlgaeToStow(algaeSubsystem));
+    NamedCommands.registerCommand("Algae To Floor", new MoveAlgaeToFloor(algaeSubsystem));
+    NamedCommands.registerCommand("Algae To Reef", new MoveAlgaeToReef(algaeSubsystem));
+    NamedCommands.registerCommand("Load Algae", new InstantCommand(algaeSubsystem::algaeIntakeLoad));
+    NamedCommands.registerCommand("Discharge Algae", new InstantCommand(algaeSubsystem::algaeIntakeDischarge));
+    NamedCommands.registerCommand("Stop Algae", new InstantCommand(algaeSubsystem::algaeIntakeOff));
     
     NamedCommands.registerCommand("Deploy Climber", new InstantCommand(climberSubsystem::setClimberOut));
   

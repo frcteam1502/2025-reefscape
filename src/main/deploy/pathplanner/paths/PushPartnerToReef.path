@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.84062698883078,
-        "y": 4.690833333333333
+        "x": 6.851503600702059,
+        "y": 4.8
       },
       "isLocked": false,
       "linkedName": "PushBackStop"
     },
     {
       "anchor": {
-        "x": 5.99771561775911,
+        "x": 5.9,
         "y": 4.194621496860848
       },
       "prevControl": {
-        "x": 6.606620576560642,
-        "y": 4.1839930212698535
+        "x": 6.89678938355834,
+        "y": 4.1376926369905345
       },
       "nextControl": null,
       "isLocked": false,
@@ -62,7 +62,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -179.61417692349085
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

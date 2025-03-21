@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.99771561775911,
+        "x": 5.9,
         "y": 4.194621496860848
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.957889344262295,
-        "y": 6.020952868852459
+        "x": 5.935145547945206,
+        "y": 6.316416952054794
       },
       "isLocked": false,
       "linkedName": "PushReefStop"
