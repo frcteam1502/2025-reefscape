@@ -12,6 +12,7 @@ import frc.robot.subsystems.CoralDelivery.CoralDeliverySubsystem;
 public class MoveElevatorToL3 extends Command {
   /** Creates a new MoveElevatorToL4. */
   CoralDeliverySubsystem coralSubsystem;
+  boolean atPosition = false;
 
   public MoveElevatorToL3(CoralDeliverySubsystem coralSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -22,7 +23,13 @@ public class MoveElevatorToL3 extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    coralSubsystem.setElevatorLTHREEPosition();
+    if(coralSubsystem.getElevatorSetPosition()!=CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION){
+      //Not at L4 already
+      coralSubsystem.setElevatorLTHREEPosition();
+    }
+    else{
+      atPosition = true;
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -36,10 +43,13 @@ public class MoveElevatorToL3 extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if((coralSubsystem.getElevatorPosition() >= (CoralDeliveryCfg.ELEVATOR_LTHREE_POSITION-5))&&
+    if(atPosition == true){
+      return true;
+    }else if((coralSubsystem.getElevatorPosition() >= (CoralDeliveryCfg.ELEVATOR_LTHREE_POSITION-5))&&
        (coralSubsystem.getElevatorPosition() <= (CoralDeliveryCfg.ELEVATOR_LTHREE_POSITION+5))&&
        (coralSubsystem.getPivotPosition() >= (CoralDeliveryCfg.PIVOT_LTHREE_POSITION-5))&&
        (coralSubsystem.getPivotPosition() <= (CoralDeliveryCfg.PIVOT_LTHREE_POSITION+5))){
+      atPosition = true;
       return true;
     }
     return false;

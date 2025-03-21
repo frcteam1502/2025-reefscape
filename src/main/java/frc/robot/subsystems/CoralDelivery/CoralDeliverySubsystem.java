@@ -408,6 +408,11 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     return elevatorEncoder.getPosition();
   }
 
+  public double getElevatorSetPosition()
+  {
+    return elevatorSetPosition;
+  }
+
   public double getPivotPosition(){
     return pivotEncoder.getPosition();
   }
