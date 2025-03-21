@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Deploy Climber"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
