@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 public class CoralDeliveryCfg {
 
     public static final int ELEVATOR_MOTOR_ID = 15;
+    public static final int ELEVATOR_FOLLOWER_MOTOR_ID = 2;
     public static final int PIVOT_MOTOR_ID = 18;
     public static final int DELIVERY_MOTOR_ID = 19;
     public static final int INDEXER_MOTOR_ID = 3;
@@ -23,6 +24,7 @@ public class CoralDeliveryCfg {
     public static final int PIVOT_ABS_ENCODER_ID = 1;
 
     public static final SparkMax ELEVATOR_MOTOR = new SparkMax(ELEVATOR_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
+    public static final SparkMax ELEVATOR_FOLLOWER_MOTOR = new SparkMax(ELEVATOR_FOLLOWER_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
     public static final SparkMax PIVOT_MOTOR = new SparkMax(PIVOT_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
     public static final SparkMax DELIVERY_MOTOR = new SparkMax(DELIVERY_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
     public static final SparkMax INDEXER_MOTOR = new SparkMax(INDEXER_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
@@ -47,10 +49,11 @@ public class CoralDeliveryCfg {
     public static final SparkBaseConfig.IdleMode DELIVERY_IDLE_MODE = SparkBaseConfig.IdleMode.kBrake;
     public static final SparkBaseConfig.IdleMode INDEXER_IDLE_MODE = SparkBaseConfig.IdleMode.kBrake;
     public static final boolean ELEVATOR_MOTOR_REVERSED = false;
+    public static final boolean ELEVATOR_FOLLOWER_MOTOR_REVERSED = true;
     public static final boolean PIVOT_MOTOR_REVERSED = false;
     public static final boolean DELIVERY_MOTOR_REVERSED = false;
     public static final boolean INDEXER_MOTOR_REVERSED = false;
-    public static final int ELEVATOR_CURRENT_LIMIT = 60;
+    public static final int ELEVATOR_CURRENT_LIMIT = 50;
     public static final int PIVOT_CURRENT_LIMIT = 40;
     public static final int DELIVERY_CURRENT_LIMIT = 30;
     public static final int INDEXER_CURRENT_LIMIT = 20;
@@ -88,8 +91,8 @@ public class CoralDeliveryCfg {
 
     public static final double ELEVATOR_LOAD_POSITION = 0.5;
     public static final double ELEVATOR_LONE_POSITION = 20;
-    public static final double ELEVATOR_LTWO_POSITION = 50;
-    public static final double ELEVATOR_LTHREE_POSITION = 90;
+    public static final double ELEVATOR_LTWO_POSITION = 47.5;
+    public static final double ELEVATOR_LTHREE_POSITION = 88;
     public static final double ELEVATOR_LFOUR_POSITION = 125;
     public static final double ELEVATOR_ENCODER_RESET = 0;
 
