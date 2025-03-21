@@ -23,7 +23,8 @@ public class MoveElevatorToL3 extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if(coralSubsystem.getElevatorSetPosition()!=CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION){
+    atPosition = false;
+    if(coralSubsystem.getElevatorPosition()<=(CoralDeliveryCfg.ELEVATOR_LTHREE_POSITION+5)){
       //Not at L4 already
       coralSubsystem.setElevatorLTHREEPosition();
     }
