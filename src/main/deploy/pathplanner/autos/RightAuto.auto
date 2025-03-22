@@ -7,12 +7,6 @@
         {
           "type": "named",
           "data": {
-            "name": "Intake To Climb"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "Deploy Climber"
           }
         },
