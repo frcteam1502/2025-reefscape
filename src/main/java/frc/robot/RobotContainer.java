@@ -104,6 +104,7 @@ public class RobotContainer {
     new PathPlannerAuto("LeftAutoMulti");
     new PathPlannerAuto("RightAutoMulti");
     new PathPlannerAuto("PushPartner");
+    new PathPlannerAuto("CenterPlusAlgae");
     
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);

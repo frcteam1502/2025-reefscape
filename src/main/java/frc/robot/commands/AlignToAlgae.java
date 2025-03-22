@@ -7,27 +7,37 @@ package frc.robot.commands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SwerveDrive.DriveSubsystem;
 import frc.robot.subsystems.SwerveDrive.DrivebaseCfg;
-import frc.robot.subsystems.Vision.ReefMap;
-import frc.robot.subsystems.Vision.ReefMap.Side;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class AlignToReefLeft extends Command {
+public class AlignToAlgae extends Command {
   /** Creates a new AlignToReef. */
+
   private PIDController xController, yController, rotController;
   private DriveSubsystem drive;
-  private ReefMap reefMap = new ReefMap();
 
   private boolean atSetPoint;
   private double lastHeading;
   private Pose2d targetPose;
 
-  public AlignToReefLeft(DriveSubsystem drive) {
+  public AlignToAlgae(DriveSubsystem drive) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.drive = drive;
+
+    var alliance = DriverStation.getAlliance();
+    if((alliance.isPresent()) && (alliance.get() == DriverStation.Alliance.Red)){
+      targetPose = new Pose2d(5.900, 4.000, new Rotation2d(Math.toRadians(180)));
+    }else{
+      //Blue Alliance
+      targetPose = new Pose2d(11.600, 3.840, new Rotation2d(Math.toRadians(0)));
+    }
+
+    System.out.println("Center Algae!");
+    System.out.println("X:" + targetPose.getX() + " Y:" + targetPose.getY() + " Rot:" + targetPose.getRotation().getDegrees() );
 
     xController = new PIDController(DrivebaseCfg.AUTO_ALIGN_X_KP, 
                                     DrivebaseCfg.AUTO_ALIGN_X_KI, 
@@ -47,30 +57,19 @@ public class AlignToReefLeft extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //Look up the target position
-    int tagId = drive.getLimelightFiducialId();
-    
-    if(reefMap.isPosePresent(tagId, Side.LEFT)){
-      System.out.println("Align to Left!");
-      targetPose = reefMap.getReefPose2d(tagId, Side.LEFT);
-      System.out.println("X:" + targetPose.getX() + " Y:" + targetPose.getY() + " Rot:" + targetPose.getRotation().getDegrees() );
-      
-      rotController.setSetpoint(targetPose.getRotation().getDegrees());
-      rotController.setTolerance(DrivebaseCfg.AUTO_ALIGN_ROT_ALLOWED_ERROR);
-      
-      lastHeading = targetPose.getRotation().getDegrees();
 
-      xController.setSetpoint(targetPose.getX());
-      xController.setTolerance(DrivebaseCfg.AUTO_ALIGN_X_ALLOWED_ERROR);
-
-      yController.setSetpoint(targetPose.getY());
-      yController.setTolerance(DrivebaseCfg.AUTO_ALIGN_Y_ALLOWED_ERROR);
+    rotController.setSetpoint(targetPose.getRotation().getDegrees());
+    rotController.setTolerance(DrivebaseCfg.AUTO_ALIGN_ROT_ALLOWED_ERROR);
       
-      atSetPoint = false;
-    }else{
-      System.out.println("No Reef pose found!");
-      atSetPoint = true;
-    }
+    lastHeading = targetPose.getRotation().getDegrees();
+
+    xController.setSetpoint(targetPose.getX());
+    xController.setTolerance(DrivebaseCfg.AUTO_ALIGN_X_ALLOWED_ERROR);
+
+    yController.setSetpoint(targetPose.getY());
+    yController.setTolerance(DrivebaseCfg.AUTO_ALIGN_Y_ALLOWED_ERROR);
+      
+    atSetPoint = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.

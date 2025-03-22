@@ -27,7 +27,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "Elevator to L4"
+                        "name": "Elevator to L4 Sequence"
                       }
                     }
                   ]
@@ -68,12 +68,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Algae To Reef"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -96,81 +90,6 @@
           "type": "named",
           "data": {
             "name": "Stop Algae"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "CenterAlgaeToProcessor"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Elevator to Load"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Algae To Floor"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Discharge Algae"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Stop Algae"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "ProcessorToCoralStation"
-                }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 1.0
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Algae To Stow"
-                      }
-                    }
-                  ]
-                }
-              }
-            ]
           }
         }
       ]

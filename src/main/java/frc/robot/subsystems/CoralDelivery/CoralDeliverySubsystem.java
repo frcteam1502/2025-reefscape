@@ -258,6 +258,10 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     Logger.RegisterSparkMax("Coral Delivery", CoralDeliveryCfg.DELIVERY_MOTOR);
 
     Logger.RegisterSensor("Delivery Speed", ()->deliveryEncoder.getVelocity());
+    Logger.RegisterSensor("Elevator Set Position", ()->elevatorSetPosition);
+    Logger.RegisterSensor("Elevator Position", ()->getElevatorPosition());
+    Logger.RegisterSensor("Pivot Position", ()->getPivotPosition());
+    Logger.RegisterSensor("Pivot Abs Position", ()->getPivotAbsPositionDegrees());
   }
 
   private void reset(){
