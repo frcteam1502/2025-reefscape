@@ -30,10 +30,10 @@ public class AlignToAlgae extends Command {
 
     var alliance = DriverStation.getAlliance();
     if((alliance.isPresent()) && (alliance.get() == DriverStation.Alliance.Red)){
-      targetPose = new Pose2d(5.900, 4.000, new Rotation2d(Math.toRadians(180)));
+      targetPose = new Pose2d(11.600, 3.840, new Rotation2d(Math.toRadians(0)));
     }else{
       //Blue Alliance
-      targetPose = new Pose2d(11.600, 3.840, new Rotation2d(Math.toRadians(0)));
+      targetPose = new Pose2d(5.900, 4.000, new Rotation2d(Math.toRadians(180)));
     }
 
     System.out.println("Center Algae!");
