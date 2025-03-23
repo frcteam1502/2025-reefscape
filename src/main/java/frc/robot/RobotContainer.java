@@ -135,10 +135,10 @@ public class RobotContainer {
     Driver.Controller.rightTrigger(0.5).whileTrue(new AlignToReefRight(driveSubsystem));
  
     //Climber
-    Driver.Controller.b().onTrue(new InstantCommand(climberSubsystem::setClimberIn));
-    Driver.Controller.y().onTrue(new InstantCommand(climberSubsystem::setClimberOut));
-    Driver.Controller.a().whileTrue(new InstantCommand(climberSubsystem::setClimberClimbed))
-                         .onFalse(new InstantCommand(climberSubsystem::setClimberHold));
+    //Driver.Controller.b().onTrue(new InstantCommand(climberSubsystem::setClimberIn));
+    //Driver.Controller.y().onTrue(new InstantCommand(climberSubsystem::setClimberOut));
+    //Driver.Controller.a().whileTrue(new InstantCommand(climberSubsystem::setClimberClimbed))
+    //                     .onFalse(new InstantCommand(climberSubsystem::setClimberHold));
     
     //Switch comments to use X button to reset odometry during calibration
     //Driver.Controller.x().onTrue(new InstantCommand(driveSubsystem::resetOdometryToEstimatedPose));
