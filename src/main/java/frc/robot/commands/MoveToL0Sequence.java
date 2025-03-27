@@ -16,8 +16,8 @@ public class MoveToL0Sequence extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new MoveElevatorToL1(coralDelivery),
-      new MoveElevatorToL0(coralDelivery)
+      new MoveElevatorToL0(coralDelivery),
+      new MovePivotToL0(coralDelivery)
     );
   }
 }

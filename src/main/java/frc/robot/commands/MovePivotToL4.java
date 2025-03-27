@@ -9,11 +9,11 @@ import frc.robot.subsystems.CoralDelivery.CoralDeliveryCfg;
 import frc.robot.subsystems.CoralDelivery.CoralDeliverySubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class MoveElevatorToL3 extends Command {
-  /** Creates a new MoveElevatorToL4. */
+public class MovePivotToL4 extends Command {
+  /** Creates a new MovePivotToL4. */
   CoralDeliverySubsystem coralSubsystem;
 
-  public MoveElevatorToL3(CoralDeliverySubsystem coralSubsystem) {
+  public MovePivotToL4(CoralDeliverySubsystem coralSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.coralSubsystem = coralSubsystem;
     addRequirements(coralSubsystem);
@@ -22,7 +22,7 @@ public class MoveElevatorToL3 extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    coralSubsystem.setElevatorLTHREEPosition();
+    coralSubsystem.setPivotPosition(CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -36,10 +36,8 @@ public class MoveElevatorToL3 extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if((coralSubsystem.getElevatorPosition() >= (CoralDeliveryCfg.ELEVATOR_LTHREE_POSITION-5))&&
-       (coralSubsystem.getElevatorPosition() <= (CoralDeliveryCfg.ELEVATOR_LTHREE_POSITION+5))&&
-       (coralSubsystem.getPivotPosition() >= (CoralDeliveryCfg.PIVOT_LTHREE_POSITION-5))&&
-       (coralSubsystem.getPivotPosition() <= (CoralDeliveryCfg.PIVOT_LTHREE_POSITION+5))){
+    if((coralSubsystem.getPivotPosition() >= (CoralDeliveryCfg.PIVOT_LFOUR_POSITION-5))&&
+       (coralSubsystem.getPivotPosition() <= (CoralDeliveryCfg.PIVOT_LFOUR_POSITION+5))){
       return true;
     }
     return false;

@@ -513,7 +513,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
 
   public void setElevatorLoadPosition(){
     checkElevatorSetPosition(CoralDeliveryCfg.ELEVATOR_LOAD_POSITION);
-    pivotSetPosition = CoralDeliveryCfg.PIVOT_LOAD_POSITION;
+    pivotSetPosition = CoralDeliveryCfg.PIVOT_TRAVEL_POSITION;
   }
 
   public void setElevatorLONEPosition(){
@@ -533,7 +533,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
 
   public void setElevatorLFOURPosition(){
     checkElevatorSetPosition(CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION);
-    pivotSetPosition = CoralDeliveryCfg.PIVOT_LFOUR_POSITION;
+    pivotSetPosition = CoralDeliveryCfg.PIVOT_TRAVEL_POSITION;
   }
 
   public void setElevatorBargePosition(){
