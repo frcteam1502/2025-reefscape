@@ -136,14 +136,14 @@ public class RobotContainer {
  
     //Climber
     //Driver.Controller.b().onTrue(new InstantCommand(climberSubsystem::setClimberIn));
-    //Driver.Controller.y().onTrue(new InstantCommand(climberSubsystem::setClimberOut));
-    //Driver.Controller.a().whileTrue(new InstantCommand(climberSubsystem::setClimberClimbed))
-    //                     .onFalse(new InstantCommand(climberSubsystem::setClimberHold));
+    Driver.Controller.y().onTrue(new InstantCommand(climberSubsystem::setClimberOut));
+    Driver.Controller.a().whileTrue(new InstantCommand(climberSubsystem::setClimberClimbed))
+                         .onFalse(new InstantCommand(climberSubsystem::setClimberHold));
     
     //Switch comments to use X button to reset odometry during calibration
     //Driver.Controller.x().onTrue(new InstantCommand(driveSubsystem::resetOdometryToEstimatedPose));
-    Driver.Controller.x().whileTrue(new InstantCommand(climberSubsystem::setClimberStaged))
-                         .onFalse(new InstantCommand(climberSubsystem::setClimberHold));
+    //Driver.Controller.x().whileTrue(new InstantCommand(climberSubsystem::setClimberStaged))
+    //                     .onFalse(new InstantCommand(climberSubsystem::setClimberHold));
     
     //Coral Delivery/Elevator
     coralSubsystem.setDefaultCommand(new OperatorCommands(coralSubsystem));//Used for manual control of the elevator & Pivot

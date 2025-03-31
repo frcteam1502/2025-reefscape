@@ -78,7 +78,7 @@ public class Climber extends SubsystemBase {
     // This method will be called once per scheduler run
     setClimberPosition(climberSetPos);
     updateClimberState();
-    SmartDashboard.putNumber("Climber Position", getClimberPosition());
+    SmartDashboard.putNumber("Climber Position", climberEncoder.getPosition());
     SmartDashboard.putString("Climber State", climberState.name());
     SmartDashboard.putNumber("Climber Set Positino", climberSetPos);
     SmartDashboard.putNumber("Climber Output", climber.getAppliedOutput());
