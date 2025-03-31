@@ -295,7 +295,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
            (!isRwdCoralPresent())){
           deliveryState = CoralDeliveryState.LOADED;
         }
-        if(getElevatorPosition() <= CoralDeliveryCfg.HOME_POS_THRESH){
+        if(getElevatorPosition() <= CoralDeliveryCfg.ELEVATOR_LOAD_POSITION+1){
           indexer.set(CoralDeliveryCfg.INDEXER_OFF_SPEED);
         }
         break;
@@ -385,7 +385,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   public void setDeliveryStateLoading(){
    if((deliveryState == CoralDeliveryState.LOADING_FROM_INDEX1)||
       (deliveryState == CoralDeliveryState.LOADING_FROM_INDEX2)){
-        if(getElevatorPosition()>=CoralDeliveryCfg.HOME_POS_THRESH){
+        if(getElevatorPosition()>=CoralDeliveryCfg.ELEVATOR_LOAD_POSITION+1){
           indexer.set(CoralDeliveryCfg.INDEXER_REVERSE_SPEED);
         }
         else{
@@ -396,7 +396,8 @@ public class CoralDeliverySubsystem extends SubsystemBase {
         } 
    }else if(((deliveryState == CoralDeliveryState.STOPPED)||
              (deliveryState == CoralDeliveryState.UNLOADED))&&
-            (getElevatorPosition()<=CoralDeliveryCfg.HOME_POS_THRESH)){
+             ((getElevatorPosition()<=CoralDeliveryCfg.ELEVATOR_LOAD_POSITION+1)&&
+              (getElevatorPosition()>=CoralDeliveryCfg.ELEVATOR_LOAD_POSITION-1))){
      deliverySetSpd = CoralDeliveryCfg.DELIVERY_LOAD1_SPD;
      indexer.set(CoralDeliveryCfg.INDEXER_ON_SPEED);
      deliveryState = CoralDeliveryState.LOADING_FROM_INDEX1;
