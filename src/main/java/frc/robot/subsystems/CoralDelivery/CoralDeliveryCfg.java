@@ -102,7 +102,7 @@ public class CoralDeliveryCfg {
     public static final double PIVOT_LTHREE_POSITION = 15;
     public static final double PIVOT_LFOUR_POSITION = 125;
     public static final double PIVOT_BARGE_POSITION = 45;
-    public static final double PIVOT_TRAVEL_POSITION = 15;
+    public static final double PIVOT_TRAVEL_POSITION = 30;
     public static final double PIVOT_ENCODER_RESET = 0;
     public static final double INDEXER_ON_SPEED = 0.40;
     public static final double INDEXER_OFF_SPEED = 0;

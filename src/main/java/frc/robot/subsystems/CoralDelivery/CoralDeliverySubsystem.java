@@ -545,6 +545,10 @@ public class CoralDeliverySubsystem extends SubsystemBase {
   public void setPivotPosition(double position){
     pivotPIDController.setReference(position, SparkMax.ControlType.kPosition);
   }
+
+  public void setPivotTargetPosition(double position){
+    pivotSetPosition = position;
+  }
   
   public void setIndexerPower(double power){
     indexer.set(power);

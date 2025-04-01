@@ -22,7 +22,7 @@ public class MovePivotToL4 extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    coralSubsystem.setPivotPosition(CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION);
+    coralSubsystem.setPivotTargetPosition(CoralDeliveryCfg.PIVOT_LFOUR_POSITION);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

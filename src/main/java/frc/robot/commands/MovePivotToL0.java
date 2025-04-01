@@ -22,7 +22,7 @@ public class MovePivotToL0 extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    coralSubsystem.setPivotPosition(CoralDeliveryCfg.PIVOT_LOAD_POSITION);
+    coralSubsystem.setPivotTargetPosition(CoralDeliveryCfg.PIVOT_LOAD_POSITION);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -36,8 +36,8 @@ public class MovePivotToL0 extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if((coralSubsystem.getPivotPosition() >= (CoralDeliveryCfg.PIVOT_LOAD_POSITION-5))&&
-       (coralSubsystem.getPivotPosition() <= (CoralDeliveryCfg.PIVOT_LOAD_POSITION+5))){
+    if((coralSubsystem.getPivotPosition() <= (CoralDeliveryCfg.PIVOT_LOAD_POSITION+5))&&
+       (coralSubsystem.getPivotPosition() <= (CoralDeliveryCfg.PIVOT_LFOUR_POSITION+5))){
       return true;
     }
     return false;

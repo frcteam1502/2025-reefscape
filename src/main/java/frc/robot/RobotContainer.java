@@ -149,7 +149,8 @@ public class RobotContainer {
     coralSubsystem.setDefaultCommand(new OperatorCommands(coralSubsystem));//Used for manual control of the elevator & Pivot
     Operator.getCustCont1Button11().onTrue(new InstantCommand(coralSubsystem::setDeliveryStateLoading));
     Operator.getCustCont1Button10().onTrue(new InstantCommand(coralSubsystem::setDeliveryStateUnloading));
-    Operator.getCustCont1Button9().onTrue(new InstantCommand(coralSubsystem::setElevatorLoadPosition));
+  //0perator.getCustCont1Button9().onTrue(new InstantCommand(coralSubsystem::setElevatorLoadPosition));
+    Operator.getCustCont1Button9().onTrue(new MoveToL0Sequence(coralSubsystem));
     Operator.getCustCont1Button4().onTrue(new InstantCommand(coralSubsystem::setElevatorLONEPosition));
     Operator.getCustCont1Button3().onTrue(new InstantCommand(coralSubsystem::setElevatorLTWOPosition));
     Operator.getCustCont1Button2().onTrue(new InstantCommand(coralSubsystem::setElevatorLTHREEPosition));

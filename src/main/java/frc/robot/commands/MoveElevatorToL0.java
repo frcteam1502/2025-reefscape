@@ -36,10 +36,7 @@ public class MoveElevatorToL0 extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if((coralSubsystem.getElevatorPosition() >= (CoralDeliveryCfg.ELEVATOR_LOAD_POSITION-1))&&
-       (coralSubsystem.getElevatorPosition() <= (CoralDeliveryCfg.ELEVATOR_LOAD_POSITION+1))&&
-       (coralSubsystem.getPivotPosition() >= (CoralDeliveryCfg.PIVOT_TRAVEL_POSITION-1))&&
-       (coralSubsystem.getPivotPosition() <= (CoralDeliveryCfg.PIVOT_TRAVEL_POSITION+1))){
+    if((coralSubsystem.getElevatorPosition() <= (CoralDeliveryCfg.ELEVATOR_LOAD_POSITION+1))){
       return true;
     }
     return false;

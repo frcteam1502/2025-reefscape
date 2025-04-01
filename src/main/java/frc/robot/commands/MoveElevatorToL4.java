@@ -36,10 +36,9 @@ public class MoveElevatorToL4 extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if((coralSubsystem.getElevatorPosition() >= (CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION-5))&&
-       (coralSubsystem.getElevatorPosition() <= (CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION+5))&&
-       (coralSubsystem.getPivotPosition() >= (CoralDeliveryCfg.PIVOT_LFOUR_POSITION-5))&&
-       (coralSubsystem.getPivotPosition() <= (CoralDeliveryCfg.PIVOT_LFOUR_POSITION+5))){
+    if((coralSubsystem.getElevatorPosition() >= (CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION-5)))
+    {
+      System.out.println("At L4 Position");
       return true;
     }
     return false;
