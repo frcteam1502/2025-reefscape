@@ -20,6 +20,7 @@ import frc.robot.commands.MoveAlgaeToBarge;
 import frc.robot.commands.MoveAlgaeToFloor;
 import frc.robot.commands.MoveAlgaeToReef;
 import frc.robot.commands.MoveAlgaeToStow;
+import frc.robot.commands.MoveAlgaeToZeroPos;
 import frc.robot.commands.MoveElevatorToL0;
 import frc.robot.commands.MoveElevatorToL1;
 import frc.robot.commands.MoveElevatorToL4;
@@ -87,7 +88,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Unload Coral", new UnloadCoral(coralSubsystem));
 
     NamedCommands.registerCommand("Algae To Stow", new MoveAlgaeToStow(algaeSubsystem));
-    NamedCommands.registerCommand("Algae To Floor", new MoveAlgaeToFloor(algaeSubsystem));
+    NamedCommands.registerCommand("Algae To Floor", new MoveAlgaeToZeroPos(coralSubsystem, algaeSubsystem));
     NamedCommands.registerCommand("Algae To Reef", new MoveAlgaeToReef(algaeSubsystem));
     NamedCommands.registerCommand("Load Algae", new InstantCommand(algaeSubsystem::algaeIntakeLoad));
     NamedCommands.registerCommand("Discharge Algae", new InstantCommand(algaeSubsystem::algaeIntakeDischarge));

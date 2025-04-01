@@ -89,20 +89,22 @@ public class CoralDeliveryCfg {
 
     public static final int CORAL_PRESENT_THRESH_MM = 60;
 
-    public static final double ELEVATOR_LOAD_POSITION = 5;
+    public static final double ELEVATOR_ZERO_POSITION = 0;
+    public static final double ELEVATOR_LOAD_POSITION = 4;
     public static final double ELEVATOR_LONE_POSITION = 20;
     public static final double ELEVATOR_LTWO_POSITION = 47.5;
     public static final double ELEVATOR_LTHREE_POSITION = 88;
     public static final double ELEVATOR_LFOUR_POSITION = 125;
     public static final double ELEVATOR_ENCODER_RESET = 0;
 
-    public static final double PIVOT_LOAD_POSITION = 10;
+    public static final double PIVOT_ZERO_POSITION = 5;
+    public static final double PIVOT_LOAD_POSITION = 12;
     public static final double PIVOT_LONE_POSITION = 45;
     public static final double PIVOT_LTWO_POSITION = 15;
     public static final double PIVOT_LTHREE_POSITION = 15;
     public static final double PIVOT_LFOUR_POSITION = 125;
     public static final double PIVOT_BARGE_POSITION = 45;
-    public static final double PIVOT_TRAVEL_POSITION = 30;
+    public static final double PIVOT_TRAVEL_POSITION = 45;
     public static final double PIVOT_ENCODER_RESET = 0;
     public static final double INDEXER_ON_SPEED = 0.40;
     public static final double INDEXER_OFF_SPEED = 0;

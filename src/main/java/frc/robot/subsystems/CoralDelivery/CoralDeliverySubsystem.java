@@ -303,16 +303,18 @@ public class CoralDeliverySubsystem extends SubsystemBase {
         else{
           //do nothing
         }
-        
-        /*if(getElevatorPosition() <= CoralDeliveryCfg.ELEVATOR_LOAD_POSITION+1){
-          indexer.set(CoralDeliveryCfg.INDEXER_OFF_SPEED);
-        }*/
         break;
       case LOADING_FROM_INDEX1:
         if((isFwdCoralPresent())&&
            (isRwdCoralPresent())){
             deliveryState = CoralDeliveryState.LOADING_FROM_INDEX2;
            }
+        if((getElevatorPosition() >= CoralDeliveryCfg.ELEVATOR_LOAD_POSITION+1)||
+           (getElevatorPosition() <= CoralDeliveryCfg.ELEVATOR_LOAD_POSITION-1)){
+            indexer.set(CoralDeliveryCfg.INDEXER_REVERSE_SPEED);
+        }else{
+            indexer.set(CoralDeliveryCfg.INDEXER_ON_SPEED);
+        }
         break;
       case LOADING_FROM_INDEX2:
         if((isFwdCoralPresent())&&
@@ -376,7 +378,8 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     }
     else if ((deliveryState == CoralDeliveryState.LOADING_FROM_INDEX1)||
              (deliveryState == CoralDeliveryState.LOADING_FROM_INDEX2)||
-             (deliveryState == CoralDeliveryState.LOADING_FROM_INDEX3)){  
+             (deliveryState == CoralDeliveryState.LOADING_FROM_INDEX3)/*||
+             (deliveryState == CoralDeliveryState.UNLOADED)*/){  
                 if(elevatorSetPosition == CoralDeliveryCfg.ELEVATOR_LFOUR_POSITION){
                   deliverySetSpd = CoralDeliveryCfg.DELIVERY_L4_UNLOAD_SPD;
                 }
@@ -555,6 +558,11 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     pivotSetPosition = CoralDeliveryCfg.PIVOT_BARGE_POSITION;
   }
   
+  public void setElevatorFloorPosition(){
+    checkElevatorSetPosition(CoralDeliveryCfg.ELEVATOR_ZERO_POSITION);
+    pivotSetPosition = CoralDeliveryCfg.PIVOT_ZERO_POSITION;
+  }
+
   public void setPivotPosition(double position){
     pivotPIDController.setReference(position, SparkMax.ControlType.kPosition);
   }
