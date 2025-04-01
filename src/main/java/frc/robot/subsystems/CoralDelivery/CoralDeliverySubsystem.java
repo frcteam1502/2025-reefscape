@@ -294,10 +294,19 @@ public class CoralDeliverySubsystem extends SubsystemBase {
         if((isFwdCoralPresent())&&
            (!isRwdCoralPresent())){
           deliveryState = CoralDeliveryState.LOADED;
+        }else if ((getElevatorPosition()<=CoralDeliveryCfg.ELEVATOR_LOAD_POSITION+1)&&
+                  (getElevatorPosition()>=CoralDeliveryCfg.ELEVATOR_LOAD_POSITION-1)){
+          deliverySetSpd = CoralDeliveryCfg.DELIVERY_LOAD1_SPD;
+          indexer.set(CoralDeliveryCfg.INDEXER_ON_SPEED);
+          deliveryState = CoralDeliveryState.LOADING_FROM_INDEX1;
         }
-        if(getElevatorPosition() <= CoralDeliveryCfg.ELEVATOR_LOAD_POSITION+1){
+        else{
+          //do nothing
+        }
+        
+        /*if(getElevatorPosition() <= CoralDeliveryCfg.ELEVATOR_LOAD_POSITION+1){
           indexer.set(CoralDeliveryCfg.INDEXER_OFF_SPEED);
-        }
+        }*/
         break;
       case LOADING_FROM_INDEX1:
         if((isFwdCoralPresent())&&
@@ -318,6 +327,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
           deliverySetSpd = CoralDeliveryCfg.DELIVERY_OFF_SPEED;
           deliveryState = CoralDeliveryState.LOADED;
          }
+         break;
       case LOADED:
         if((!isFwdCoralPresent())&&
            (!isRwdCoralPresent())){
@@ -332,16 +342,19 @@ public class CoralDeliverySubsystem extends SubsystemBase {
               indexer.set(CoralDeliveryCfg.INDEXER_REVERSE_SPEED);
               deliveryState = CoralDeliveryState.UNLOADED;
               }
-           break;
+        break;
       case CLEAR_DELIVERY:
         if((!isFwdCoralPresent())&&
            (!isRwdCoralPresent())){
             deliverySetSpd = CoralDeliveryCfg.DELIVERY_OFF_SPEED;
+            indexer.set(CoralDeliveryCfg.INDEXER_REVERSE_SPEED);
             deliveryState = CoralDeliveryState.UNLOADED;
-      }
+        }
+        break;
 
       case STOPPED:
            //This will be handled by the setDeliveryStateLoading() method.  Always goes to LOADING_FROM_INDEX1 (same as UNLOADED)
+        break;
     }
   }
 
