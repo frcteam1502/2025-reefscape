@@ -179,7 +179,7 @@ public class RobotContainer {
                                   .onFalse(new InstantCommand(algaeSubsystem::algaeIntakeOff));
     Operator.getCustCont2Button6().onTrue(new InstantCommand(algaeSubsystem::algaePivotHome));
     Operator.getCustCont2Button5().onTrue(new InstantCommand(algaeSubsystem::algaePivotReef));
-    Operator.getCustCont2Button4().onTrue(new InstantCommand(algaeSubsystem::algaePivotFloor));
+    Operator.getCustCont2Button4().onTrue(new MoveAlgaeToZeroPos(coralSubsystem, algaeSubsystem));
     Operator.getCustCont2Button3().onTrue(new MoveAlgaeToBarge(coralSubsystem, algaeSubsystem));
 
 
