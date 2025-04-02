@@ -21,6 +21,7 @@ import frc.robot.commands.MoveAlgaeToFloor;
 import frc.robot.commands.MoveAlgaeToReef;
 import frc.robot.commands.MoveAlgaeToStow;
 import frc.robot.commands.MoveAlgaeToZeroPos;
+import frc.robot.commands.MoveElevatorToFloor;
 import frc.robot.commands.MoveElevatorToL0;
 import frc.robot.commands.MoveElevatorToL1;
 import frc.robot.commands.MoveElevatorToL4;
@@ -162,7 +163,7 @@ public class RobotContainer {
 
     //Intake
     //Operator.getCustCont1Button7().onTrue(new InstantCommand(intakeSubsystem::setIntakeState));
-    //Operator.getCustCont1Button5().onTrue(new InstantCommand(intakeSubsystem::setLeftIntakeClimb));
+    Operator.getCustCont1Button5().onTrue(new MoveElevatorToFloor(coralSubsystem));
     //Operator.getCustCont1Button8().onTrue(new InstantCommand(intakeSubsystem::intakeCoral))
     //                     .onFalse(new InstantCommand(intakeSubsystem::intakeOff));
     //Operator.getCustCont1Button6().onTrue(new InstantCommand(intakeSubsystem::ejectCoral))

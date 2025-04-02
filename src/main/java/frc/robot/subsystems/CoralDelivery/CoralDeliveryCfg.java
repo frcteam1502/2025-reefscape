@@ -102,7 +102,7 @@ public class CoralDeliveryCfg {
     public static final double PIVOT_LONE_POSITION = 45;
     public static final double PIVOT_LTWO_POSITION = 15;
     public static final double PIVOT_LTHREE_POSITION = 15;
-    public static final double PIVOT_LFOUR_POSITION = 125;
+    public static final double PIVOT_LFOUR_POSITION = 130;
     public static final double PIVOT_BARGE_POSITION = 45;
     public static final double PIVOT_TRAVEL_POSITION = 45;
     public static final double PIVOT_ENCODER_RESET = 0;
@@ -114,11 +114,11 @@ public class CoralDeliveryCfg {
     public static final double ELEVATOR_MAX_LIMIT = 125;
     public static final double ELEVATOR_MIN_LIMIT = 0;
     public static final double PIVOT_CHANGE = 5;
-    public static final double PIVOT_MAX_LIMIT = 125;
+    public static final double PIVOT_MAX_LIMIT = 130;
     public static final double PIVOT_MIN_LIMIT = 0;  
     
     public static final double HOME_POS_THRESH = 1;
-    public static final double LFOUR_POS_THRESH = 115;
+    public static final double LFOUR_POS_THRESH = 125;
     public static final double NEO550_KV = 917; //Published data from REV
     public static final double DELIVERY_P_GAIN = 0.0008;
     public static final double DELIVERY_I_GAIN = 0;
