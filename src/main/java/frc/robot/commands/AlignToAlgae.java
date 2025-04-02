@@ -28,17 +28,6 @@ public class AlignToAlgae extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     this.drive = drive;
 
-    var alliance = DriverStation.getAlliance();
-    if((alliance.isPresent()) && (alliance.get() == DriverStation.Alliance.Red)){
-      targetPose = new Pose2d(11.600, 3.840, new Rotation2d(Math.toRadians(0)));
-    }else{
-      //Blue Alliance
-      targetPose = new Pose2d(5.900, 4.000, new Rotation2d(Math.toRadians(180)));
-    }
-
-    System.out.println("Center Algae!");
-    System.out.println("X:" + targetPose.getX() + " Y:" + targetPose.getY() + " Rot:" + targetPose.getRotation().getDegrees() );
-
     xController = new PIDController(DrivebaseCfg.AUTO_ALIGN_X_KP, 
                                     DrivebaseCfg.AUTO_ALIGN_X_KI, 
                                     DrivebaseCfg.AUTO_ALIGN_X_KD);
@@ -57,6 +46,17 @@ public class AlignToAlgae extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+ 
+    var alliance = DriverStation.getAlliance();
+    if((alliance.isPresent()) && (alliance.get() == DriverStation.Alliance.Red)){
+      targetPose = new Pose2d(11.600, 3.840, new Rotation2d(Math.toRadians(0)));
+    }else{
+      //Blue Alliance
+      targetPose = new Pose2d(5.850, 3.900, new Rotation2d(Math.toRadians(180)));
+    }
+
+    System.out.println("Center Algae!");
+    System.out.println("X:" + targetPose.getX() + " Y:" + targetPose.getY() + " Rot:" + targetPose.getRotation().getDegrees() );
 
     rotController.setSetpoint(targetPose.getRotation().getDegrees());
     rotController.setTolerance(DrivebaseCfg.AUTO_ALIGN_ROT_ALLOWED_ERROR);

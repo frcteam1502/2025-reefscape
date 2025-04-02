@@ -30,6 +30,7 @@ import frc.robot.commands.OperatorCommands;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.StopDriveMotors;
 import frc.robot.commands.UnloadCoral;
+import frc.robot.commands.WaitForCoral;
 import frc.robot.subsystems.SwerveDrive.DriveSubsystem;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -83,6 +84,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Elevator to L2", new InstantCommand(coralSubsystem::setElevatorLTWOPosition));
     NamedCommands.registerCommand("Elevator to Load Sequence", new MoveToL0Sequence(coralSubsystem));
     NamedCommands.registerCommand("Elevator to Load", new MoveElevatorToL0(coralSubsystem));
+    NamedCommands.registerCommand("Wait for Coral", new WaitForCoral(coralSubsystem));
 
     NamedCommands.registerCommand("Load Coral", new LoadCoral(coralSubsystem));
     NamedCommands.registerCommand("Unload Coral", new UnloadCoral(coralSubsystem));

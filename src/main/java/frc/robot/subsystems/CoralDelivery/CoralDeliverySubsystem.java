@@ -69,7 +69,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
 
   boolean isElevatorZeroedBySwitch = false;
 
-  private enum CoralDeliveryState{
+  public enum CoralDeliveryState{
     INIT,
     UNLOADED,
     LOADING_FROM_INDEX1,
