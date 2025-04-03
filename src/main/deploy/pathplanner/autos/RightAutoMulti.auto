@@ -49,6 +49,12 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -112,6 +118,12 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -172,6 +184,12 @@
           "type": "named",
           "data": {
             "name": "Unload Coral"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
           }
         },
         {

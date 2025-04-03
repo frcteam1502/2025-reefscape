@@ -34,9 +34,10 @@ public class UnloadCoral extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(coralSubsystem.isCoralUnloaded()){
+    /*if(coralSubsystem.isCoralUnloaded()){
       return true;
     }
-    return false;
+    return false;*/
+    return true;
   }
 }
