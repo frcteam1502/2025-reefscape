@@ -86,6 +86,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Elevator to Load Sequence", new MoveToL0Sequence(coralSubsystem));
     NamedCommands.registerCommand("Elevator to Load", new MoveElevatorToL0(coralSubsystem));
     NamedCommands.registerCommand("Wait for Coral", new WaitForCoral(coralSubsystem));
+    NamedCommands.registerCommand("Elevator to Floor", new InstantCommand(coralSubsystem::setElevatorFloorPosition));
 
     NamedCommands.registerCommand("Load Coral", new LoadCoral(coralSubsystem));
     NamedCommands.registerCommand("Unload Coral", new UnloadCoral(coralSubsystem));
