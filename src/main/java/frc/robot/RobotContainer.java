@@ -57,7 +57,7 @@ public class RobotContainer {
   //private final PdpSubsystem pdpSubsystem = new PdpSubsystem();
   public final CoralDeliverySubsystem coralSubsystem = new CoralDeliverySubsystem();
   //public final IntakeIndexerSubsystem intakeSubsystem = new IntakeIndexerSubsystem();
-  public final AlgaeSubsystem algaeSubsystem = new AlgaeSubsystem();
+  //public final AlgaeSubsystem algaeSubsystem = new AlgaeSubsystem();
   public final Climber climberSubsystem = new Climber();
 
   private final SendableChooser<Command> autoChooser; 
@@ -90,12 +90,12 @@ public class RobotContainer {
     NamedCommands.registerCommand("Load Coral", new LoadCoral(coralSubsystem));
     NamedCommands.registerCommand("Unload Coral", new UnloadCoral(coralSubsystem));
 
-    NamedCommands.registerCommand("Algae To Stow", new MoveAlgaeToStow(algaeSubsystem));
+    /*NamedCommands.registerCommand("Algae To Stow", new MoveAlgaeToStow(algaeSubsystem));
     NamedCommands.registerCommand("Algae To Floor", new MoveAlgaeToZeroPos(coralSubsystem, algaeSubsystem));
     NamedCommands.registerCommand("Algae To Reef", new MoveAlgaeToReef(algaeSubsystem));
     NamedCommands.registerCommand("Load Algae", new InstantCommand(algaeSubsystem::algaeIntakeLoad));
     NamedCommands.registerCommand("Discharge Algae", new InstantCommand(algaeSubsystem::algaeIntakeDischarge));
-    NamedCommands.registerCommand("Stop Algae", new InstantCommand(algaeSubsystem::algaeIntakeOff));
+    NamedCommands.registerCommand("Stop Algae", new InstantCommand(algaeSubsystem::algaeIntakeOff));*/
     
     NamedCommands.registerCommand("Deploy Climber", new InstantCommand(climberSubsystem::setClimberOut));
   
@@ -173,14 +173,14 @@ public class RobotContainer {
     //                      .onFalse(new InstantCommand(algaeSubsystem::setAlgaeIntakeOffState));
     //Operator.getButton5().onTrue(new InstantCommand(algaeSubsystem::setAlgaePivotState));*/
     
-    Operator.getCustCont2Button1().onTrue(new InstantCommand(algaeSubsystem::algaeIntakeLoad))
+    /*Operator.getCustCont2Button1().onTrue(new InstantCommand(algaeSubsystem::algaeIntakeLoad))
                                   .onFalse(new InstantCommand(algaeSubsystem::algaeIntakeOff));
     Operator.getCustCont2Button2().onTrue(new InstantCommand(algaeSubsystem::algaeIntakeDischarge))
-                                  .onFalse(new InstantCommand(algaeSubsystem::algaeIntakeOff));
-    Operator.getCustCont2Button6().onTrue(new InstantCommand(algaeSubsystem::algaePivotHome));
-    Operator.getCustCont2Button5().onTrue(new InstantCommand(algaeSubsystem::algaePivotReef));
-    Operator.getCustCont2Button4().onTrue(new MoveAlgaeToZeroPos(coralSubsystem, algaeSubsystem));
-    Operator.getCustCont2Button3().onTrue(new MoveAlgaeToBarge(coralSubsystem, algaeSubsystem));
+                                  .onFalse(new InstantCommand(algaeSubsystem::algaeIntakeOff));*/
+  Operator.getCustCont2Button4().onTrue(new InstantCommand(coralSubsystem::setElevatorAlgaeLowPosition));
+  Operator.getCustCont2Button5().onTrue(new InstantCommand(coralSubsystem::setElevatorAlgaeMiddlePosition));
+  Operator.getCustCont2Button6().onTrue(new InstantCommand(coralSubsystem::setElevatorAlgaeHighPosition));
+    
 
 
     

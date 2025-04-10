@@ -85,7 +85,8 @@ public class CoralDeliveryCfg {
     public static final double DELIVERY_L4_UNLOAD_SPD = -700;
     public static final double DELIVERY_LOAD1_SPD = 150;
     public static final double DELIVERY_LOAD3_SPD = -75;
-    public static final double DELIVERY_L1_UNLOAD_SPD = 150;
+    public static final double DELIVERY_L1_UNLOAD_SPD = 200;
+    
 
     public static final int CORAL_PRESENT_THRESH_MM = 60;
 
@@ -96,6 +97,9 @@ public class CoralDeliveryCfg {
     public static final double ELEVATOR_LTHREE_POSITION = 88;
     public static final double ELEVATOR_LFOUR_POSITION = 125;
     public static final double ELEVATOR_ENCODER_RESET = 0;
+    public static final double ELEVATOR_ALGAE_LOW = 20;
+    public static final double ELEVATOR_ALGAE_MIDDLE = 55;
+    public static final double ELEVATOR_ALGAE_HIGH = 95;
 
     public static final double PIVOT_ZERO_POSITION = 5;
     public static final double PIVOT_LOAD_POSITION = 12;
@@ -106,6 +110,8 @@ public class CoralDeliveryCfg {
     public static final double PIVOT_BARGE_POSITION = 45;
     public static final double PIVOT_TRAVEL_POSITION = 45;
     public static final double PIVOT_ENCODER_RESET = 0;
+    public static final double PIVOT_ALGAE_POS = 65;
+
     public static final double INDEXER_ON_SPEED = 0.40;
     public static final double INDEXER_OFF_SPEED = 0;
     public static final double INDEXER_REVERSE_SPEED = -0.4;

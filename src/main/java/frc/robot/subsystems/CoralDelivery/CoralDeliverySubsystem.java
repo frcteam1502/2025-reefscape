@@ -567,6 +567,19 @@ public class CoralDeliverySubsystem extends SubsystemBase {
     pivotPIDController.setReference(position, SparkMax.ControlType.kPosition);
   }
 
+  public void setElevatorAlgaeLowPosition(){
+    checkElevatorSetPosition(CoralDeliveryCfg.ELEVATOR_ALGAE_LOW);
+    pivotSetPosition = CoralDeliveryCfg.PIVOT_ALGAE_POS;
+  }
+  public void setElevatorAlgaeMiddlePosition(){
+    checkElevatorSetPosition(CoralDeliveryCfg.ELEVATOR_ALGAE_MIDDLE);
+    pivotSetPosition = CoralDeliveryCfg.PIVOT_ALGAE_POS;
+  }
+  public void setElevatorAlgaeHighPosition(){
+    checkElevatorSetPosition(CoralDeliveryCfg.ELEVATOR_ALGAE_HIGH);
+    pivotSetPosition = CoralDeliveryCfg.PIVOT_ALGAE_POS;
+  }
+
   public void setPivotTargetPosition(double position){
     pivotSetPosition = position;
   }
