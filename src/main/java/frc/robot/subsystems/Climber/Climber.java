@@ -151,8 +151,10 @@ public class Climber extends SubsystemBase {
   }
 
   public void setClimberStaged(){
-    climberSetPos = ClimberCfg.CLIMBER_MIDDLE_POS;
-    climberState = ClimberState.STAGING;
+    if(ClimberCfg.AUTO_DEPLOY_ENABLED){
+      climberSetPos = ClimberCfg.CLIMBER_MIDDLE_POS;
+      climberState = ClimberState.STAGING;
+    }
   }
 
   public void setClimberHold(){

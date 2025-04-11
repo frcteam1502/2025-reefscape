@@ -97,7 +97,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Discharge Algae", new InstantCommand(algaeSubsystem::algaeIntakeDischarge));
     NamedCommands.registerCommand("Stop Algae", new InstantCommand(algaeSubsystem::algaeIntakeOff));*/
     
-    NamedCommands.registerCommand("Deploy Climber", new InstantCommand(climberSubsystem::setClimberOut));
+    NamedCommands.registerCommand("Deploy Climber", new InstantCommand(climberSubsystem::setClimberStaged));
   
     //Build an Autochooser from SmartDashboard selection.  Default will be Commands.none()
     //e.g new PathPlannerAuto("MiddleAutoAMPFinal");
