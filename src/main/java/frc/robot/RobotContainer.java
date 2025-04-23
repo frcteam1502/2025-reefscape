@@ -24,6 +24,7 @@ import frc.robot.commands.MoveAlgaeToZeroPos;
 import frc.robot.commands.MoveElevatorToFloor;
 import frc.robot.commands.MoveElevatorToL0;
 import frc.robot.commands.MoveElevatorToL1;
+import frc.robot.commands.MoveElevatorToL2;
 import frc.robot.commands.MoveElevatorToL4;
 import frc.robot.commands.MoveToL0Sequence;
 import frc.robot.commands.MoveToL4Sequence;
@@ -82,7 +83,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("Elevator to L1", new MoveElevatorToL1(coralSubsystem));
     NamedCommands.registerCommand("Elevator to L4 Sequence", new MoveToL4Sequence(coralSubsystem));
     NamedCommands.registerCommand("Elevator to L4", new MoveElevatorToL4(coralSubsystem));
-    NamedCommands.registerCommand("Elevator to L2", new InstantCommand(coralSubsystem::setElevatorLTWOPosition));
+    //NamedCommands.registerCommand("Elevator to L2", new InstantCommand(coralSubsystem::setElevatorLTWOPosition));
+    NamedCommands.registerCommand("Elevator to L2", new MoveElevatorToL2(coralSubsystem));
     NamedCommands.registerCommand("Elevator to Load Sequence", new MoveToL0Sequence(coralSubsystem));
     NamedCommands.registerCommand("Elevator to Load", new MoveElevatorToL0(coralSubsystem));
     NamedCommands.registerCommand("Wait for Coral", new WaitForCoral(coralSubsystem));
