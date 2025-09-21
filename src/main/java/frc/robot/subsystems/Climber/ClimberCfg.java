@@ -27,6 +27,6 @@ public class ClimberCfg {
     public static final double CLIMBER_STOWED_POS = 0;
     public static final double CLIMBER_MIDDLE_POS = 4.25;
     public static final double CLIMBER_DEPLOYED_POS = 12.4;
-    public static final double CLIMBER_CLIMB_POS = -10;
+    public static final double CLIMBER_CLIMB_POS = -20;
     public static final boolean AUTO_DEPLOY_ENABLED = true;
 }
