@@ -8,7 +8,6 @@ import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.config.*;
 import com.revrobotics.RelativeEncoder;
@@ -24,7 +23,7 @@ import edu.wpi.first.units.measure.Voltage;
 
 public class SwerveModule{
   private final SparkFlex driveMotor;
-  private final SparkMax turningMotor;
+  private final SparkFlex turningMotor;
 
   private final RelativeEncoder driveEncoder;
 
@@ -47,7 +46,7 @@ public class SwerveModule{
   private double commandedSpeed;
   private double commandedAngle;
 
-  public SwerveModule(int moduleId, SparkFlex driveMotor, SparkMax turnMotor, CANcoder absEncoder) {
+  public SwerveModule(int moduleId, SparkFlex driveMotor, SparkFlex turnMotor, CANcoder absEncoder) {
     this.driveMotor = driveMotor;
     this.turningMotor = turnMotor;
     this.absEncoder = absEncoder;
@@ -84,7 +83,7 @@ public class SwerveModule{
     this.drivePIDController = driveMotor.getClosedLoopController();
 
     //Setup Turn Motor Config
-    SparkMaxConfig turnConfig = new SparkMaxConfig();
+    SparkFlexConfig turnConfig = new SparkFlexConfig();
     turnConfig.idleMode(SwerveModuleCfg.TURN_IDLE_MODE);
     turnConfig.inverted(ChassisMotorCfg.ANGLE_MOTOR_REVERSED[moduleId]);
 
@@ -134,7 +133,7 @@ public class SwerveModule{
 
       //Calculate the motor speed output && feedforward and pass the values to the SPARK PID Controller object
       var desiredSpeed = desiredState.speedMetersPerSecond;
-      drivePIDController.setReference(desiredSpeed, SparkMax.ControlType.kVelocity);
+      drivePIDController.setReference(desiredSpeed, SparkFlex.ControlType.kVelocity);
 
       // Calculate the turning motor output from the turning PID controller.
       final double turnOutput = turningPIDController.calculate(getAbsPositionZeroed(), desiredState.angle.getRadians());

@@ -560,10 +560,10 @@ public class DriveSubsystem extends SubsystemBase{
     Logger.RegisterSparkFlex("RL Drive", ChassisMotorCfg.DRIVE_BACK_LEFT);
     Logger.RegisterSparkFlex("RR Drive", ChassisMotorCfg.DRIVE_BACK_RIGHT);
 
-    Logger.RegisterSparkMax("FL Turn", ChassisMotorCfg.ANGLE_FRONT_LEFT);
-    Logger.RegisterSparkMax("FR Turn", ChassisMotorCfg.ANGLE_FRONT_RIGHT);
-    Logger.RegisterSparkMax("RL Turn", ChassisMotorCfg.ANGLE_BACK_LEFT);
-    Logger.RegisterSparkMax("RR Turn", ChassisMotorCfg.ANGLE_BACK_RIGHT);
+    Logger.RegisterSparkFlex("FL Turn", ChassisMotorCfg.ANGLE_FRONT_LEFT);
+    Logger.RegisterSparkFlex("FR Turn", ChassisMotorCfg.ANGLE_FRONT_RIGHT);
+    Logger.RegisterSparkFlex("RL Turn", ChassisMotorCfg.ANGLE_BACK_LEFT);
+    Logger.RegisterSparkFlex("RR Turn", ChassisMotorCfg.ANGLE_BACK_RIGHT);
 
     Logger.RegisterPigeon(IMU_Cfg.IMU);
 

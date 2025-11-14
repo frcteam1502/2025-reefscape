@@ -41,10 +41,10 @@ final class ChassisMotorCfg {
     DRIVE_BACK_RIGHT_REVERSED
   };
 
-  public static final SparkMax ANGLE_FRONT_LEFT   = new SparkMax(ANGLE_FRONT_LEFT_ID, SparkLowLevel.MotorType.kBrushless);
-  public static final SparkMax ANGLE_FRONT_RIGHT  = new SparkMax(ANGLE_FRONT_RIGHT_ID, SparkLowLevel.MotorType.kBrushless);
-  public static final SparkMax ANGLE_BACK_RIGHT   = new SparkMax(ANGLE_BACK_RIGHT_ID, SparkLowLevel.MotorType.kBrushless);
-  public static final SparkMax ANGLE_BACK_LEFT    = new SparkMax(ANGLE_BACK_LEFT_ID, SparkLowLevel.MotorType.kBrushless);
+  public static final SparkFlex ANGLE_FRONT_LEFT   = new SparkFlex(ANGLE_FRONT_LEFT_ID, SparkLowLevel.MotorType.kBrushless);
+  public static final SparkFlex ANGLE_FRONT_RIGHT  = new SparkFlex(ANGLE_FRONT_RIGHT_ID, SparkLowLevel.MotorType.kBrushless);
+  public static final SparkFlex ANGLE_BACK_RIGHT   = new SparkFlex(ANGLE_BACK_RIGHT_ID, SparkLowLevel.MotorType.kBrushless);
+  public static final SparkFlex ANGLE_BACK_LEFT    = new SparkFlex(ANGLE_BACK_LEFT_ID, SparkLowLevel.MotorType.kBrushless);
 
   public static final boolean ANGLE_MOTOR_REVERSED[] = {
     ANGLE_FRONT_LEFT_REVERSED,
